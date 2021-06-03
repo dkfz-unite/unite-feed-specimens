@@ -1,0 +1,48 @@
+﻿{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:52470",
+      "sslPort": 44302
+    }
+  },
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "api",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "UNITE_SQL_HOST": "localhost",
+        "UNITE_SQL_DATABASE": "unite",
+        "UNITE_SQL_USER": "root",
+        "UNITE_SQL_PASSWORD": "Long-p@55w0rd",
+        "UNITE_ELASTIC_HOST": "http://localhost:9200",
+        "UNITE_ELASTIC_USER": "elastic",
+        "UNITE_ELASTIC_PASSWORD": "Long-p@55w0rd",
+        "UNITE_INDEXING_INTERVAL": "10",
+        "UNITE_INDEXING_BUCKET_SIZE": "300"
+      }
+    },
+    "Unite.Specimens.Feed.Web": {
+      "commandName": "Project",
+      "dotnetRunMessages": "true",
+      "launchBrowser": true,
+      "launchUrl": "api",
+      "applicationUrl": "http://localhost:5040",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "UNITE_SQL_HOST": "localhost",
+        "UNITE_SQL_DATABASE": "unite",
+        "UNITE_SQL_USER": "root",
+        "UNITE_SQL_PASSWORD": "Long-p@55w0rd",
+        "UNITE_ELASTIC_HOST": "http://localhost:9200",
+        "UNITE_ELASTIC_USER": "elastic",
+        "UNITE_ELASTIC_PASSWORD": "Long-p@55w0rd",
+        "UNITE_INDEXING_INTERVAL": "10",
+        "UNITE_INDEXING_BUCKET_SIZE": "300"
+      }
+    }
+  }
+}
