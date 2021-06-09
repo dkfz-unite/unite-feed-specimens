@@ -31,11 +31,15 @@ namespace Unite.Specimens.Feed.Data.Specimens
 
             if (specimen == null)
             {
-                CreateSpecimen(donor.Id, parentSpecimen?.Id, model, ref audit);
+                specimen = CreateSpecimen(donor.Id, parentSpecimen?.Id, model, ref audit);
+
+                audit.Specimens.Add(specimen.Id);
             }
             else
             {
                 UpdateSpecimen(specimen, model, ref audit);
+
+                audit.Specimens.Add(specimen.Id);
             }
         }
 

@@ -74,9 +74,8 @@ namespace Unite.Specimens.Feed.Web.Services
 
         private void CreateDonorIndexingTasks(IEnumerable<int> specimenIds)
         {
-            var donorIds = _dbContext.MutationOccurrences
-                .Where(mutationOccurrence => specimenIds.Contains(mutationOccurrence.AnalysedSample.Sample.SpecimenId))
-                .Select(mutationOccurrence => mutationOccurrence.AnalysedSample.Sample.Specimen.DonorId)
+            var donorIds = _dbContext.Specimens
+                .Select(specimen => specimen.DonorId)
                 .Distinct()
                 .ToArray();
 
