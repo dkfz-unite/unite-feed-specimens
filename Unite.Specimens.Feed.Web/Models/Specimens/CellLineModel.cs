@@ -4,8 +4,10 @@ namespace Unite.Specimens.Feed.Web.Models.Specimens
 {
     public class CellLineModel
     {
-        public CellLineType? Type { get; set; }
         public Species? Species { get; set; }
+        public CellLineType? Type { get; set; }
+        public CellLineCultureType? CultureType { get; set; }
+        public string PassageNumber { get; set; }
 
         public CellLineInfoModel Info { get; set; }
 

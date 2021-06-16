@@ -11,12 +11,15 @@ namespace Unite.Specimens.Feed.Web.Models.Specimens.Validators
         {
             _cellLineInfoModelValidator = new CellLineInfoModelValidator();
 
+            RuleFor(model => model.Species)
+                .NotEmpty()
+                .WithMessage("Should not be empty");
 
             RuleFor(model => model.Type)
                 .NotEmpty()
                 .WithMessage("Should not be empty");
 
-            RuleFor(model => model.Species)
+            RuleFor(model => model.CultureType)
                 .NotEmpty()
                 .WithMessage("Should not be empty");
 

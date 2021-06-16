@@ -42,8 +42,10 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
             }
 
             specimen.CellLine.ReferenceId = model.ReferenceId;
-            specimen.CellLine.TypeId = model.Type;
             specimen.CellLine.SpeciesId = model.Species;
+            specimen.CellLine.TypeId = model.Type;
+            specimen.CellLine.CultureTypeId = model.CultureType;
+            specimen.CellLine.PassageNumber = model.PassageNumber;
 
             if (model.Info != null)
             {

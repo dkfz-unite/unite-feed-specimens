@@ -72,7 +72,7 @@ namespace Unite.Specimens.Feed.Web.Models.Specimens.Converters
             {
                 ReferenceId = source.Id,
                 Type = source.Tissue.Type.Value,
-                TumourType = source.Tissue.TumourType,
+                TumorType = source.Tissue.TumorType,
                 ExtractionDate = source.Tissue.ExtractionDate,
                 Source = source.Tissue.Source
             };
@@ -85,8 +85,10 @@ namespace Unite.Specimens.Feed.Web.Models.Specimens.Converters
             var target = new Data.Specimens.Models.CellLineModel
             {
                 ReferenceId = source.Id,
+                Species = source.CellLine.Species,
                 Type = source.CellLine.Type,
-                Species = source.CellLine.Species
+                CultureType = source.CellLine.CultureType,
+                PassageNumber = source.CellLine.PassageNumber
             };
 
             if (source.CellLine.Info != null)
