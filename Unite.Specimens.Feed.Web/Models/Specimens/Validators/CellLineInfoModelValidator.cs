@@ -7,12 +7,12 @@ namespace Unite.Specimens.Feed.Web.Models.Specimens.Validators
         public CellLineInfoModelValidator()
         {
             RuleFor(model => model)
-                .Must(HaveAnythingSate)
+                .Must(HaveAnythingSet)
                 .WithMessage("At least one field has to be set");
         }
 
 
-        private bool HaveAnythingSate(CellLineInfoModel model)
+        private bool HaveAnythingSet(CellLineInfoModel model)
         {
             return !string.IsNullOrWhiteSpace(model.Name)
                 || !string.IsNullOrWhiteSpace(model.DepositorName)

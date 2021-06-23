@@ -11,6 +11,8 @@ namespace Unite.Specimens.Feed.Web.Models.Specimens
 
         public TissueModel Tissue { get; set; }
         public CellLineModel CellLine { get; set; }
+        public OrganoidModel Organoid { get; set; }
+        public XenograftModel Xenograft { get; set; }
 
         public MolecularDataModel MolecularData { get; set; }
 
@@ -20,6 +22,11 @@ namespace Unite.Specimens.Feed.Web.Models.Specimens
             Id = Id?.Trim();
             ParentId = ParentId?.Trim();
             DonorId = DonorId?.Trim();
+
+            Tissue?.Sanitise();
+            CellLine?.Sanitise();
+            Organoid?.Sanitise();
+            Xenograft?.Sanitise();
 
             MolecularData?.Sanitise();
         }

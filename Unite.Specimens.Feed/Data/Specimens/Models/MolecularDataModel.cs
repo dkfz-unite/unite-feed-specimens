@@ -4,11 +4,11 @@ namespace Unite.Specimens.Feed.Data.Specimens.Models
 {
     public class MolecularDataModel
     {
+        public MgmtStatus? MgmtStatus { get; set; }
+        public IdhStatus? IdhStatus { get; set; }
+        public IdhMutation? IdhMutation { get; set; }
         public GeneExpressionSubtype? GeneExpressionSubtype { get; set; }
-        public IDHStatus? IdhStatus { get; set; }
-        public IDHMutation? IdhMutation { get; set; }
-        public MethylationStatus? MethylationStatus { get; set; }
-        public MethylationType? MethylationType { get; set; }
+        public MethylationSubtype? MethylationSubtype { get; set; }
         public bool? GcimpMethylation { get; set; }
     }
 }

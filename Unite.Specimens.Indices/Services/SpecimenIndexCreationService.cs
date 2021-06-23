@@ -14,9 +14,9 @@ namespace Unite.Specimens.Indices.Services
     public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
     {
         private readonly UniteDbContext _dbContext;
-        private readonly IMapper<Mutation, Unite.Indices.Entities.Basic.Mutations.MutationIndex> _mutationIndexMapper;
-        private readonly IMapper<Donor, Unite.Indices.Entities.Basic.Donors.DonorIndex> _donorIndexMapper;
-        private readonly IMapper<Specimen, Unite.Indices.Entities.Basic.Specimens.SpecimenIndex> _specimenIndexMapper;
+        private readonly MutationIndexMapper _mutationIndexMapper;
+        private readonly DonorIndexMapper _donorIndexMapper;
+        private readonly SpecimenIndexMapper _specimenIndexMapper;
 
 
         public SpecimenIndexCreationService(UniteDbContext dbContext)
@@ -40,7 +40,7 @@ namespace Unite.Specimens.Indices.Services
         {
             var specimen = LoadSpecimen(specimenId);
 
-            if(specimen == null)
+            if (specimen == null)
             {
                 return null;
             }
@@ -70,6 +70,7 @@ namespace Unite.Specimens.Indices.Services
                 .Count();
 
             index.NumberOfGenes = index.Mutations
+                .Where(mutation => mutation.AffectedTranscripts != null)
                 .SelectMany(mutation => mutation.AffectedTranscripts)
                 .Select(affectedTranscript => affectedTranscript.Gene.Id)
                 .Distinct()
@@ -85,6 +86,12 @@ namespace Unite.Specimens.Indices.Services
                     .ThenInclude(tissue => tissue.Source)
                 .Include(specimen => specimen.CellLine)
                     .ThenInclude(cellLine => cellLine.Info)
+                .Include(specimen => specimen.Organoid)
+                    .ThenInclude(organoid => organoid.Interventions)
+                        .ThenInclude(intervention => intervention.Type)
+                .Include(specimen => specimen.Xenograft)
+                    .ThenInclude(xenograft => xenograft.Interventions)
+                        .ThenInclude(intervention => intervention.Type)
                 .Include(specimen => specimen.MolecularData)
                 .FirstOrDefault(specimen => specimen.Id == specimenId);
 
@@ -96,7 +103,7 @@ namespace Unite.Specimens.Indices.Services
         {
             var specimen = LoadParentSpecimen(specimeId);
 
-            if(specimen == null)
+            if (specimen == null)
             {
                 return null;
             }
@@ -125,6 +132,14 @@ namespace Unite.Specimens.Indices.Services
                     .ThenInclude(specimen => specimen.CellLine)
                         .ThenInclude(cellLine => cellLine.Info)
                 .Include(specimen => specimen.Parent)
+                    .Include(specimen => specimen.Organoid)
+                        .ThenInclude(organoid => organoid.Interventions)
+                            .ThenInclude(intervention => intervention.Type)
+                .Include(specimen => specimen.Parent)
+                    .Include(specimen => specimen.Xenograft)
+                        .ThenInclude(xenograft => xenograft.Interventions)
+                            .ThenInclude(intervention => intervention.Type)
+                .Include(specimen => specimen.Parent)
                     .ThenInclude(specimen => specimen.MolecularData)
                 .FirstOrDefault(specimen => specimen.Id == specimeId).Parent;
 
@@ -136,7 +151,7 @@ namespace Unite.Specimens.Indices.Services
         {
             var specimens = LoadChildSpecimens(specimenId);
 
-            if(specimens == null)
+            if (specimens == null)
             {
                 return null;
             }
@@ -166,6 +181,12 @@ namespace Unite.Specimens.Indices.Services
                     .ThenInclude(tissue => tissue.Source)
                 .Include(specimen => specimen.CellLine)
                     .ThenInclude(cellLine => cellLine.Info)
+                .Include(specimen => specimen.Organoid)
+                    .ThenInclude(organoid => organoid.Interventions)
+                        .ThenInclude(intervention => intervention.Type)
+                .Include(specimen => specimen.Xenograft)
+                    .ThenInclude(xenograft => xenograft.Interventions)
+                        .ThenInclude(intervention => intervention.Type)
                 .Include(specimen => specimen.MolecularData)
                 .Where(specimen => specimen.ParentId == specimenId)
                 .ToArray();
@@ -178,7 +199,7 @@ namespace Unite.Specimens.Indices.Services
         {
             var donor = LoadDonor(donorId);
 
-            if(donor == null)
+            if (donor == null)
             {
                 return null;
             }
@@ -220,7 +241,7 @@ namespace Unite.Specimens.Indices.Services
         {
             var mutations = LoadMutations(specimenId);
 
-            if(mutations == null)
+            if (mutations == null)
             {
                 return null;
             }

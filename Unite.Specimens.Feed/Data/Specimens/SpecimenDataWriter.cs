@@ -89,6 +89,14 @@ namespace Unite.Specimens.Feed.Data.Specimens
             {
                 audit.CellLinesCreated++;
             }
+            else if (specimen.Organoid != null)
+            {
+                audit.OrganoidsCreated++;
+            }
+            else if (specimen.Xenograft != null)
+            {
+                audit.XenograftsCreated++;
+            }
 
             return specimen;
         }
@@ -104,6 +112,14 @@ namespace Unite.Specimens.Feed.Data.Specimens
             else if (specimen.CellLine != null)
             {
                 audit.CellLinesUpdated++;
+            }
+            else if (specimen.Organoid != null)
+            {
+                audit.OrganoidsUpdate++;
+            }
+            else if (specimen.Xenograft != null)
+            {
+                audit.XenograftsUpdated++;
             }
 
             return specimen;

@@ -5,15 +5,19 @@ namespace Unite.Specimens.Feed.Web.Models.Specimens.Validators
 {
     public class SpecimenModelValidator : AbstractValidator<SpecimenModel>
     {
-        private IValidator<TissueModel> _tissueModelValidator;
-        private IValidator<CellLineModel> _cellLineModelValidator;
-        protected IValidator<MolecularDataModel> _molecularDataModelValidator;
+        private readonly IValidator<TissueModel> _tissueModelValidator;
+        private readonly IValidator<CellLineModel> _cellLineModelValidator;
+        private readonly IValidator<OrganoidModel> _organoidModelValidator;
+        private readonly IValidator<XenograftModel> _xenograftModelValidator;
+        private readonly IValidator<MolecularDataModel> _molecularDataModelValidator;
 
 
         public SpecimenModelValidator()
         {
             _tissueModelValidator = new TissueModelValidator();
             _cellLineModelValidator = new CellLineModelValidator();
+            _organoidModelValidator = new OrganoidModelValidator();
+            _xenograftModelValidator = new XenograftModelValidator();
             _molecularDataModelValidator = new MolecularDataModelValidator();
 
 
@@ -61,6 +65,12 @@ namespace Unite.Specimens.Feed.Web.Models.Specimens.Validators
             RuleFor(model => model.CellLine)
                 .SetValidator(_cellLineModelValidator);
 
+            RuleFor(model => model.Organoid)
+                .SetValidator(_organoidModelValidator);
+
+            RuleFor(model => model.Xenograft)
+                .SetValidator(_xenograftModelValidator);
+
             RuleFor(model => model.MolecularData)
                 .SetValidator(_molecularDataModelValidator);
         }
@@ -69,7 +79,9 @@ namespace Unite.Specimens.Feed.Web.Models.Specimens.Validators
         private bool HaveModelSet(SpecimenModel model)
         {
             return model.Tissue != null
-                || model.CellLine != null;
+                || model.CellLine != null
+                || model.Organoid != null
+                || model.Xenograft != null;
         }
     }
 

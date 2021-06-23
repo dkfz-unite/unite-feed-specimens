@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Unite.Specimens.Feed.Web.Models.Specimens.Enums;
 
 namespace Unite.Specimens.Feed.Web.Models.Specimens.Converters
@@ -29,6 +30,14 @@ namespace Unite.Specimens.Feed.Web.Models.Specimens.Converters
             {
                 return GetCellLineModel(source);
             }
+            else if (source.Organoid != null)
+            {
+                return GetOrganoidModel(source);
+            }
+            else if (source.Xenograft != null)
+            {
+                return GetXenograftModel(source);
+            }
             else
             {
                 throw new NotImplementedException("Specimen type is not supported yet");
@@ -49,6 +58,14 @@ namespace Unite.Specimens.Feed.Web.Models.Specimens.Converters
             else if (type == SpecimenType.CellLine)
             {
                 return new Data.Specimens.Models.CellLineModel { ReferenceId = id };
+            }
+            else if (type == SpecimenType.Organoid)
+            {
+                return new Data.Specimens.Models.OrganoidModel { ReferenceId = id };
+            }
+            else if (type == SpecimenType.Xenograft)
+            {
+                return new Data.Specimens.Models.XenograftModel { ReferenceId = id };
             }
             else
             {
@@ -87,8 +104,7 @@ namespace Unite.Specimens.Feed.Web.Models.Specimens.Converters
                 ReferenceId = source.Id,
                 Species = source.CellLine.Species,
                 Type = source.CellLine.Type,
-                CultureType = source.CellLine.CultureType,
-                PassageNumber = source.CellLine.PassageNumber
+                CultureType = source.CellLine.CultureType
             };
 
             if (source.CellLine.Info != null)
@@ -108,6 +124,65 @@ namespace Unite.Specimens.Feed.Web.Models.Specimens.Converters
             return target;
         }
 
+        private Data.Specimens.Models.OrganoidModel GetOrganoidModel(SpecimenModel source)
+        {
+            var target = new Data.Specimens.Models.OrganoidModel
+            {
+                ReferenceId = source.Id,
+                ImplantedCellsNumber = source.Organoid.ImplantedCellsNumber,
+                Tumorigenicity = source.Organoid.Tumorigenicity,
+                Medium = source.Organoid.Medium,
+
+                Interventions = source.Organoid.Interventions?.Select(intervention =>
+                {
+                    return new Data.Specimens.Models.OrganoidInterventionModel
+                    {
+                        Type = intervention.Type,
+                        Details = intervention.Details,
+                        StartDay = intervention.StartDay,
+                        DurationDays = intervention.DurationDays,
+                        Results = intervention.Results
+                    };
+
+                }).ToArray()
+            };
+
+            return target;
+        }
+
+        private Data.Specimens.Models.XenograftModel GetXenograftModel(SpecimenModel source)
+        {
+            var target = new Data.Specimens.Models.XenograftModel
+            {
+                ReferenceId = source.Id,
+                MouseStrain = source.Xenograft.MouseStrain,
+                GroupSize = source.Xenograft.GroupSize,
+                ImplantType = source.Xenograft.ImplantType,
+                TissueLocation = source.Xenograft.TissueLocation,
+                ImplantedCellsNumber = source.Xenograft.ImplantedCellsNumber,
+                Tumorigenicity = source.Xenograft.Tumorigenicity,
+                TumorGrowthForm = source.Xenograft.TumorGrowthForm,
+                SurvivalDaysFrom = ParseDuration(source.Xenograft.SurvivalDays)?.From,
+                SurvivalDaysTo = ParseDuration(source.Xenograft.SurvivalDays)?.To,
+
+                Interventions = source.Organoid.Interventions?.Select(intervention =>
+                {
+                    return new Data.Specimens.Models.XenograftInterventionModel
+                    {
+                        Type = intervention.Type,
+                        Details = intervention.Details,
+                        StartDay = intervention.StartDay,
+                        DurationDays = intervention.DurationDays,
+                        Results = intervention.Results
+                    };
+
+                }).ToArray()
+
+            };
+
+            return target;
+        }
+
         private Data.Specimens.Models.MolecularDataModel GetMolecularDataModel(MolecularDataModel source)
         {
             if (source == null)
@@ -117,14 +192,40 @@ namespace Unite.Specimens.Feed.Web.Models.Specimens.Converters
 
             var target = new Data.Specimens.Models.MolecularDataModel();
 
-            target.GeneExpressionSubtype = source.GeneExpressionSubtype;
+            target.MgmtStatus = source.MgmtStatus;
             target.IdhStatus = source.IdhStatus;
             target.IdhMutation = source.IdhMutation;
-            target.MethylationStatus = source.MethylationStatus;
-            target.MethylationType = source.MethylationType;
+            target.GeneExpressionSubtype = source.GeneExpressionSubtype;
+            target.MethylationSubtype = source.MethylationSubtype;
             target.GcimpMethylation = source.GcimpMethylation;
 
             return target;
+        }
+
+
+        private (int From, int To)? ParseDuration(string duration)
+        {
+            if (string.IsNullOrWhiteSpace(duration))
+            {
+                return null;
+            }
+
+            if (duration.Contains('-'))
+            {
+                var parts = duration.Split('-');
+
+                var start = int.Parse(parts[0]);
+                var end = int.Parse(parts[1]);
+
+                return (start, end);
+            }
+            else
+            {
+                var start = int.Parse(duration);
+                var end = int.Parse(duration);
+
+                return (start, end);
+            }
         }
     }
 }

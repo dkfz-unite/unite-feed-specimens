@@ -10,7 +10,10 @@ namespace Unite.Specimens.Feed.Web.Models.Specimens.Enums
         [EnumMember(Value = "CellLine")]
         CellLine = 2,
 
+        [EnumMember(Value = "Organoid")]
+        Organoid = 3,
+
         [EnumMember(Value = "Xenograft")]
-        Xenograft = 3
+        Xenograft = 4
     }
 }

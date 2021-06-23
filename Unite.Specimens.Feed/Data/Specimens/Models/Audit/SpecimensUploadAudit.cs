@@ -10,6 +10,8 @@ namespace Unite.Specimens.Feed.Data.Specimens.Models.Audit
         public int TissuesUpdated;
         public int CellLinesCreated;
         public int CellLinesUpdated;
+        public int OrganoidsCreated;
+        public int OrganoidsUpdate;
         public int XenograftsCreated;
         public int XenograftsUpdated;
         public int MolecularDataCreated;
@@ -32,6 +34,8 @@ namespace Unite.Specimens.Feed.Data.Specimens.Models.Audit
             message.AppendLine($"{TissuesUpdated} tissues updated");
             message.AppendLine($"{CellLinesCreated} cell lines created");
             message.AppendLine($"{CellLinesUpdated} cell lines updated");
+            message.AppendLine($"{OrganoidsCreated} organoids created");
+            message.AppendLine($"{OrganoidsUpdate} organoids updated");
             message.AppendLine($"{XenograftsCreated} xenografts created");
             message.AppendLine($"{XenograftsUpdated} xenografts updated");
             message.Append($"{MolecularDataCreated} specimen molecular data entries created");

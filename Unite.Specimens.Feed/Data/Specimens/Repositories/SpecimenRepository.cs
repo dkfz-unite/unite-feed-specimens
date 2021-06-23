@@ -9,12 +9,16 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
     {
         private readonly SpecimenRepositoryBase<TissueModel> _tissueRepository;
         private readonly SpecimenRepositoryBase<CellLineModel> _cellLineRepository;
+        private readonly SpecimenRepositoryBase<OrganoidModel> _organoidRepository;
+        private readonly SpecimenRepositoryBase<XenograftModel> _xenograftRepository;
 
 
         public SpecimenRepository(UniteDbContext dbContext)
         {
             _tissueRepository = new TissueRepository(dbContext);
             _cellLineRepository = new CellLineRepository(dbContext);
+            _organoidRepository = new OrganoidRepository(dbContext);
+            _xenograftRepository = new XenograftRepository(dbContext);
         }
 
 
@@ -27,6 +31,14 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
             else if (specimenModel is CellLineModel cellLineModel)
             {
                 return _cellLineRepository.Find(donorId, parentId, cellLineModel);
+            }
+            else if (specimenModel is OrganoidModel organoidModel)
+            {
+                return _organoidRepository.Find(donorId, parentId, organoidModel);
+            }
+            else if (specimenModel is XenograftModel xenograftModel)
+            {
+                return _xenograftRepository.Find(donorId, parentId, xenograftModel);
             }
             else
             {
@@ -44,6 +56,14 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
             {
                 return _cellLineRepository.Create(donorId, parentId, cellLineModel);
             }
+            else if (specimenModel is OrganoidModel organoidModel)
+            {
+                return _organoidRepository.Create(donorId, parentId, organoidModel);
+            }
+            else if (specimenModel is XenograftModel xenograftModel)
+            {
+                return _xenograftRepository.Create(donorId, parentId, xenograftModel);
+            }
             else
             {
                 throw new NotSupportedException("Specimen type is not yet supported");
@@ -59,6 +79,14 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
             else if (specimenModel is CellLineModel cellLineModel)
             {
                 _cellLineRepository.Update(ref specimen, cellLineModel);
+            }
+            else if (specimenModel is OrganoidModel organoidModel)
+            {
+                _organoidRepository.Update(ref specimen, organoidModel);
+            }
+            else if (specimenModel is XenograftModel xenograftModel)
+            {
+                _xenograftRepository.Update(ref specimen, xenograftModel);
             }
             else
             {

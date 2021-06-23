@@ -59,7 +59,7 @@ namespace Unite.Specimens.Feed.Web.Services
         {
             var donorIds = _dbContext.Specimens
                 .Where(specimen => specimenIds.Contains(specimen.Id))
-                .Select(specime => specime.DonorId)
+                .Select(specimen => specimen.DonorId)
                 .Distinct()
                 .ToArray();
 

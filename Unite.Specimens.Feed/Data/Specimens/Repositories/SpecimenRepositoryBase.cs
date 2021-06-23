@@ -52,11 +52,11 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
                     specimen.MolecularData = new MolecularData();
                 }
 
-                specimen.MolecularData.GeneExpressionSubtypeId = model.MolecularData.GeneExpressionSubtype;
+                specimen.MolecularData.MgmtStatusId = model.MolecularData.MgmtStatus;
                 specimen.MolecularData.IdhStatusId = model.MolecularData.IdhStatus;
                 specimen.MolecularData.IdhMutationId = model.MolecularData.IdhMutation;
-                specimen.MolecularData.MethylationStatusId = model.MolecularData.MethylationStatus;
-                specimen.MolecularData.MethylationTypeId = model.MolecularData.MethylationType;
+                specimen.MolecularData.GeneExpressionSubtypeId = model.MolecularData.GeneExpressionSubtype;
+                specimen.MolecularData.MethylationSubtypeId = model.MolecularData.MethylationSubtype;
                 specimen.MolecularData.GcimpMethylation = model.MolecularData.GcimpMethylation;
             }
         }
