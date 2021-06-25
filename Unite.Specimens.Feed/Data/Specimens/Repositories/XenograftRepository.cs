@@ -82,6 +82,7 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
                 specimen.Xenograft = new Xenograft();
             }
 
+            specimen.Xenograft.ReferenceId = model.ReferenceId;
             specimen.Xenograft.MouseStrain = model.MouseStrain;
             specimen.Xenograft.GroupSize = model.GroupSize;
             specimen.Xenograft.ImplantTypeId = model.ImplantType;

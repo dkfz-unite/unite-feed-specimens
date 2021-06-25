@@ -165,7 +165,7 @@ namespace Unite.Specimens.Feed.Web.Models.Specimens.Converters
                 SurvivalDaysFrom = ParseDuration(source.Xenograft.SurvivalDays)?.From,
                 SurvivalDaysTo = ParseDuration(source.Xenograft.SurvivalDays)?.To,
 
-                Interventions = source.Organoid.Interventions?.Select(intervention =>
+                Interventions = source.Xenograft.Interventions?.Select(intervention =>
                 {
                     return new Data.Specimens.Models.XenograftInterventionModel
                     {
