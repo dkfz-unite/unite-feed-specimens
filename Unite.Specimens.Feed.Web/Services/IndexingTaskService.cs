@@ -39,13 +39,7 @@ namespace Unite.Specimens.Feed.Web.Services
         /// <param name="specimenIds">Identifiers of specimens</param>
         public void CreateTasks(IEnumerable<int> specimenIds)
         {
-            var donorIds = _dbContext.Specimens
-                .Where(specimen => specimenIds.Contains(specimen.Id))
-                .Select(specime => specime.DonorId)
-                .Distinct()
-                .ToArray();
-
-            IterateSpecimens(specimen => donorIds.Contains(specimen.DonorId), specimens =>
+            IterateSpecimens(specimen => true, specimens =>
             {
                 CreateSpecimenIndexingTasks(specimens);
             });
@@ -57,13 +51,7 @@ namespace Unite.Specimens.Feed.Web.Services
         /// <param name="specimenIds">Identifiers of specimens</param>
         public void PopulateTasks(IEnumerable<int> specimenIds)
         {
-            var donorIds = _dbContext.Specimens
-                .Where(specimen => specimenIds.Contains(specimen.Id))
-                .Select(specimen => specimen.DonorId)
-                .Distinct()
-                .ToArray();
-
-            IterateSpecimens(specimen => donorIds.Contains(specimen.DonorId), specimens =>
+            IterateSpecimens(specimen => true, specimens =>
             {
                 CreateDonorIndexingTasks(specimens);
                 CreateMutationIndexingTasks(specimens);
@@ -117,7 +105,18 @@ namespace Unite.Specimens.Feed.Web.Services
 
         private void CreateSpecimenIndexingTasks(IEnumerable<int> specimenIds)
         {
-            var tasks = specimenIds
+            var donorIds = _dbContext.Specimens
+                .Select(specimen => specimen.DonorId)
+                .Distinct()
+                .ToArray();
+
+            var relatedSpecimenIds = _dbContext.Specimens
+                .Where(specimen => donorIds.Contains(specimen.DonorId))
+                .Select(specimen => specimen.Id)
+                .Distinct()
+                .ToArray();
+
+            var tasks = relatedSpecimenIds
                 .Select(specimenId => new Task
                 {
                     TypeId = TaskType.Indexing,
