@@ -106,6 +106,7 @@ namespace Unite.Specimens.Feed.Web.Services
         private void CreateSpecimenIndexingTasks(IEnumerable<int> specimenIds)
         {
             var donorIds = _dbContext.Specimens
+                .Where(specimen => specimenIds.Contains(specimen.Id))
                 .Select(specimen => specimen.DonorId)
                 .Distinct()
                 .ToArray();
