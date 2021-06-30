@@ -39,7 +39,7 @@ namespace Unite.Specimens.Feed.Web.Services
         /// <param name="specimenIds">Identifiers of specimens</param>
         public void CreateTasks(IEnumerable<int> specimenIds)
         {
-            IterateSpecimens(specimen => true, specimens =>
+            IterateSpecimens(specimen => specimenIds.Contains(specimen.Id), specimens =>
             {
                 CreateSpecimenIndexingTasks(specimens);
             });
@@ -51,7 +51,7 @@ namespace Unite.Specimens.Feed.Web.Services
         /// <param name="specimenIds">Identifiers of specimens</param>
         public void PopulateTasks(IEnumerable<int> specimenIds)
         {
-            IterateSpecimens(specimen => true, specimens =>
+            IterateSpecimens(specimen => specimenIds.Contains(specimen.Id), specimens =>
             {
                 CreateDonorIndexingTasks(specimens);
                 CreateMutationIndexingTasks(specimens);
@@ -63,6 +63,7 @@ namespace Unite.Specimens.Feed.Web.Services
         private void CreateDonorIndexingTasks(IEnumerable<int> specimenIds)
         {
             var donorIds = _dbContext.Specimens
+                .Where(specimen => specimenIds.Contains(specimen.Id))
                 .Select(specimen => specimen.DonorId)
                 .Distinct()
                 .ToArray();
