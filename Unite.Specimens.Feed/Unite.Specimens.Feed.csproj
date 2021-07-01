@@ -13,6 +13,6 @@
     <Folder Include="Data\Specimens\Exceptions\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Unite.Data" Version="1.6.3" />
+    <PackageReference Include="Unite.Data" Version="1.6.4" />
   </ItemGroup>
 </Project>
