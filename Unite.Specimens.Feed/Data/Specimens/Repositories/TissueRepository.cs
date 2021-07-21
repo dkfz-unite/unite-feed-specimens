@@ -44,7 +44,7 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
             specimen.Tissue.ReferenceId = model.ReferenceId;
             specimen.Tissue.TypeId = model.Type;
             specimen.Tissue.TumorTypeId = model.TumorType;
-            specimen.Tissue.ExtractionDate = model.ExtractionDate;
+            specimen.Tissue.ExtractionDay = model.ExtractionDay;
             specimen.Tissue.Source = GetTissueSource(model.Source);
         }
 

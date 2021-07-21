@@ -90,7 +90,7 @@ namespace Unite.Specimens.Feed.Web.Models.Specimens.Converters
                 ReferenceId = source.Id,
                 Type = source.Tissue.Type.Value,
                 TumorType = source.Tissue.TumorType,
-                ExtractionDate = source.Tissue.ExtractionDate,
+                ExtractionDay = source.Tissue.ExtractionDay,
                 Source = source.Tissue.Source
             };
 

@@ -1,5 +1,4 @@
-﻿using System;
-using Unite.Data.Entities.Specimens.Tissues.Enums;
+﻿using Unite.Data.Entities.Specimens.Tissues.Enums;
 
 namespace Unite.Specimens.Feed.Web.Models.Specimens
 {
@@ -7,7 +6,7 @@ namespace Unite.Specimens.Feed.Web.Models.Specimens
     {
         public TissueType? Type { get; set; }
         public TumorType? TumorType { get; set; }
-        public DateTime? ExtractionDate { get; set; }
+        public int? ExtractionDay { get; set; }
         public string Source { get; set; }
 
 
