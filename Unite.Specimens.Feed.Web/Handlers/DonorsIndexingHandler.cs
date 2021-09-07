@@ -7,19 +7,19 @@ using Unite.Specimens.Feed.Web.Services;
 
 namespace Unite.Specimens.Feed.Web.Handlers
 {
-    public class IndexingHandler
+    public class DonorsIndexingHandler
     {
-        private readonly TaskProcessingService _taskProcessingService;
+        private readonly TasksProcessingService _taskProcessingService;
         private readonly IIndexCreationService<SpecimenIndex> _indexCreationService;
         private readonly IIndexingService<SpecimenIndex> _indexingService;
         private readonly ILogger _logger;
 
 
-        public IndexingHandler(
-            TaskProcessingService taskProcessingService,
+        public DonorsIndexingHandler(
+            TasksProcessingService taskProcessingService,
             IIndexCreationService<SpecimenIndex> indexCreationService,
             IIndexingService<SpecimenIndex> indexingService,
-            ILogger<IndexingHandler> logger)
+            ILogger<DonorsIndexingHandler> logger)
         {
             _taskProcessingService = taskProcessingService;
             _indexCreationService = indexCreationService;

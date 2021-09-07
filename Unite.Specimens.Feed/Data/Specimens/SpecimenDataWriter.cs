@@ -14,7 +14,7 @@ namespace Unite.Specimens.Feed.Data.Specimens
         private readonly SpecimenRepository _specimenRepository;
 
 
-        public SpecimenDataWriter(UniteDbContext dbContext) : base(dbContext)
+        public SpecimenDataWriter(DomainDbContext dbContext) : base(dbContext)
         {
             _donorRepository = new DonorRepository(dbContext);
             _specimenRepository = new SpecimenRepository(dbContext);

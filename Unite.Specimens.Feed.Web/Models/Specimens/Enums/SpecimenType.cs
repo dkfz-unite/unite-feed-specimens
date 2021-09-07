@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Unite.Specimens.Feed.Web.Models.Specimens.Enums
+namespace Unite.Specimens.Feed.Web.Services.Specimens.Enums
 {
     public enum SpecimenType
     {

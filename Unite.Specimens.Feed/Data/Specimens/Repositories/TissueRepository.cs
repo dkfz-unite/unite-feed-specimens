@@ -9,7 +9,7 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
 {
     internal class TissueRepository : SpecimenRepositoryBase<TissueModel>
     {
-        public TissueRepository(UniteDbContext dbContext) : base(dbContext)
+        public TissueRepository(DomainDbContext dbContext) : base(dbContext)
         {
         }
 

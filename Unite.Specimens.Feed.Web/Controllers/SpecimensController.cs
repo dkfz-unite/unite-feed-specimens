@@ -3,13 +3,13 @@ using System.Linq;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Unite.Data.Extensions;
 using Unite.Specimens.Feed.Data.Exceptions;
 using Unite.Specimens.Feed.Data.Specimens;
-using Unite.Specimens.Feed.Web.Models.Specimens;
-using Unite.Specimens.Feed.Web.Models.Specimens.Converters;
-using Unite.Specimens.Feed.Web.Models.Specimens.Extensions;
-using Unite.Specimens.Feed.Web.Models.Validation;
 using Unite.Specimens.Feed.Web.Services;
+using Unite.Specimens.Feed.Web.Services.Specimens;
+using Unite.Specimens.Feed.Web.Services.Specimens.Converters;
+using Unite.Specimens.Feed.Web.Services.Validation;
 
 namespace Unite.Specimens.Feed.Web.Controllers
 {
@@ -19,7 +19,7 @@ namespace Unite.Specimens.Feed.Web.Controllers
         private readonly IValidationService _validationService;
         private readonly IValidator<IEnumerable<SpecimenModel>> _validator;
         private readonly SpecimenDataWriter _dataWriter;
-        private readonly IndexingTaskService _indexingTaskService;
+        private readonly DonorIndexingTasksService _indexingTaskService;
         private readonly ILogger _logger;
 
         private readonly SpecimenModelConverter _converter;
@@ -29,7 +29,7 @@ namespace Unite.Specimens.Feed.Web.Controllers
             IValidationService validationService,
             IValidator<IEnumerable<SpecimenModel>> validator,
             SpecimenDataWriter dataWriter,
-            IndexingTaskService indexingTaskService,
+            DonorIndexingTasksService indexingTaskService,
             ILogger<SpecimensController> logger)
         {
             _validationService = validationService;

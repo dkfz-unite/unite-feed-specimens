@@ -8,16 +8,16 @@ using Unite.Specimens.Feed.Web.Handlers;
 
 namespace Unite.Specimens.Feed.Web.HostedServices
 {
-    public class IndexingHostedService : BackgroundService
+    public class DonorsIndexingHostedService : BackgroundService
     {
         private readonly IndexingOptions _options;
-        private readonly IndexingHandler _handler;
+        private readonly DonorsIndexingHandler _handler;
         private readonly ILogger _logger;
 
-        public IndexingHostedService(
+        public DonorsIndexingHostedService(
             IndexingOptions options,
-            IndexingHandler handler,
-            ILogger<IndexingHostedService> logger)
+            DonorsIndexingHandler handler,
+            ILogger<DonorsIndexingHostedService> logger)
         {
             _options = options;
             _handler = handler;

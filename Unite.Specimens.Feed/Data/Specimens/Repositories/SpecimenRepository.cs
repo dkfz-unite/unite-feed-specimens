@@ -13,7 +13,7 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
         private readonly SpecimenRepositoryBase<XenograftModel> _xenograftRepository;
 
 
-        public SpecimenRepository(UniteDbContext dbContext)
+        public SpecimenRepository(DomainDbContext dbContext)
         {
             _tissueRepository = new TissueRepository(dbContext);
             _cellLineRepository = new CellLineRepository(dbContext);

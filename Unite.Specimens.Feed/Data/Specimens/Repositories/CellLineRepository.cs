@@ -9,7 +9,7 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
 {
     internal class CellLineRepository : SpecimenRepositoryBase<CellLineModel>
     {
-        public CellLineRepository(UniteDbContext dbContext) : base(dbContext)
+        public CellLineRepository(DomainDbContext dbContext) : base(dbContext)
         {
         }
 

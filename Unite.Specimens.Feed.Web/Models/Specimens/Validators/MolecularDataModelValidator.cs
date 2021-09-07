@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Unite.Data.Entities.Molecular.Enums;
 
-namespace Unite.Specimens.Feed.Web.Models.Specimens.Validators
+namespace Unite.Specimens.Feed.Web.Services.Specimens.Validators
 {
     public class MolecularDataModelValidator : AbstractValidator<MolecularDataModel>
     {

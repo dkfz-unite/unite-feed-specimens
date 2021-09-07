@@ -12,7 +12,7 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
         private readonly XenograftInterventionRepository _interventionRepository;
 
 
-        public XenograftRepository(UniteDbContext dbContext) : base(dbContext)
+        public XenograftRepository(DomainDbContext dbContext) : base(dbContext)
         {
             _interventionRepository = new XenograftInterventionRepository(dbContext);
         }

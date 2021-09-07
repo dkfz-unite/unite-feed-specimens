@@ -5,11 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Unite.Data" Version="1.7.2" />
-    <PackageReference Include="Unite.Indices" Version="1.7.0" />
+    <PackageReference Include="Unite.Data" Version="1.8.0" />
+    <PackageReference Include="Unite.Indices" Version="1.7.2" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
     <Folder Include="Services\Mappers\" />
+    <Folder Include="Services\Extensions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Services\Extensions\" />
   </ItemGroup>
 </Project>

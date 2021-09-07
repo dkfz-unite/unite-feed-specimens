@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Unite.Specimens.Feed.Web.Models.Validation
+namespace Unite.Specimens.Feed.Web.Services.Validation
 {
     public interface IValidationService
     {

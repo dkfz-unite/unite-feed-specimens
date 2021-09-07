@@ -10,8 +10,8 @@
     <Folder Include="Models\Specimens\" />
     <Folder Include="Models\Specimens\Enums\" />
     <Folder Include="Models\Specimens\Validators\" />
-    <Folder Include="Models\Specimens\Extensions\" />
     <Folder Include="Models\Specimens\Converters\" />
+    <Folder Include="Services\Validation\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Unite.Specimens.Feed\Unite.Specimens.Feed.csproj">
@@ -23,6 +23,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Macross.Json.Extensions" Version="2.0.0" />
-    <PackageReference Include="FluentValidation" Version="10.2.3" />
+    <PackageReference Include="FluentValidation" Version="10.3.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Services\Validation\" />
   </ItemGroup>
 </Project>

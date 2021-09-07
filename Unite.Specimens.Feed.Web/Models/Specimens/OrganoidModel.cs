@@ -1,6 +1,6 @@
-﻿using Unite.Specimens.Feed.Web.Models.Specimens.Extensions;
+﻿using Unite.Data.Extensions;
 
-namespace Unite.Specimens.Feed.Web.Models.Specimens
+namespace Unite.Specimens.Feed.Web.Services.Specimens
 {
     public class OrganoidModel
     {

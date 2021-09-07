@@ -8,10 +8,10 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
 {
     internal class OrganoidInterventionRepository
     {
-        private readonly UniteDbContext _dbContext;
+        private readonly DomainDbContext _dbContext;
 
 
-        public OrganoidInterventionRepository(UniteDbContext dbContext)
+        public OrganoidInterventionRepository(DomainDbContext dbContext)
         {
             _dbContext = dbContext;
         }

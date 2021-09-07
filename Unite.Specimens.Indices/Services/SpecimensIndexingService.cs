@@ -6,7 +6,7 @@ using Unite.Indices.Services.Configuration.Options;
 
 namespace Unite.Specimens.Indices.Services
 {
-    public class SpecimenIndexingService : IndexingService<SpecimenIndex>
+    public class SpecimensIndexingService : IndexingService<SpecimenIndex>
     {
         protected override string DefaultIndex
         {
@@ -19,7 +19,7 @@ namespace Unite.Specimens.Indices.Services
         }
 
 
-        public SpecimenIndexingService(IElasticOptions options) : base(options)
+        public SpecimensIndexingService(IElasticOptions options) : base(options)
         {
 
         }

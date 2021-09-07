@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Unite.Specimens.Feed.Web.Models.Specimens
+namespace Unite.Specimens.Feed.Web.Services.Specimens
 {
     public class CellLineInfoModel
     {

@@ -8,10 +8,10 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
 {
     internal class XenograftInterventionRepository
     {
-        private readonly UniteDbContext _dbContext;
+        private readonly DomainDbContext _dbContext;
 
 
-        public XenograftInterventionRepository(UniteDbContext dbContext)
+        public XenograftInterventionRepository(DomainDbContext dbContext)
         {
             _dbContext = dbContext;
         }

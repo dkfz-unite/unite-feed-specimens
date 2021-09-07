@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Unite.Specimens.Feed.Web.Models.Specimens.Enums;
+using Unite.Specimens.Feed.Web.Services.Specimens.Enums;
 
-namespace Unite.Specimens.Feed.Web.Models.Specimens.Converters
+namespace Unite.Specimens.Feed.Web.Services.Specimens.Converters
 {
     public class SpecimenModelConverter
     {

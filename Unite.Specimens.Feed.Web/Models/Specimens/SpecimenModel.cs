@@ -1,6 +1,6 @@
-﻿using Unite.Specimens.Feed.Web.Models.Specimens.Enums;
+﻿using Unite.Specimens.Feed.Web.Services.Specimens.Enums;
 
-namespace Unite.Specimens.Feed.Web.Models.Specimens
+namespace Unite.Specimens.Feed.Web.Services.Specimens
 {
     public class SpecimenModel
     {

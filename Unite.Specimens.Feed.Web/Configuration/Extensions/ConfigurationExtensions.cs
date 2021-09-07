@@ -10,9 +10,9 @@ using Unite.Specimens.Feed.Data.Specimens;
 using Unite.Specimens.Feed.Web.Configuration.Options;
 using Unite.Specimens.Feed.Web.Handlers;
 using Unite.Specimens.Feed.Web.HostedServices;
-using Unite.Specimens.Feed.Web.Models.Specimens;
-using Unite.Specimens.Feed.Web.Models.Specimens.Validators;
-using Unite.Specimens.Feed.Web.Models.Validation;
+using Unite.Specimens.Feed.Web.Services.Specimens;
+using Unite.Specimens.Feed.Web.Services.Specimens.Validators;
+using Unite.Specimens.Feed.Web.Services.Validation;
 using Unite.Specimens.Feed.Web.Services;
 using Unite.Specimens.Indices.Services;
 
@@ -38,7 +38,7 @@ namespace Unite.Specimens.Feed.Web.Configuration.Extensions
 
         private static void AddDatabases(IServiceCollection services)
         {
-            services.AddTransient<UniteDbContext>();
+            services.AddTransient<DomainDbContext>();
         }
 
         private static void AddValidation(IServiceCollection services)
@@ -52,17 +52,17 @@ namespace Unite.Specimens.Feed.Web.Configuration.Extensions
         {
             services.AddTransient<SpecimenDataWriter>();
 
-            services.AddTransient<TaskProcessingService>();
-            services.AddTransient<IndexingTaskService>();
+            services.AddTransient<TasksProcessingService>();
+            services.AddTransient<DonorIndexingTasksService>();
             services.AddTransient<IIndexCreationService<SpecimenIndex>, SpecimenIndexCreationService>();
-            services.AddTransient<IIndexingService<SpecimenIndex>, SpecimenIndexingService>();
+            services.AddTransient<IIndexingService<SpecimenIndex>, SpecimensIndexingService>();
         }
 
         private static void AddHostedServices(IServiceCollection services)
         {
             services.AddTransient<IndexingOptions>();
-            services.AddHostedService<IndexingHostedService>();
-            services.AddTransient<IndexingHandler>();
+            services.AddHostedService<DonorsIndexingHostedService>();
+            services.AddTransient<DonorsIndexingHandler>();
         }
     }
 }

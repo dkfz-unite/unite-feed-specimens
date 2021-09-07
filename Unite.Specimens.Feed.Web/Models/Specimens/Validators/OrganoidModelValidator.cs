@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Unite.Specimens.Feed.Web.Models.Specimens.Validators
+namespace Unite.Specimens.Feed.Web.Services.Specimens.Validators
 {
     public class OrganoidModelValidator : AbstractValidator<OrganoidModel>
     {

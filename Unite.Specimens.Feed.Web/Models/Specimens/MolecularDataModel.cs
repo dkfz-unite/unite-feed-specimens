@@ -1,6 +1,6 @@
 ﻿using Unite.Data.Entities.Molecular.Enums;
 
-namespace Unite.Specimens.Feed.Web.Models.Specimens
+namespace Unite.Specimens.Feed.Web.Services.Specimens
 {
     public class MolecularDataModel
     {

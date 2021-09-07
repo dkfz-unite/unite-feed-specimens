@@ -12,7 +12,7 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
         private readonly OrganoidInterventionRepository _interventionRepository;
 
 
-        public OrganoidRepository(UniteDbContext dbContext) : base(dbContext)
+        public OrganoidRepository(DomainDbContext dbContext) : base(dbContext)
         {
             _interventionRepository = new OrganoidInterventionRepository(dbContext);
         }

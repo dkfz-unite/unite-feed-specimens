@@ -7,10 +7,10 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
 {
     internal abstract class SpecimenRepositoryBase<TModel> where TModel : SpecimenModel
     {
-        protected readonly UniteDbContext _dbContext;
+        protected readonly DomainDbContext _dbContext;
 
 
-        public SpecimenRepositoryBase(UniteDbContext dbContext)
+        public SpecimenRepositoryBase(DomainDbContext dbContext)
         {
             _dbContext = dbContext;
         }
