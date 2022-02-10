@@ -7,7 +7,7 @@ using Unite.Specimens.Feed.Web.Services;
 
 namespace Unite.Specimens.Feed.Web.Handlers
 {
-    public class DonorsIndexingHandler
+    public class SpecimensIndexingHandler
     {
         private readonly TasksProcessingService _taskProcessingService;
         private readonly IIndexCreationService<SpecimenIndex> _indexCreationService;
@@ -15,11 +15,11 @@ namespace Unite.Specimens.Feed.Web.Handlers
         private readonly ILogger _logger;
 
 
-        public DonorsIndexingHandler(
+        public SpecimensIndexingHandler(
             TasksProcessingService taskProcessingService,
             IIndexCreationService<SpecimenIndex> indexCreationService,
             IIndexingService<SpecimenIndex> indexingService,
-            ILogger<DonorsIndexingHandler> logger)
+            ILogger<SpecimensIndexingHandler> logger)
         {
             _taskProcessingService = taskProcessingService;
             _indexCreationService = indexCreationService;
@@ -38,8 +38,6 @@ namespace Unite.Specimens.Feed.Web.Handlers
         {
             _taskProcessingService.Process(TaskType.Indexing, TaskTargetType.Specimen, bucketSize, (tasks) =>
             {
-                _logger.LogInformation($"Indexing {tasks.Length} specimens");
-
                 var indices = tasks.Select(task =>
                 {
                     var id = int.Parse(task.Target);
@@ -53,7 +51,7 @@ namespace Unite.Specimens.Feed.Web.Handlers
                 _indexingService.IndexMany(indices);
 
 
-                _logger.LogInformation($"Indexing of {tasks.Length} specimens completed");
+                _logger.LogInformation($"Finished indexing of {tasks.Length} specimens");
             });
         }
     }

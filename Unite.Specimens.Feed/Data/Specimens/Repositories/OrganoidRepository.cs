@@ -22,47 +22,47 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
         {
             var referenceId = model.ReferenceId;
 
-            var specimen = _dbContext.Specimens
-                .Include(specimen => specimen.Organoid)
-                .Include(specimen => specimen.MolecularData)
-                .FirstOrDefault(specimen =>
-                    specimen.DonorId == donorId &&
-                    specimen.Organoid != null &&
-                    specimen.Organoid.ReferenceId == referenceId
+            var entity = _dbContext.Specimens
+                .Include(entity => entity.Organoid)
+                .Include(entity => entity.MolecularData)
+                .FirstOrDefault(entity =>
+                    entity.DonorId == donorId &&
+                    entity.Organoid != null &&
+                    entity.Organoid.ReferenceId == referenceId
                 );
 
-            return specimen;
+            return entity;
         }
 
 
         public override Specimen Create(int donorId, int? parentId, in OrganoidModel model)
         {
-            var specimen = base.Create(donorId, parentId, model);
+            var entity = base.Create(donorId, parentId, model);
 
             if (model.Interventions != null && model.Interventions.Any())
             {
                 foreach (var interventionModel in model.Interventions)
                 {
-                    _interventionRepository.Create(specimen.Id, interventionModel);
+                    _interventionRepository.Create(entity.Id, interventionModel);
                 }
             }
 
-            return specimen;
+            return entity;
         }
 
-        public override void Update(ref Specimen specimen, in OrganoidModel model)
+        public override void Update(ref Specimen entity, in OrganoidModel model)
         {
-            base.Update(ref specimen, model);
+            base.Update(ref entity, model);
 
             if (model.Interventions != null && model.Interventions.Any())
             {
                 foreach (var interventionModel in model.Interventions)
                 {
-                    var intervention = _interventionRepository.Find(specimen.Id, interventionModel);
+                    var intervention = _interventionRepository.Find(entity.Id, interventionModel);
 
                     if (intervention == null)
                     {
-                        _interventionRepository.Create(specimen.Id, interventionModel);
+                        _interventionRepository.Create(entity.Id, interventionModel);
                     }
                     else
                     {
@@ -73,19 +73,19 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
         }
 
 
-        protected override void Map(in OrganoidModel model, ref Specimen specimen)
+        protected override void Map(in OrganoidModel model, ref Specimen entity)
         {
-            base.Map(model, ref specimen);
+            base.Map(model, ref entity);
 
-            if (specimen.Organoid == null)
+            if (entity.Organoid == null)
             {
-                specimen.Organoid = new Organoid();
+                entity.Organoid = new Organoid();
             }
 
-            specimen.Organoid.ReferenceId = model.ReferenceId;
-            specimen.Organoid.ImplantedCellsNumber = model.ImplantedCellsNumber;
-            specimen.Organoid.Tumorigenicity = model.Tumorigenicity;
-            specimen.Organoid.Medium = model.Medium;
+            entity.Organoid.ReferenceId = model.ReferenceId;
+            entity.Organoid.ImplantedCellsNumber = model.ImplantedCellsNumber;
+            entity.Organoid.Tumorigenicity = model.Tumorigenicity;
+            entity.Organoid.Medium = model.Medium;
         }
     }
 }

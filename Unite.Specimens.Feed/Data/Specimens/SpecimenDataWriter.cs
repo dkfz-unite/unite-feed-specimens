@@ -44,85 +44,85 @@ namespace Unite.Specimens.Feed.Data.Specimens
         }
 
 
-        private Donor FindOrCreateDonor(DonorModel donorModel, ref SpecimensUploadAudit audit)
+        private Donor FindOrCreateDonor(DonorModel model, ref SpecimensUploadAudit audit)
         {
-            var donor = _donorRepository.Find(donorModel.ReferenceId);
+            var entity = _donorRepository.Find(model.ReferenceId);
 
-            if (donor == null)
+            if (entity == null)
             {
-                donor = _donorRepository.Create(donorModel);
+                entity = _donorRepository.Create(model);
 
                 audit.DonorsCreated++;
             }
 
-            return donor;
+            return entity;
         }
 
-        private Specimen FindSpecimen(int donorId, int? parentId, SpecimenModel specimenModel, bool throwNotFound = false)
+        private Specimen FindSpecimen(int donorId, int? parentId, SpecimenModel model, bool throwNotFound = false)
         {
-            if (specimenModel == null)
+            if (model == null)
             {
                 return null;
             }
 
-            var specimen = _specimenRepository.Find(donorId, parentId, specimenModel);
+            var entity = _specimenRepository.Find(donorId, parentId, model);
 
-            if (specimen == null && throwNotFound)
+            if (entity == null && throwNotFound)
             {
-                throw new NotFoundException($"Parent specimen with id '{specimenModel.ReferenceId}' was not found");
+                throw new NotFoundException($"Parent specimen with id '{model.ReferenceId}' was not found");
             }
             else
             {
-                return specimen;
+                return entity;
             }
         }
 
-        private Specimen CreateSpecimen(int donorId, int? parentId, SpecimenModel specimenModel, ref SpecimensUploadAudit audit)
+        private Specimen CreateSpecimen(int donorId, int? parentId, SpecimenModel model, ref SpecimensUploadAudit audit)
         {
-            var specimen = _specimenRepository.Create(donorId, parentId, specimenModel);
+            var entity = _specimenRepository.Create(donorId, parentId, model);
 
-            if (specimen.Tissue != null)
+            if (entity.Tissue != null)
             {
                 audit.TissuesCreated++;
             }
-            else if (specimen.CellLine != null)
+            else if (entity.CellLine != null)
             {
                 audit.CellLinesCreated++;
             }
-            else if (specimen.Organoid != null)
+            else if (entity.Organoid != null)
             {
                 audit.OrganoidsCreated++;
             }
-            else if (specimen.Xenograft != null)
+            else if (entity.Xenograft != null)
             {
                 audit.XenograftsCreated++;
             }
 
-            return specimen;
+            return entity;
         }
 
-        private Specimen UpdateSpecimen(Specimen specimen, SpecimenModel specimenModel, ref SpecimensUploadAudit audit)
+        private Specimen UpdateSpecimen(Specimen entity, SpecimenModel model, ref SpecimensUploadAudit audit)
         {
-            _specimenRepository.Update(ref specimen, specimenModel);
+            _specimenRepository.Update(ref entity, model);
 
-            if (specimen.Tissue != null)
+            if (entity.Tissue != null)
             {
                 audit.TissuesUpdated++;
             }
-            else if (specimen.CellLine != null)
+            else if (entity.CellLine != null)
             {
                 audit.CellLinesUpdated++;
             }
-            else if (specimen.Organoid != null)
+            else if (entity.Organoid != null)
             {
                 audit.OrganoidsUpdate++;
             }
-            else if (specimen.Xenograft != null)
+            else if (entity.Xenograft != null)
             {
                 audit.XenograftsUpdated++;
             }
 
-            return specimen;
+            return entity;
         }
     }
 }

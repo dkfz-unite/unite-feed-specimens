@@ -18,32 +18,33 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
 
         public Donor Find(string referenceId)
         {
-            var donor = _dbContext.Donors.FirstOrDefault(donor =>
-                donor.ReferenceId == referenceId
-            );
+            var entity = _dbContext.Set<Donor>()
+                .FirstOrDefault(entity =>
+                    entity.ReferenceId == referenceId
+                );
 
-            return donor;
+            return entity;
         }
 
-        public Donor Create(DonorModel donorModel)
+        public Donor Create(DonorModel model)
         {
-            var donor = new Donor
+            var entity = new Donor
             {
-                ReferenceId = donorModel.ReferenceId
+                ReferenceId = model.ReferenceId
             };
 
-            Map(donorModel, donor);
+            Map(model, ref entity);
 
-            _dbContext.Donors.Add(donor);
+            _dbContext.Add(entity);
             _dbContext.SaveChanges();
 
-            return donor;
+            return entity;
         }
 
 
-        private void Map(DonorModel donorModel, Donor donor)
+        private void Map(in DonorModel model, ref Donor entity)
         {
-            
+
         }
     }
 }

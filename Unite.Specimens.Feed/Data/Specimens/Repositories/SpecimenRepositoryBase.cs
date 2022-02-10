@@ -1,5 +1,4 @@
-﻿using Unite.Data.Entities.Molecular;
-using Unite.Data.Entities.Specimens;
+﻿using Unite.Data.Entities.Specimens;
 using Unite.Data.Services;
 using Unite.Specimens.Feed.Data.Specimens.Models;
 
@@ -20,44 +19,47 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
 
         public virtual Specimen Create(int donorId, int? parentId, in TModel model)
         {
-            var specimen = new Specimen
+            var entity = new Specimen
             {
                 DonorId = donorId,
                 ParentId = parentId
             };
 
-            Map(model, ref specimen);
+            Map(model, ref entity);
 
-            _dbContext.Specimens.Add(specimen);
+            _dbContext.Add(entity);
             _dbContext.SaveChanges();
 
-            return specimen;
+            return entity;
         }
 
-        public virtual void Update(ref Specimen specimen, in TModel model)
+        public virtual void Update(ref Specimen entity, in TModel model)
         {
-            Map(model, ref specimen);
+            Map(model, ref entity);
 
-            _dbContext.Specimens.Update(specimen);
+            _dbContext.Update(entity);
             _dbContext.SaveChanges();
         }
 
 
-        protected virtual void Map(in TModel model, ref Specimen specimen)
+        protected virtual void Map(in TModel model, ref Specimen entity)
         {
+            entity.CreationDate = model.CreationDate;
+            entity.CreationDay = model.CreationDay;
+
             if (model.MolecularData != null)
             {
-                if (specimen.MolecularData == null)
+                if (entity.MolecularData == null)
                 {
-                    specimen.MolecularData = new MolecularData();
+                    entity.MolecularData = new MolecularData();
                 }
 
-                specimen.MolecularData.MgmtStatusId = model.MolecularData.MgmtStatus;
-                specimen.MolecularData.IdhStatusId = model.MolecularData.IdhStatus;
-                specimen.MolecularData.IdhMutationId = model.MolecularData.IdhMutation;
-                specimen.MolecularData.GeneExpressionSubtypeId = model.MolecularData.GeneExpressionSubtype;
-                specimen.MolecularData.MethylationSubtypeId = model.MolecularData.MethylationSubtype;
-                specimen.MolecularData.GcimpMethylation = model.MolecularData.GcimpMethylation;
+                entity.MolecularData.MgmtStatusId = model.MolecularData.MgmtStatus;
+                entity.MolecularData.IdhStatusId = model.MolecularData.IdhStatus;
+                entity.MolecularData.IdhMutationId = model.MolecularData.IdhMutation;
+                entity.MolecularData.GeneExpressionSubtypeId = model.MolecularData.GeneExpressionSubtype;
+                entity.MolecularData.MethylationSubtypeId = model.MolecularData.MethylationSubtype;
+                entity.MolecularData.GcimpMethylation = model.MolecularData.GcimpMethylation;
             }
         }
     }

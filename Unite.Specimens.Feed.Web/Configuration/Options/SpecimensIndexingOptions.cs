@@ -2,7 +2,7 @@
 
 namespace Unite.Specimens.Feed.Web.Configuration.Options
 {
-    public class IndexingOptions
+    public class SpecimensIndexingOptions
     {
         /// <summary>
         /// Indexing interval in milliseconds

@@ -1,4 +1,4 @@
-﻿using Unite.Data.Entities.Molecular.Enums;
+﻿using Unite.Data.Entities.Specimens.Enums;
 
 namespace Unite.Specimens.Feed.Data.Specimens.Models
 {

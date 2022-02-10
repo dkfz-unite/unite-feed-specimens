@@ -18,34 +18,33 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
         {
             var referenceId = model.ReferenceId;
 
-            var specimen = _dbContext.Specimens
-                .Include(specimen => specimen.Tissue)
+            var entity = _dbContext.Set<Specimen>()
+                .Include(entity => entity.Tissue)
                     .ThenInclude(tissue => tissue.Source)
-                .Include(specimen => specimen.MolecularData)
-                .FirstOrDefault(specimen =>
-                    specimen.DonorId == donorId &&
-                    specimen.Tissue != null &&
-                    specimen.Tissue.ReferenceId == referenceId
+                .Include(entity => entity.MolecularData)
+                .FirstOrDefault(entity =>
+                    entity.DonorId == donorId &&
+                    entity.Tissue != null &&
+                    entity.Tissue.ReferenceId == referenceId
                 );
 
-            return specimen;
+            return entity;
         }
 
 
-        protected override void Map(in TissueModel model, ref Specimen specimen)
+        protected override void Map(in TissueModel model, ref Specimen entity)
         {
-            base.Map(model, ref specimen);
+            base.Map(model, ref entity);
 
-            if (specimen.Tissue == null)
+            if (entity.Tissue == null)
             {
-                specimen.Tissue = new Tissue();
+                entity.Tissue = new Tissue();
             }
 
-            specimen.Tissue.ReferenceId = model.ReferenceId;
-            specimen.Tissue.TypeId = model.Type;
-            specimen.Tissue.TumorTypeId = model.TumorType;
-            specimen.Tissue.ExtractionDay = model.ExtractionDay;
-            specimen.Tissue.Source = GetTissueSource(model.Source);
+            entity.Tissue.ReferenceId = model.ReferenceId;
+            entity.Tissue.TypeId = model.Type;
+            entity.Tissue.TumorTypeId = model.TumorType;
+            entity.Tissue.Source = GetTissueSource(model.Source);
         }
 
         private TissueSource GetTissueSource(string value)
@@ -55,19 +54,20 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
                 return null;
             }
 
-            var tissueSource = _dbContext.TissueSources.FirstOrDefault(tissueSource =>
-                tissueSource.Value == value
-            );
+            var entity = _dbContext.Set<TissueSource>()
+                    .FirstOrDefault(entity =>
+                    entity.Value == value
+                );
 
-            if (tissueSource == null)
+            if (entity == null)
             {
-                tissueSource = new TissueSource() { Value = value };
+                entity = new TissueSource() { Value = value };
 
-                _dbContext.TissueSources.Add(tissueSource);
+                _dbContext.Add(entity);
                 _dbContext.SaveChanges();
             }
 
-            return tissueSource;
+            return entity;
         }
     }
 }

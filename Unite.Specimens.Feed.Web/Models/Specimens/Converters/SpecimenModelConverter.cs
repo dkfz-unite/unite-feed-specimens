@@ -8,15 +8,15 @@ namespace Unite.Specimens.Feed.Web.Services.Specimens.Converters
     {
         public Data.Specimens.Models.SpecimenModel Convert(SpecimenModel source)
         {
-            var specimenModel = GetSpecimenModel(source);
+            var target = GetSpecimenModel(source);
 
-            specimenModel.Donor = GetDonorModel(source.DonorId);
+            target.CreationDate = source.CreationDate;
+            target.CreationDay = source.CreationDay;
+            target.Donor = GetDonorModel(source.DonorId);
+            target.Parent = GetSpecimenModel(source.ParentId, source.ParentType);
+            target.MolecularData = GetMolecularDataModel(source.MolecularData);
 
-            specimenModel.Parent = GetSpecimenModel(source.ParentId, source.ParentType);
-
-            specimenModel.MolecularData = GetMolecularDataModel(source.MolecularData);
-
-            return specimenModel;
+            return target;
         }
 
 
@@ -90,7 +90,6 @@ namespace Unite.Specimens.Feed.Web.Services.Specimens.Converters
                 ReferenceId = source.Id,
                 Type = source.Tissue.Type.Value,
                 TumorType = source.Tissue.TumorType,
-                ExtractionDay = source.Tissue.ExtractionDay,
                 Source = source.Tissue.Source
             };
 
@@ -139,7 +138,9 @@ namespace Unite.Specimens.Feed.Web.Services.Specimens.Converters
                     {
                         Type = intervention.Type,
                         Details = intervention.Details,
+                        StartDate = intervention.StartDate,
                         StartDay = intervention.StartDay,
+                        EndDate = intervention.EndDate,
                         DurationDays = intervention.DurationDays,
                         Results = intervention.Results
                     };
@@ -171,7 +172,9 @@ namespace Unite.Specimens.Feed.Web.Services.Specimens.Converters
                     {
                         Type = intervention.Type,
                         Details = intervention.Details,
+                        StartDate = intervention.StartDate,
                         StartDay = intervention.StartDay,
+                        EndDate = intervention.EndDate,
                         DurationDays = intervention.DurationDays,
                         Results = intervention.Results
                     };

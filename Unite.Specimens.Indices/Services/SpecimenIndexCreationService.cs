@@ -2,7 +2,8 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Unite.Data.Entities.Donors;
-using Unite.Data.Entities.Mutations;
+using Unite.Data.Entities.Genome.Mutations;
+using Unite.Data.Entities.Images;
 using Unite.Data.Entities.Specimens;
 using Unite.Data.Services;
 using Unite.Data.Services.Extensions;
@@ -18,6 +19,7 @@ namespace Unite.Specimens.Indices.Services
         private readonly DomainDbContext _dbContext;
         private readonly MutationIndexMapper _mutationIndexMapper;
         private readonly DonorIndexMapper _donorIndexMapper;
+        private readonly ImageIndexMapper _imageIndexMapper;
         private readonly SpecimenIndexMapper _specimenIndexMapper;
 
 
@@ -26,6 +28,7 @@ namespace Unite.Specimens.Indices.Services
             _dbContext = dbContext;
             _mutationIndexMapper = new MutationIndexMapper();
             _donorIndexMapper = new DonorIndexMapper();
+            _imageIndexMapper = new ImageIndexMapper();
             _specimenIndexMapper = new SpecimenIndexMapper();
         }
 
@@ -42,27 +45,29 @@ namespace Unite.Specimens.Indices.Services
         {
             var specimen = LoadSpecimen(specimenId);
 
+            var diagnosisDate = specimen.Donor.ClinicalData.DiagnosisDate;
+
             if (specimen == null)
             {
                 return null;
             }
 
-            var index = CreateSpecimenIndex(specimen);
+            var index = CreateSpecimenIndex(specimen, diagnosisDate);
 
             return index;
         }
 
-        private SpecimenIndex CreateSpecimenIndex(Specimen specimen)
+        private SpecimenIndex CreateSpecimenIndex(Specimen specimen, DateTime? diagnosisDate)
         {
             var index = new SpecimenIndex();
 
-            _specimenIndexMapper.Map(specimen, index);
+            _specimenIndexMapper.Map(specimen, index, diagnosisDate);
 
             index.Donor = CreateDonorIndex(specimen.DonorId);
 
-            index.Parent = CreateParentSpecimenIndex(specimen.Id);
+            index.Parent = CreateParentSpecimenIndex(specimen.Id, diagnosisDate);
 
-            index.Children = CreateChildSpecimenIndices(specimen.Id);
+            index.Children = CreateChildSpecimenIndices(specimen.Id, diagnosisDate);
 
             index.Mutations = CreateMutationIndices(specimen.Id);
 
@@ -83,7 +88,9 @@ namespace Unite.Specimens.Indices.Services
 
         private Specimen LoadSpecimen(int specimenId)
         {
-            var specimen = _dbContext.Specimens
+            var specimen = _dbContext.Set<Specimen>()
+                .Include(specimen => specimen.Donor)
+                    .ThenInclude(donor => donor.ClinicalData)
                 .IncludeTissue()
                 .IncludeCellLine()
                 .IncludeOrganoid()
@@ -95,7 +102,7 @@ namespace Unite.Specimens.Indices.Services
         }
 
 
-        private SpecimenIndex CreateParentSpecimenIndex(int specimeId)
+        private SpecimenIndex CreateParentSpecimenIndex(int specimeId, DateTime? diagnosisDate)
         {
             var specimen = LoadParentSpecimen(specimeId);
 
@@ -104,23 +111,23 @@ namespace Unite.Specimens.Indices.Services
                 return null;
             }
 
-            var index = CreateParentSpecimenIndex(specimen);
+            var index = CreateParentSpecimenIndex(specimen, diagnosisDate);
 
             return index;
         }
 
-        private SpecimenIndex CreateParentSpecimenIndex(Specimen specimen)
+        private SpecimenIndex CreateParentSpecimenIndex(Specimen specimen, DateTime? diagnosisDate)
         {
             var index = new SpecimenIndex();
 
-            _specimenIndexMapper.Map(specimen, index);
+            _specimenIndexMapper.Map(specimen, index, diagnosisDate);
 
             return index;
         }
 
         private Specimen LoadParentSpecimen(int specimeId)
         {
-            var specimen = _dbContext.Specimens
+            var specimen = _dbContext.Set<Specimen>()
                 .IncludeParentTissue()
                 .IncludeParentCellLine()
                 .IncludeParentOrganoid()
@@ -132,7 +139,7 @@ namespace Unite.Specimens.Indices.Services
         }
 
 
-        private SpecimenIndex[] CreateChildSpecimenIndices(int specimenId)
+        private SpecimenIndex[] CreateChildSpecimenIndices(int specimenId, DateTime? diagnosisDate)
         {
             var specimens = LoadChildSpecimens(specimenId);
 
@@ -142,26 +149,26 @@ namespace Unite.Specimens.Indices.Services
             }
 
             var indices = specimens
-                .Select(CreateChildSpecimenIndex)
+                .Select(specimen => CreateChildSpecimenIndex(specimen, diagnosisDate))
                 .ToArray();
 
             return indices;
         }
 
-        private SpecimenIndex CreateChildSpecimenIndex(Specimen specimen)
+        private SpecimenIndex CreateChildSpecimenIndex(Specimen specimen, DateTime? diagnosisDate)
         {
             var index = new SpecimenIndex();
 
-            _specimenIndexMapper.Map(specimen, index);
+            _specimenIndexMapper.Map(specimen, index, diagnosisDate);
 
-            index.Children = CreateChildSpecimenIndices(specimen.Id);
+            index.Children = CreateChildSpecimenIndices(specimen.Id, diagnosisDate);
 
             return index;
         }
 
         private Specimen[] LoadChildSpecimens(int specimenId)
         {
-            var specimens = _dbContext.Specimens
+            var specimens = _dbContext.Set<Specimen>()
                 .IncludeTissue()
                 .IncludeCellLine()
                 .IncludeOrganoid()
@@ -192,14 +199,18 @@ namespace Unite.Specimens.Indices.Services
         {
             var index = new DonorIndex();
 
+            var diagnosisDate = donor.ClinicalData.DiagnosisDate;
+
             _donorIndexMapper.Map(donor, index);
+
+            index.Images = CreateImageIndices(donor.Id, diagnosisDate);
 
             return index;
         }
 
         private Donor LoadDonor(int donorId)
         {
-            var donor = _dbContext.Donors
+            var donor = _dbContext.Set<Donor>()
                 .IncludeClinicalData()
                 .IncludeTreatments()
                 .IncludeWorkPackages()
@@ -207,6 +218,42 @@ namespace Unite.Specimens.Indices.Services
                 .FirstOrDefault(donor => donor.Id == donorId);
 
             return donor;
+        }
+
+
+        private ImageIndex[] CreateImageIndices(int donorId, DateTime? diagnosisDate)
+        {
+            var images = LoadImages(donorId);
+
+            if (images == null)
+            {
+                return null;
+            }
+
+            var indices = images
+                .Select(image => CreateImageIndex(image, diagnosisDate))
+                .ToArray();
+
+            return indices;
+        }
+
+        private ImageIndex CreateImageIndex(Image image, DateTime? diagnosisDate)
+        {
+            var index = new ImageIndex();
+
+            _imageIndexMapper.Map(image, index, diagnosisDate);
+
+            return index;
+        }
+
+        private Image[] LoadImages(int donorId)
+        {
+            var images = _dbContext.Set<Image>()
+                .Include(image => image.MriImage)
+                .Where(image => image.DonorId == donorId)
+                .ToArray();
+
+            return images;
         }
 
 
@@ -237,7 +284,7 @@ namespace Unite.Specimens.Indices.Services
 
         private Mutation[] LoadMutations(int specimenId)
         {
-            var mutationIds = _dbContext.MutationOccurrences
+            var mutationIds = _dbContext.Set<MutationOccurrence>()
                 .Where(mutationOccurrence => mutationOccurrence.AnalysedSample.Sample.SpecimenId == specimenId)
                 .Select(mutationOccurrence => mutationOccurrence.MutationId)
                 .Distinct()

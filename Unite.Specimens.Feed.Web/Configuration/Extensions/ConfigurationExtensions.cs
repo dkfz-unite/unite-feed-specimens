@@ -10,10 +10,10 @@ using Unite.Specimens.Feed.Data.Specimens;
 using Unite.Specimens.Feed.Web.Configuration.Options;
 using Unite.Specimens.Feed.Web.Handlers;
 using Unite.Specimens.Feed.Web.HostedServices;
+using Unite.Specimens.Feed.Web.Services;
 using Unite.Specimens.Feed.Web.Services.Specimens;
 using Unite.Specimens.Feed.Web.Services.Specimens.Validators;
 using Unite.Specimens.Feed.Web.Services.Validation;
-using Unite.Specimens.Feed.Web.Services;
 using Unite.Specimens.Indices.Services;
 
 namespace Unite.Specimens.Feed.Web.Configuration.Extensions
@@ -22,47 +22,23 @@ namespace Unite.Specimens.Feed.Web.Configuration.Extensions
     {
         public static void Configure(this IServiceCollection services)
         {
-            AddOptions(services);
-            AddDatabases(services);
-            AddValidation(services);
-            AddServices(services);
-            AddHostedServices(services);
-        }
-
-
-        private static void AddOptions(IServiceCollection services)
-        {
             services.AddTransient<ISqlOptions, SqlOptions>();
             services.AddTransient<IElasticOptions, ElasticOptions>();
-        }
 
-        private static void AddDatabases(IServiceCollection services)
-        {
-            services.AddTransient<DomainDbContext>();
-        }
-
-        private static void AddValidation(IServiceCollection services)
-        {
             services.AddTransient<IValidationService, ValidationService>();
-
             services.AddTransient<IValidator<IEnumerable<SpecimenModel>>, SpecimenModelsValidator>();
-        }
 
-        private static void AddServices(IServiceCollection services)
-        {
+            services.AddTransient<DomainDbContext>();
             services.AddTransient<SpecimenDataWriter>();
 
+            services.AddTransient<SpecimenIndexingTasksService>();
             services.AddTransient<TasksProcessingService>();
-            services.AddTransient<DonorIndexingTasksService>();
+
+            services.AddHostedService<SpecimensIndexingHostedService>();
+            services.AddTransient<SpecimensIndexingOptions>();
+            services.AddTransient<SpecimensIndexingHandler>();
             services.AddTransient<IIndexCreationService<SpecimenIndex>, SpecimenIndexCreationService>();
             services.AddTransient<IIndexingService<SpecimenIndex>, SpecimensIndexingService>();
-        }
-
-        private static void AddHostedServices(IServiceCollection services)
-        {
-            services.AddTransient<IndexingOptions>();
-            services.AddHostedService<DonorsIndexingHostedService>();
-            services.AddTransient<DonorsIndexingHandler>();
         }
     }
 }

@@ -22,21 +22,21 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
         }
 
 
-        public Specimen Find(int donorId, int? parentId, SpecimenModel specimenModel)
+        public Specimen Find(int donorId, int? parentId, SpecimenModel model)
         {
-            if (specimenModel is TissueModel tissueModel)
+            if (model is TissueModel tissueModel)
             {
                 return _tissueRepository.Find(donorId, parentId, tissueModel);
             }
-            else if (specimenModel is CellLineModel cellLineModel)
+            else if (model is CellLineModel cellLineModel)
             {
                 return _cellLineRepository.Find(donorId, parentId, cellLineModel);
             }
-            else if (specimenModel is OrganoidModel organoidModel)
+            else if (model is OrganoidModel organoidModel)
             {
                 return _organoidRepository.Find(donorId, parentId, organoidModel);
             }
-            else if (specimenModel is XenograftModel xenograftModel)
+            else if (model is XenograftModel xenograftModel)
             {
                 return _xenograftRepository.Find(donorId, parentId, xenograftModel);
             }
@@ -46,21 +46,21 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
             }
         }
 
-        public Specimen Create(int donorId, int? parentId, SpecimenModel specimenModel)
+        public Specimen Create(int donorId, int? parentId, SpecimenModel model)
         {
-            if (specimenModel is TissueModel tissueModel)
+            if (model is TissueModel tissueModel)
             {
                 return _tissueRepository.Create(donorId, parentId, tissueModel);
             }
-            else if (specimenModel is CellLineModel cellLineModel)
+            else if (model is CellLineModel cellLineModel)
             {
                 return _cellLineRepository.Create(donorId, parentId, cellLineModel);
             }
-            else if (specimenModel is OrganoidModel organoidModel)
+            else if (model is OrganoidModel organoidModel)
             {
                 return _organoidRepository.Create(donorId, parentId, organoidModel);
             }
-            else if (specimenModel is XenograftModel xenograftModel)
+            else if (model is XenograftModel xenograftModel)
             {
                 return _xenograftRepository.Create(donorId, parentId, xenograftModel);
             }
@@ -70,23 +70,23 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
             }
         }
 
-        public void Update(ref Specimen specimen, in SpecimenModel specimenModel)
+        public void Update(ref Specimen entity, in SpecimenModel model)
         {
-            if (specimenModel is TissueModel tissueModel)
+            if (model is TissueModel tissueModel)
             {
-                _tissueRepository.Update(ref specimen, tissueModel);
+                _tissueRepository.Update(ref entity, tissueModel);
             }
-            else if (specimenModel is CellLineModel cellLineModel)
+            else if (model is CellLineModel cellLineModel)
             {
-                _cellLineRepository.Update(ref specimen, cellLineModel);
+                _cellLineRepository.Update(ref entity, cellLineModel);
             }
-            else if (specimenModel is OrganoidModel organoidModel)
+            else if (model is OrganoidModel organoidModel)
             {
-                _organoidRepository.Update(ref specimen, organoidModel);
+                _organoidRepository.Update(ref entity, organoidModel);
             }
-            else if (specimenModel is XenograftModel xenograftModel)
+            else if (model is XenograftModel xenograftModel)
             {
-                _xenograftRepository.Update(ref specimen, xenograftModel);
+                _xenograftRepository.Update(ref entity, xenograftModel);
             }
             else
             {

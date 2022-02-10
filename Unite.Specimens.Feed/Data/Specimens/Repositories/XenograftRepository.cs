@@ -22,47 +22,47 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
         {
             var referenceId = model.ReferenceId;
 
-            var specimen = _dbContext.Specimens
-                .Include(specimen => specimen.Xenograft)
-                .Include(specimen => specimen.MolecularData)
-                .FirstOrDefault(specimen =>
-                    specimen.DonorId == donorId &&
-                    specimen.Xenograft != null &&
-                    specimen.Xenograft.ReferenceId == referenceId
+            var entity = _dbContext.Set<Specimen>()
+                .Include(entity => entity.Xenograft)
+                .Include(entity => entity.MolecularData)
+                .FirstOrDefault(entity =>
+                    entity.DonorId == donorId &&
+                    entity.Xenograft != null &&
+                    entity.Xenograft.ReferenceId == referenceId
                 );
 
-            return specimen;
+            return entity;
         }
 
 
         public override Specimen Create(int donorId, int? parentId, in XenograftModel model)
         {
-            var specimen = base.Create(donorId, parentId, model);
+            var entity = base.Create(donorId, parentId, model);
 
             if (model.Interventions != null && model.Interventions.Any())
             {
                 foreach (var interventionModel in model.Interventions)
                 {
-                    _interventionRepository.Create(specimen.Id, interventionModel);
+                    _interventionRepository.Create(entity.Id, interventionModel);
                 }
             }
 
-            return specimen;
+            return entity;
         }
 
-        public override void Update(ref Specimen specimen, in XenograftModel model)
+        public override void Update(ref Specimen entity, in XenograftModel model)
         {
-            base.Update(ref specimen, model);
+            base.Update(ref entity, model);
 
             if (model.Interventions != null && model.Interventions.Any())
             {
                 foreach (var interventionModel in model.Interventions)
                 {
-                    var intervention = _interventionRepository.Find(specimen.Id, interventionModel);
+                    var intervention = _interventionRepository.Find(entity.Id, interventionModel);
 
                     if (intervention == null)
                     {
-                        _interventionRepository.Create(specimen.Id, interventionModel);
+                        _interventionRepository.Create(entity.Id, interventionModel);
                     }
                     else
                     {
@@ -73,25 +73,25 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
         }
 
 
-        protected override void Map(in XenograftModel model, ref Specimen specimen)
+        protected override void Map(in XenograftModel model, ref Specimen entity)
         {
-            base.Map(model, ref specimen);
+            base.Map(model, ref entity);
 
-            if (specimen.Xenograft == null)
+            if (entity.Xenograft == null)
             {
-                specimen.Xenograft = new Xenograft();
+                entity.Xenograft = new Xenograft();
             }
 
-            specimen.Xenograft.ReferenceId = model.ReferenceId;
-            specimen.Xenograft.MouseStrain = model.MouseStrain;
-            specimen.Xenograft.GroupSize = model.GroupSize;
-            specimen.Xenograft.ImplantTypeId = model.ImplantType;
-            specimen.Xenograft.TissueLocationId = model.TissueLocation;
-            specimen.Xenograft.ImplantedCellsNumber = model.ImplantedCellsNumber;
-            specimen.Xenograft.Tumorigenicity = model.Tumorigenicity;
-            specimen.Xenograft.TumorGrowthFormId = model.TumorGrowthForm;
-            specimen.Xenograft.SurvivalDaysFrom = model.SurvivalDaysFrom;
-            specimen.Xenograft.SurvivalDaysTo = model.SurvivalDaysTo;
+            entity.Xenograft.ReferenceId = model.ReferenceId;
+            entity.Xenograft.MouseStrain = model.MouseStrain;
+            entity.Xenograft.GroupSize = model.GroupSize;
+            entity.Xenograft.ImplantTypeId = model.ImplantType;
+            entity.Xenograft.TissueLocationId = model.TissueLocation;
+            entity.Xenograft.ImplantedCellsNumber = model.ImplantedCellsNumber;
+            entity.Xenograft.Tumorigenicity = model.Tumorigenicity;
+            entity.Xenograft.TumorGrowthFormId = model.TumorGrowthForm;
+            entity.Xenograft.SurvivalDaysFrom = model.SurvivalDaysFrom;
+            entity.Xenograft.SurvivalDaysTo = model.SurvivalDaysTo;
         }
     }
 }

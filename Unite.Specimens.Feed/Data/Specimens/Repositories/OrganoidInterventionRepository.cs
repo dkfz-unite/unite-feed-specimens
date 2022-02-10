@@ -17,72 +17,75 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
         }
 
 
-        public OrganoidIntervention Find(int specimenId, OrganoidInterventionModel interventionModel)
+        public Intervention Find(int specimenId, OrganoidInterventionModel model)
         {
-            var intervention = _dbContext.OrganoidInterventions
-                .Include(intervention => intervention.Type)
-                .FirstOrDefault(intervention =>
-                    intervention.SpecimenId == specimenId &&
-                    intervention.Type.Name == interventionModel.Type &&
-                    intervention.StartDay == interventionModel.StartDay
+            var entity = _dbContext.Set<Intervention>()
+                .Include(entity => entity.Type)
+                .FirstOrDefault(entity =>
+                    entity.SpecimenId == specimenId &&
+                    entity.Type.Name == model.Type &&
+                    entity.StartDay == model.StartDay
                 );
 
-            return intervention;
+            return entity;
         }
 
-        public OrganoidIntervention Create(int specimenId, OrganoidInterventionModel interventionModel)
+        public Intervention Create(int specimenId, OrganoidInterventionModel model)
         {
-            var intervention = new OrganoidIntervention
+            var entity = new Intervention
             {
                 SpecimenId = specimenId
             };
 
-            Map(interventionModel, intervention);
+            Map(model, ref entity);
 
-            _dbContext.OrganoidInterventions.Add(intervention);
+            _dbContext.Add(entity);
             _dbContext.SaveChanges();
 
-            return intervention;
+            return entity;
         }
 
-        public void Update(OrganoidIntervention intervention, OrganoidInterventionModel interventionModel)
+        public void Update(Intervention entity, OrganoidInterventionModel model)
         {
-            Map(interventionModel, intervention);
+            Map(model, ref entity);
 
-            _dbContext.OrganoidInterventions.Update(intervention);
+            _dbContext.Update(entity);
             _dbContext.SaveChanges();
         }
 
 
-        private void Map(OrganoidInterventionModel interventionModel, OrganoidIntervention intervention)
+        private void Map(in OrganoidInterventionModel model, ref Intervention entity)
         {
-            intervention.Type = GetInterventionType(interventionModel.Type);
-            intervention.Details = interventionModel.Details;
-            intervention.StartDay = interventionModel.StartDay;
-            intervention.DurationDays = interventionModel.DurationDays;
-            intervention.Results = interventionModel.Results;
+            entity.Type = GetInterventionType(model.Type);
+            entity.Details = model.Details;
+            entity.StartDate = model.StartDate;
+            entity.StartDay = model.StartDay;
+            entity.EndDate = model.EndDate;
+            entity.DurationDays = model.DurationDays;
+            entity.Results = model.Results;
         }
 
-        private OrganoidInterventionType GetInterventionType(string name)
+        private InterventionType GetInterventionType(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
                 return null;
             }
 
-            var interventionType = _dbContext.OrganoidInterventionTypes.FirstOrDefault(interventionType =>
-                interventionType.Name == name
-            );
+            var entity = _dbContext.Set<InterventionType>()
+                .FirstOrDefault(entity =>
+                    entity.Name == name
+                );
 
-            if (interventionType == null)
+            if (entity == null)
             {
-                interventionType = new OrganoidInterventionType { Name = name };
+                entity = new InterventionType { Name = name };
 
-                _dbContext.OrganoidInterventionTypes.Add(interventionType);
+                _dbContext.Add(entity);
                 _dbContext.SaveChanges();
             }
 
-            return interventionType;
+            return entity;
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Unite.Specimens.Feed.Web.Controllers
         private readonly IValidationService _validationService;
         private readonly IValidator<IEnumerable<SpecimenModel>> _validator;
         private readonly SpecimenDataWriter _dataWriter;
-        private readonly DonorIndexingTasksService _indexingTaskService;
+        private readonly SpecimenIndexingTasksService _indexingTaskService;
         private readonly ILogger _logger;
 
         private readonly SpecimenModelConverter _converter;
@@ -29,7 +29,7 @@ namespace Unite.Specimens.Feed.Web.Controllers
             IValidationService validationService,
             IValidator<IEnumerable<SpecimenModel>> validator,
             SpecimenDataWriter dataWriter,
-            DonorIndexingTasksService indexingTaskService,
+            SpecimenIndexingTasksService indexingTaskService,
             ILogger<SpecimensController> logger)
         {
             _validationService = validationService;

@@ -54,6 +54,18 @@ namespace Unite.Specimens.Feed.Web.Services.Specimens.Validators
                 .WithMessage("Maximum length is 255");
 
 
+            RuleFor(model => model.CreationDate)
+                .Empty()
+                .When(model => model.CreationDay.HasValue)
+                .WithMessage("Either 'CreationDate' or 'CreationDay' can be set, not both");
+
+
+            RuleFor(model => model.CreationDay)
+                .Empty()
+                .When(model => model.CreationDate.HasValue)
+                .WithMessage("Either 'CreationDate' or 'CreationDay' can be set, not both");
+
+
             RuleFor(model => model)
                 .Must(HaveModelSet)
                 .WithMessage("Specific specimen data (Tissue, CellLine or Xenograft) has to be set");

@@ -1,10 +1,14 @@
-﻿namespace Unite.Specimens.Feed.Web.Services.Specimens
+﻿using System;
+
+namespace Unite.Specimens.Feed.Web.Services.Specimens
 {
     public class XenograftInterventionModel
     {
         public string Type { get; set; }
         public string Details { get; set; }
+        public DateTime? StartDate { get; set; }
         public int? StartDay { get; set; }
+        public DateTime? EndDate { get; set; }
         public int? DurationDays { get; set; }
         public string Results { get; set; }
 

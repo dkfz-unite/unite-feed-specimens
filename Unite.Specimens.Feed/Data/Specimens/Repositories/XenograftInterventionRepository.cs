@@ -17,72 +17,73 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories
         }
 
 
-        public XenograftIntervention Find(int specimenId, XenograftInterventionModel interventionModel)
+        public Intervention Find(int specimenId, XenograftInterventionModel model)
         {
-            var intervention = _dbContext.XenograftInterventions
-                .Include(intervention => intervention.Type)
-                .FirstOrDefault(intervention =>
-                    intervention.SpecimenId == specimenId &&
-                    intervention.Type.Name == interventionModel.Type &&
-                    intervention.StartDay == interventionModel.StartDay
+            var entity = _dbContext.Set<Intervention>()
+                .Include(entity => entity.Type)
+                .FirstOrDefault(entity =>
+                    entity.SpecimenId == specimenId &&
+                    entity.Type.Name == model.Type &&
+                    entity.StartDay == model.StartDay
                 );
 
-            return intervention;
+            return entity;
         }
 
-        public XenograftIntervention Create(int specimenId, XenograftInterventionModel interventionModel)
+        public Intervention Create(int specimenId, XenograftInterventionModel model)
         {
-            var intervention = new XenograftIntervention
+            var entity = new Intervention
             {
                 SpecimenId = specimenId
             };
 
-            Map(interventionModel, intervention);
+            Map(model, entity);
 
-            _dbContext.XenograftInterventions.Add(intervention);
+            _dbContext.Add(entity);
             _dbContext.SaveChanges();
 
-            return intervention;
+            return entity;
         }
 
-        public void Update(XenograftIntervention intervention, XenograftInterventionModel interventionModel)
+        public void Update(Intervention entity, XenograftInterventionModel model)
         {
-            Map(interventionModel, intervention);
+            Map(model, entity);
 
-            _dbContext.XenograftInterventions.Update(intervention);
+            _dbContext.Update(entity);
             _dbContext.SaveChanges();
         }
 
 
-        private void Map(XenograftInterventionModel interventionModel, XenograftIntervention intervention)
+        private void Map(XenograftInterventionModel model, Intervention entity)
         {
-            intervention.Type = GetInterventionType(interventionModel.Type);
-            intervention.Details = interventionModel.Details;
-            intervention.StartDay = interventionModel.StartDay;
-            intervention.DurationDays = interventionModel.DurationDays;
-            intervention.Results = interventionModel.Results;
+            entity.Type = GetInterventionType(model.Type);
+            entity.Details = model.Details;
+            entity.StartDay = model.StartDay;
+            entity.DurationDays = model.DurationDays;
+            entity.Results = model.Results;
         }
 
-        private XenograftInterventionType GetInterventionType(string name)
+        private InterventionType GetInterventionType(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
                 return null;
             }
 
-            var interventionType = _dbContext.XenograftInterventionTypes.FirstOrDefault(interventionType =>
-                interventionType.Name == name
-            );
+            var entity = _dbContext.Set<InterventionType>()
+                .FirstOrDefault(entity =>
+                    entity.Name == name
+                );
 
-            if (interventionType == null)
+            if (entity == null)
             {
-                interventionType = new XenograftInterventionType { Name = name };
+                entity = new InterventionType { Name = name };
 
-                _dbContext.XenograftInterventionTypes.Add(interventionType);
+                _dbContext.Add(entity);
                 _dbContext.SaveChanges();
             }
 
-            return interventionType;
+            return entity;
         }
     }
 }

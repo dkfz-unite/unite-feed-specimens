@@ -1,4 +1,5 @@
-﻿using Unite.Specimens.Feed.Web.Services.Specimens.Enums;
+﻿using System;
+using Unite.Specimens.Feed.Web.Services.Specimens.Enums;
 
 namespace Unite.Specimens.Feed.Web.Services.Specimens
 {
@@ -8,6 +9,8 @@ namespace Unite.Specimens.Feed.Web.Services.Specimens
         public string ParentId { get; set; }
         public SpecimenType? ParentType { get; set; }
         public string DonorId { get; set; }
+        public DateTime? CreationDate { get; set; }
+        public int? CreationDay { get; set; }
 
         public TissueModel Tissue { get; set; }
         public CellLineModel CellLine { get; set; }

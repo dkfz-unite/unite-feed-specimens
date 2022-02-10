@@ -6,7 +6,6 @@ namespace Unite.Specimens.Feed.Web.Services.Specimens
     {
         public TissueType? Type { get; set; }
         public TumorType? TumorType { get; set; }
-        public int? ExtractionDay { get; set; }
         public string Source { get; set; }
 
 
