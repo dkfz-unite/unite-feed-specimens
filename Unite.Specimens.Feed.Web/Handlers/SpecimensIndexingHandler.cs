@@ -38,6 +38,8 @@ namespace Unite.Specimens.Feed.Web.Handlers
         {
             _taskProcessingService.Process(TaskType.Indexing, TaskTargetType.Specimen, bucketSize, (tasks) =>
             {
+                _logger.LogInformation($"Indexing {tasks.Length} specimens");
+
                 var indices = tasks.Select(task =>
                 {
                     var id = int.Parse(task.Target);
@@ -51,7 +53,7 @@ namespace Unite.Specimens.Feed.Web.Handlers
                 _indexingService.IndexMany(indices);
 
 
-                _logger.LogInformation($"Finished indexing of {tasks.Length} specimens");
+                _logger.LogInformation($"Indexing of {tasks.Length} specimens completed");
             });
         }
     }
