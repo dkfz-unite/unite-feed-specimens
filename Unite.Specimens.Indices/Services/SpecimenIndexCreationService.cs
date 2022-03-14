@@ -5,6 +5,7 @@ using Unite.Data.Entities.Donors;
 using Unite.Data.Entities.Genome.Mutations;
 using Unite.Data.Entities.Images;
 using Unite.Data.Entities.Specimens;
+using Unite.Data.Entities.Specimens.Tissues.Enums;
 using Unite.Data.Services;
 using Unite.Data.Services.Extensions;
 using Unite.Indices.Entities.Specimens;
@@ -59,11 +60,13 @@ namespace Unite.Specimens.Indices.Services
 
         private SpecimenIndex CreateSpecimenIndex(Specimen specimen, DateTime? diagnosisDate)
         {
-            var index = new SpecimenIndex();
+            var isTumorTissue = specimen.Tissue?.TypeId == TissueType.Tumor;
 
+            var index = new SpecimenIndex();
+            
             _specimenIndexMapper.Map(specimen, index, diagnosisDate);
 
-            index.Donor = CreateDonorIndex(specimen.DonorId);
+            index.Donor = CreateDonorIndex(specimen.DonorId, isTumorTissue);
 
             index.Parent = CreateParentSpecimenIndex(specimen.Id, diagnosisDate);
 
@@ -181,7 +184,7 @@ namespace Unite.Specimens.Indices.Services
         }
 
 
-        private DonorIndex CreateDonorIndex(int donorId)
+        private DonorIndex CreateDonorIndex(int donorId, bool isTumorTissue)
         {
             var donor = LoadDonor(donorId);
 
@@ -190,12 +193,12 @@ namespace Unite.Specimens.Indices.Services
                 return null;
             }
 
-            var index = CreateDonorIndex(donor);
+            var index = CreateDonorIndex(donor, isTumorTissue);
 
             return index;
         }
 
-        private DonorIndex CreateDonorIndex(Donor donor)
+        private DonorIndex CreateDonorIndex(Donor donor, bool isTumorTissue)
         {
             var index = new DonorIndex();
 
@@ -203,7 +206,11 @@ namespace Unite.Specimens.Indices.Services
 
             _donorIndexMapper.Map(donor, index);
 
-            index.Images = CreateImageIndices(donor.Id, diagnosisDate);
+            // Images can be associated only with tumor tissues
+            if (isTumorTissue)
+            {
+                index.Images = CreateImageIndices(donor.Id, diagnosisDate);
+            }
 
             return index;
         }
