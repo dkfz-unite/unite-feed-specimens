@@ -41,24 +41,24 @@ Includes Organoid intervention data.
 - Type: _String_
 - Format: "YYYY-MM-DDTHH-MM-SS"
 - Limitations: Only either 'StartDateDate' or 'StartDay' can be set at once, not both
-- Example: `"2020-01-07T00:00:00"`
+- Example: `"2020-04-05T00:00:00"`
 
 **`StartDay`** - Relative number of days since specimen creation, when intervention has started.
 - Type: _Number_
 - Limitations: Integer, greater or equal to 0, only either 'StartDate' or 'StartDay' can be set at once, not both
-- Example: `7`
+- Example: `5`
 
 **`EndDate`** - Date, when intervention has ended.
 - Note: It's hidden and protected. Relative date is shown instead, if calculation was possible.
 - Type: _String_
 - Format: "YYYY-MM-DDTHH-MM-SS"
 - Limitations: Only either 'EndDateDate' or 'DurationDays' can be set at once, not both
-- Example: `"2020-01-27T00:00:00"`
+- Example: `"2020-04-10T00:00:00"`
 
 **`DurationDays`** - Intervention duration in days.
 - Type: _Number_
 - Limitations: Integer, greater or equal to 0, only either 'EndDate' or 'DurationDays' can be set at once, not both
-- Example: `20`
+- Example: `5`
 
 **`Results`** - Intervention results.
 - Type: _String_
