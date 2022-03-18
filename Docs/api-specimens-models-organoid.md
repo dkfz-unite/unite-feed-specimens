@@ -1,4 +1,4 @@
-# Organoid Data Model
+# Organoid Data Models
 Includes organoid and organoid interventions data.
 
 ## Organoid
