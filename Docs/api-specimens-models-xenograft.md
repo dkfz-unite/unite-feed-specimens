@@ -47,7 +47,7 @@ _At least one field has to be set_
 
 **`Interventions`** - Interventions applied.
 - Type: _Array_
-- Element type: _Object(Intervention)_
+- Element type: _Object([Xenograft Intervention](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-specimens-models-xenograft.md#xenograft-intervention))_
 - Example: `[{...}, {...}]`
 
 ## Xenograft Intervention
