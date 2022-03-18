@@ -57,7 +57,7 @@ Includes general data about the specimen.
 - Example: `{...}`
 
 **`MolecularData`** - Specimen molecular data.
-- Type: _Object([Molecular Data](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-specimens-models-molecular.md))_
+- Type: _Object([MolecularData](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-specimens-models-molecular.md))_
 - Example: `{...}`
 
 ##
