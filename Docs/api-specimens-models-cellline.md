@@ -22,7 +22,7 @@ _At least one field has to be set_
 - Example: `"Both"`
 
 **`Info`** - public information about the cell line.
-- Type: _Object([Cell Line Info](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-specimens-models-cellline.md#cell-line-info))_
+- Type: _Object([CellLineInfo](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-specimens-models-cellline.md#cell-line-info))_
 - Example: `{...}`
 
 ## Cell Line Info
