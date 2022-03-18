@@ -16,10 +16,5 @@ Includes tissue data.
 - Limitations: Maximum length 100
 - Example: `"Solid tissue"`
 
-**`MolecularData`** - Tissue molecular data.
-- Type: _Object([MolecularData](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-specimens-models-molecular.md))_
-- Limitations: Can be set for tumor tissues only 
-- Example: `{...}`
-
 ##
 **`*`** - Required fields
