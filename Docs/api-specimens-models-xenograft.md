@@ -1,4 +1,4 @@
-# Xenograft Data Model
+# Xenograft Data Models
 Includes xenograft and xenograft interventions data.
 
 ## Xenograft
