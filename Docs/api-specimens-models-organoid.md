@@ -39,7 +39,7 @@ Includes Organoid intervention data.
 **`StartDate`** - Date, when intervention has started.
 - Note: It's hidden and protected. Relative date is shown instead, if calculation was possible.
 - Type: _String_
-- Format: "YYYY-MM-DDTHH-MM-SS"
+- Format: "YYYY-MM-DDTHH:MM:SS"
 - Limitations: Only either 'StartDateDate' or 'StartDay' can be set at once, not both
 - Example: `"2020-04-05T00:00:00"`
 
@@ -51,7 +51,7 @@ Includes Organoid intervention data.
 **`EndDate`** - Date, when intervention has ended.
 - Note: It's hidden and protected. Relative date is shown instead, if calculation was possible.
 - Type: _String_
-- Format: "YYYY-MM-DDTHH-MM-SS"
+- Format: "YYYY-MM-DDTHH:MM:SS"
 - Limitations: Only either 'EndDateDate' or 'DurationDays' can be set at once, not both
 - Example: `"2020-04-10T00:00:00"`
 
