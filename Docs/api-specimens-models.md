@@ -27,7 +27,7 @@ Includes general data about the specimen.
 **`CreationDate`** - Date when specimen was created.
 - Note: It's hidden and protected. Relative date is shown instead, if calculation was possible.
 - Type: _String_
-- Format: YYYY-MM-DDTHH:MM:SS
+- Format: "YYYY-MM-DDTHH:MM:SS"
 - Limitations: Only either 'CreationDateDate' or 'CreationDay' can be set at once, not both
 - Example: `"2020-02-05T00:00:00"`
 
