@@ -46,7 +46,7 @@ namespace Unite.Specimens.Indices.Services
         {
             var specimen = LoadSpecimen(specimenId);
 
-            var diagnosisDate = specimen.Donor.ClinicalData.DiagnosisDate;
+            var diagnosisDate = specimen.Donor.ClinicalData?.DiagnosisDate;
 
             if (specimen == null)
             {
@@ -202,7 +202,7 @@ namespace Unite.Specimens.Indices.Services
         {
             var index = new DonorIndex();
 
-            var diagnosisDate = donor.ClinicalData.DiagnosisDate;
+            var diagnosisDate = donor.ClinicalData?.DiagnosisDate;
 
             _donorIndexMapper.Map(donor, index);
 
