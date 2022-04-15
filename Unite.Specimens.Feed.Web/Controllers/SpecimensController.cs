@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -9,15 +8,12 @@ using Unite.Specimens.Feed.Data.Specimens;
 using Unite.Specimens.Feed.Web.Services;
 using Unite.Specimens.Feed.Web.Services.Specimens;
 using Unite.Specimens.Feed.Web.Services.Specimens.Converters;
-using Unite.Specimens.Feed.Web.Services.Validation;
 
 namespace Unite.Specimens.Feed.Web.Controllers
 {
     [Route("api/[controller]")]
     public class SpecimensController : Controller
     {
-        private readonly IValidationService _validationService;
-        private readonly IValidator<IEnumerable<SpecimenModel>> _validator;
         private readonly SpecimenDataWriter _dataWriter;
         private readonly SpecimenIndexingTasksService _indexingTaskService;
         private readonly ILogger _logger;
@@ -26,14 +22,10 @@ namespace Unite.Specimens.Feed.Web.Controllers
 
 
         public SpecimensController(
-            IValidationService validationService,
-            IValidator<IEnumerable<SpecimenModel>> validator,
             SpecimenDataWriter dataWriter,
             SpecimenIndexingTasksService indexingTaskService,
             ILogger<SpecimensController> logger)
         {
-            _validationService = validationService;
-            _validator = validator;
             _dataWriter = dataWriter;
             _indexingTaskService = indexingTaskService;
             _logger = logger;
@@ -44,13 +36,6 @@ namespace Unite.Specimens.Feed.Web.Controllers
 
         public IActionResult Post([FromBody] SpecimenModel[] models)
         {
-            if (!_validationService.ValidateParameter(models, _validator, out string modelErrorMessage))
-            {
-                _logger.LogWarning(modelErrorMessage);
-
-                return BadRequest(modelErrorMessage);
-            }
-
             try
             {
                 models.ForEach(model => model.Sanitise());

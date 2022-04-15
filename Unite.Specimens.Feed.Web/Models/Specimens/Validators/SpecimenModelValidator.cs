@@ -98,7 +98,7 @@ namespace Unite.Specimens.Feed.Web.Services.Specimens.Validators
     }
 
 
-    public class SpecimenModelsValidator : AbstractValidator<IEnumerable<SpecimenModel>>
+    public class SpecimenModelsValidator : AbstractValidator<SpecimenModel[]>
     {
         private readonly IValidator<SpecimenModel> _specimenModelValidator;
 

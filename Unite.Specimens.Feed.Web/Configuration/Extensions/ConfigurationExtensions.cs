@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Unite.Data.Services;
 using Unite.Data.Services.Configuration.Options;
@@ -13,7 +12,6 @@ using Unite.Specimens.Feed.Web.HostedServices;
 using Unite.Specimens.Feed.Web.Services;
 using Unite.Specimens.Feed.Web.Services.Specimens;
 using Unite.Specimens.Feed.Web.Services.Specimens.Validators;
-using Unite.Specimens.Feed.Web.Services.Validation;
 using Unite.Specimens.Indices.Services;
 
 namespace Unite.Specimens.Feed.Web.Configuration.Extensions
@@ -25,8 +23,7 @@ namespace Unite.Specimens.Feed.Web.Configuration.Extensions
             services.AddTransient<ISqlOptions, SqlOptions>();
             services.AddTransient<IElasticOptions, ElasticOptions>();
 
-            services.AddTransient<IValidationService, ValidationService>();
-            services.AddTransient<IValidator<IEnumerable<SpecimenModel>>, SpecimenModelsValidator>();
+            services.AddTransient<IValidator<SpecimenModel[]>, SpecimenModelsValidator>();
 
             services.AddTransient<DomainDbContext>();
             services.AddTransient<SpecimenDataWriter>();

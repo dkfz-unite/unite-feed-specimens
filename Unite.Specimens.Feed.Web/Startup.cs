@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +25,8 @@ namespace Unite.Specimens.Feed.Web
             services.Configure();
 
             services.AddControllers(options => options.AddMvcOptions())
-                    .AddJsonOptions(options => options.AddJsonOptions());
+                    .AddJsonOptions(options => options.AddJsonOptions())
+                    .AddFluentValidation();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
