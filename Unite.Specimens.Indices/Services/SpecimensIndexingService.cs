@@ -21,19 +21,7 @@ namespace Unite.Specimens.Indices.Services
 
         public SpecimensIndexingService(IElasticOptions options) : base(options)
         {
-            var existsResponse = _client.Indices.Exists(DefaultIndex);
 
-            if (existsResponse.IsValid)
-            {
-                if (existsResponse.Exists)
-                {
-                    var updateResponse = _client.Indices.PutMapping<SpecimenIndex>(mapping => mapping.AutoMap());
-                }
-                else
-                {
-                    var createResponse = _client.Indices.Create(DefaultIndex, request => request.Map(mapping => mapping.AutoMap()));
-                }
-            }
         }
     }
 }

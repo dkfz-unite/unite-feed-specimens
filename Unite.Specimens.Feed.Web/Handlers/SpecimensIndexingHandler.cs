@@ -27,6 +27,10 @@ namespace Unite.Specimens.Feed.Web.Handlers
             _logger = logger;
         }
 
+        public void Prepare()
+        {
+            _indexingService.UpdateMapping().RunSynchronously();
+        }
 
         public void Handle(int bucketSize)
         {
