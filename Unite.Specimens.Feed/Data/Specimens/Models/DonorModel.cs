@@ -1,7 +1,6 @@
-﻿namespace Unite.Specimens.Feed.Data.Specimens.Models
+﻿namespace Unite.Specimens.Feed.Data.Specimens.Models;
+
+public class DonorModel
 {
-    public class DonorModel
-    {
-        public string ReferenceId { get; set; }
-    }
+    public string ReferenceId { get; set; }
 }

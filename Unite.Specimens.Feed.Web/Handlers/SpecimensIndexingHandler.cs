@@ -1,65 +1,62 @@
-﻿using System.Linq;
-using Microsoft.Extensions.Logging;
-using Unite.Data.Entities.Tasks.Enums;
+﻿using Unite.Data.Entities.Tasks.Enums;
+using Unite.Data.Services.Tasks;
 using Unite.Indices.Entities.Specimens;
 using Unite.Indices.Services;
-using Unite.Specimens.Feed.Web.Services;
 
-namespace Unite.Specimens.Feed.Web.Handlers
+namespace Unite.Specimens.Feed.Web.Handlers;
+
+public class SpecimensIndexingHandler
 {
-    public class SpecimensIndexingHandler
+    private readonly TasksProcessingService _taskProcessingService;
+    private readonly IIndexCreationService<SpecimenIndex> _indexCreationService;
+    private readonly IIndexingService<SpecimenIndex> _indexingService;
+    private readonly ILogger _logger;
+
+
+    public SpecimensIndexingHandler(
+        TasksProcessingService taskProcessingService,
+        IIndexCreationService<SpecimenIndex> indexCreationService,
+        IIndexingService<SpecimenIndex> indexingService,
+        ILogger<SpecimensIndexingHandler> logger)
     {
-        private readonly TasksProcessingService _taskProcessingService;
-        private readonly IIndexCreationService<SpecimenIndex> _indexCreationService;
-        private readonly IIndexingService<SpecimenIndex> _indexingService;
-        private readonly ILogger _logger;
+        _taskProcessingService = taskProcessingService;
+        _indexCreationService = indexCreationService;
+        _indexingService = indexingService;
+        _logger = logger;
+    }
+
+    public void Prepare()
+    {
+        _indexingService.UpdateMapping().GetAwaiter().GetResult();
+    }
+
+    public void Handle(int bucketSize)
+    {
+        ProcessSpecimenIndexingTasks(bucketSize);
+    }
 
 
-        public SpecimensIndexingHandler(
-            TasksProcessingService taskProcessingService,
-            IIndexCreationService<SpecimenIndex> indexCreationService,
-            IIndexingService<SpecimenIndex> indexingService,
-            ILogger<SpecimensIndexingHandler> logger)
+    private void ProcessSpecimenIndexingTasks(int bucketSize)
+    {
+        _taskProcessingService.Process(TaskType.Indexing, TaskTargetType.Specimen, bucketSize, (tasks) =>
         {
-            _taskProcessingService = taskProcessingService;
-            _indexCreationService = indexCreationService;
-            _indexingService = indexingService;
-            _logger = logger;
-        }
+            _logger.LogInformation($"Indexing {tasks.Length} specimens");
 
-        public void Prepare()
-        {
-            _indexingService.UpdateMapping().GetAwaiter().GetResult();
-        }
-
-        public void Handle(int bucketSize)
-        {
-            ProcessSpecimenIndexingTasks(bucketSize);
-        }
-
-
-        private void ProcessSpecimenIndexingTasks(int bucketSize)
-        {
-            _taskProcessingService.Process(TaskType.Indexing, TaskTargetType.Specimen, bucketSize, (tasks) =>
+            var indices = tasks.Select(task =>
             {
-                _logger.LogInformation($"Indexing {tasks.Length} specimens");
+                var id = int.Parse(task.Target);
 
-                var indices = tasks.Select(task =>
-                {
-                    var id = int.Parse(task.Target);
+                var index = _indexCreationService.CreateIndex(id);
 
-                    var index = _indexCreationService.CreateIndex(id);
+                return index;
 
-                    return index;
+            }).ToArray();
 
-                }).ToArray();
-
-                _indexingService.IndexMany(indices);
+            _indexingService.IndexMany(indices);
 
 
-                _logger.LogInformation($"Indexing of {tasks.Length} specimens completed");
-            });
-        }
+            _logger.LogInformation($"Indexing of {tasks.Length} specimens completed");
+        });
     }
 }
 

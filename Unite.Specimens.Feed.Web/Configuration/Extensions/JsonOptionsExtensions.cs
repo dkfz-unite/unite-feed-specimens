@@ -8,7 +8,7 @@ namespace Unite.Specimens.Feed.Web.Configuration.Extensions
         public static void AddJsonOptions(this JsonOptions options)
         {
             options.JsonSerializerOptions.Converters.Add(new JsonStringEnumMemberConverter());
-            options.JsonSerializerOptions.IgnoreNullValues = true;
+            options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         }
     }
 }

@@ -1,61 +1,58 @@
-﻿using System.Linq;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Unite.Data.Extensions;
-using Unite.Specimens.Feed.Data.Exceptions;
 using Unite.Specimens.Feed.Data.Specimens;
-using Unite.Specimens.Feed.Web.Services;
-using Unite.Specimens.Feed.Web.Services.Specimens;
+using Unite.Specimens.Feed.Data.Specimens.Exceptions;
 using Unite.Specimens.Feed.Web.Services.Specimens.Converters;
+using Unite.Specimens.Feed.Web.Services.Specimens;
+using Unite.Specimens.Feed.Web.Services;
 
-namespace Unite.Specimens.Feed.Web.Controllers
+namespace Unite.Specimens.Feed.Web.Controllers;
+
+[Route("api/[controller]")]
+public class SpecimensController : Controller
 {
-    [Route("api/[controller]")]
-    public class SpecimensController : Controller
+    private readonly SpecimenDataWriter _dataWriter;
+    private readonly SpecimenIndexingTasksService _indexingTaskService;
+    private readonly ILogger _logger;
+
+    private readonly SpecimenModelConverter _converter;
+
+
+    public SpecimensController(
+        SpecimenDataWriter dataWriter,
+        SpecimenIndexingTasksService indexingTaskService,
+        ILogger<SpecimensController> logger)
     {
-        private readonly SpecimenDataWriter _dataWriter;
-        private readonly SpecimenIndexingTasksService _indexingTaskService;
-        private readonly ILogger _logger;
+        _dataWriter = dataWriter;
+        _indexingTaskService = indexingTaskService;
+        _logger = logger;
 
-        private readonly SpecimenModelConverter _converter;
+        _converter = new SpecimenModelConverter();
+    }
 
 
-        public SpecimensController(
-            SpecimenDataWriter dataWriter,
-            SpecimenIndexingTasksService indexingTaskService,
-            ILogger<SpecimensController> logger)
+    public IActionResult Post([FromBody] SpecimenModel[] models)
+    {
+        try
         {
-            _dataWriter = dataWriter;
-            _indexingTaskService = indexingTaskService;
-            _logger = logger;
+            models.ForEach(model => model.Sanitise());
 
-            _converter = new SpecimenModelConverter();
+            var dataModels = models.Select(model => _converter.Convert(model));
+
+            _dataWriter.SaveData(dataModels, out var audit);
+
+            _logger.LogInformation(audit.ToString());
+
+            _indexingTaskService.PopulateTasks(audit.Specimens);
+
+            return Ok();
         }
-
-
-        public IActionResult Post([FromBody] SpecimenModel[] models)
+        catch (NotFoundException exception)
         {
-            try
-            {
-                models.ForEach(model => model.Sanitise());
+            _logger.LogError(exception.Message);
 
-                var dataModels = models.Select(model => _converter.Convert(model));
-
-                _dataWriter.SaveData(dataModels, out var audit);
-
-                _logger.LogInformation(audit.ToString());
-
-                _indexingTaskService.PopulateTasks(audit.Specimens);
-
-                return Ok();
-            }
-            catch (NotFoundException exception)
-            {
-                _logger.LogError(exception.Message);
-
-                return BadRequest(exception.Message);
-            }
+            return BadRequest(exception.Message);
         }
     }
 }

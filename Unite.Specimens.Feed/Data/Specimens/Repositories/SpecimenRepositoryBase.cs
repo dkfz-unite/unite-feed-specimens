@@ -2,65 +2,64 @@
 using Unite.Data.Services;
 using Unite.Specimens.Feed.Data.Specimens.Models;
 
-namespace Unite.Specimens.Feed.Data.Specimens.Repositories
+namespace Unite.Specimens.Feed.Data.Specimens.Repositories;
+
+internal abstract class SpecimenRepositoryBase<TModel> where TModel : SpecimenModel
 {
-    internal abstract class SpecimenRepositoryBase<TModel> where TModel : SpecimenModel
+    protected readonly DomainDbContext _dbContext;
+
+
+    public SpecimenRepositoryBase(DomainDbContext dbContext)
     {
-        protected readonly DomainDbContext _dbContext;
+        _dbContext = dbContext;
+    }
 
 
-        public SpecimenRepositoryBase(DomainDbContext dbContext)
+    public abstract Specimen Find(int donorId, int? parentId, in TModel model);
+
+    public virtual Specimen Create(int donorId, int? parentId, in TModel model)
+    {
+        var entity = new Specimen
         {
-            _dbContext = dbContext;
-        }
+            DonorId = donorId,
+            ParentId = parentId
+        };
+
+        Map(model, ref entity);
+
+        _dbContext.Add(entity);
+        _dbContext.SaveChanges();
+
+        return entity;
+    }
+
+    public virtual void Update(ref Specimen entity, in TModel model)
+    {
+        Map(model, ref entity);
+
+        _dbContext.Update(entity);
+        _dbContext.SaveChanges();
+    }
 
 
-        public abstract Specimen Find(int donorId, int? parentId, in TModel model);
+    protected virtual void Map(in TModel model, ref Specimen entity)
+    {
+        entity.CreationDate = model.CreationDate;
+        entity.CreationDay = model.CreationDay;
 
-        public virtual Specimen Create(int donorId, int? parentId, in TModel model)
+        if (model.MolecularData != null)
         {
-            var entity = new Specimen
+            if (entity.MolecularData == null)
             {
-                DonorId = donorId,
-                ParentId = parentId
-            };
-
-            Map(model, ref entity);
-
-            _dbContext.Add(entity);
-            _dbContext.SaveChanges();
-
-            return entity;
-        }
-
-        public virtual void Update(ref Specimen entity, in TModel model)
-        {
-            Map(model, ref entity);
-
-            _dbContext.Update(entity);
-            _dbContext.SaveChanges();
-        }
-
-
-        protected virtual void Map(in TModel model, ref Specimen entity)
-        {
-            entity.CreationDate = model.CreationDate;
-            entity.CreationDay = model.CreationDay;
-
-            if (model.MolecularData != null)
-            {
-                if (entity.MolecularData == null)
-                {
-                    entity.MolecularData = new MolecularData();
-                }
-
-                entity.MolecularData.MgmtStatusId = model.MolecularData.MgmtStatus;
-                entity.MolecularData.IdhStatusId = model.MolecularData.IdhStatus;
-                entity.MolecularData.IdhMutationId = model.MolecularData.IdhMutation;
-                entity.MolecularData.GeneExpressionSubtypeId = model.MolecularData.GeneExpressionSubtype;
-                entity.MolecularData.MethylationSubtypeId = model.MolecularData.MethylationSubtype;
-                entity.MolecularData.GcimpMethylation = model.MolecularData.GcimpMethylation;
+                entity.MolecularData = new MolecularData();
             }
+
+            entity.MolecularData.MgmtStatusId = model.MolecularData.MgmtStatus;
+            entity.MolecularData.IdhStatusId = model.MolecularData.IdhStatus;
+            entity.MolecularData.IdhMutationId = model.MolecularData.IdhMutation;
+            entity.MolecularData.GeneExpressionSubtypeId = model.MolecularData.GeneExpressionSubtype;
+            entity.MolecularData.MethylationSubtypeId = model.MolecularData.MethylationSubtype;
+            entity.MolecularData.GcimpMethylation = model.MolecularData.GcimpMethylation;
         }
     }
 }

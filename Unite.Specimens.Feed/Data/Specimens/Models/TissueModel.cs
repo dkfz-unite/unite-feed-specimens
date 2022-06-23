@@ -1,12 +1,11 @@
 ﻿using Unite.Data.Entities.Specimens.Tissues.Enums;
 
-namespace Unite.Specimens.Feed.Data.Specimens.Models
+namespace Unite.Specimens.Feed.Data.Specimens.Models;
+
+public class TissueModel : SpecimenModel
 {
-    public class TissueModel : SpecimenModel
-    {
-        public TissueType Type { get; set; }
-        public TumorType? TumorType { get; set; }
-        public int? ExtractionDay { get; set; }
-        public string Source { get; set; }
-    }
+    public TissueType Type { get; set; }
+    public TumorType? TumorType { get; set; }
+    public int? ExtractionDay { get; set; }
+    public string Source { get; set; }
 }

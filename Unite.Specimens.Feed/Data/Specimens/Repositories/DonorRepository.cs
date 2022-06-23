@@ -1,50 +1,48 @@
-﻿using System.Linq;
-using Unite.Data.Entities.Donors;
+﻿using Unite.Data.Entities.Donors;
 using Unite.Data.Services;
 using Unite.Specimens.Feed.Data.Specimens.Models;
 
-namespace Unite.Specimens.Feed.Data.Specimens.Repositories
+namespace Unite.Specimens.Feed.Data.Specimens.Repositories;
+
+internal class DonorRepository
 {
-    internal class DonorRepository
+    private readonly DomainDbContext _dbContext;
+
+
+    public DonorRepository(DomainDbContext dbContext)
     {
-        private readonly DomainDbContext _dbContext;
+        _dbContext = dbContext;
+    }
 
 
-        public DonorRepository(DomainDbContext dbContext)
+    public Donor Find(string referenceId)
+    {
+        var entity = _dbContext.Set<Donor>()
+            .FirstOrDefault(entity =>
+                entity.ReferenceId == referenceId
+            );
+
+        return entity;
+    }
+
+    public Donor Create(DonorModel model)
+    {
+        var entity = new Donor
         {
-            _dbContext = dbContext;
-        }
+            ReferenceId = model.ReferenceId
+        };
+
+        Map(model, ref entity);
+
+        _dbContext.Add(entity);
+        _dbContext.SaveChanges();
+
+        return entity;
+    }
 
 
-        public Donor Find(string referenceId)
-        {
-            var entity = _dbContext.Set<Donor>()
-                .FirstOrDefault(entity =>
-                    entity.ReferenceId == referenceId
-                );
+    private void Map(in DonorModel model, ref Donor entity)
+    {
 
-            return entity;
-        }
-
-        public Donor Create(DonorModel model)
-        {
-            var entity = new Donor
-            {
-                ReferenceId = model.ReferenceId
-            };
-
-            Map(model, ref entity);
-
-            _dbContext.Add(entity);
-            _dbContext.SaveChanges();
-
-            return entity;
-        }
-
-
-        private void Map(in DonorModel model, ref Donor entity)
-        {
-
-        }
     }
 }
