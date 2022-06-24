@@ -1,4 +1,5 @@
-﻿using Unite.Data.Entities.Tasks.Enums;
+﻿using System.Diagnostics;
+using Unite.Data.Entities.Tasks.Enums;
 using Unite.Data.Services.Tasks;
 using Unite.Indices.Entities.Specimens;
 using Unite.Indices.Services;
@@ -38,9 +39,13 @@ public class SpecimensIndexingHandler
 
     private void ProcessSpecimenIndexingTasks(int bucketSize)
     {
+        var stopwatch = new Stopwatch();
+
         _taskProcessingService.Process(TaskType.Indexing, TaskTargetType.Specimen, bucketSize, (tasks) =>
         {
             _logger.LogInformation($"Indexing {tasks.Length} specimens");
+
+            stopwatch.Restart();
 
             var indices = tasks.Select(task =>
             {
@@ -54,8 +59,9 @@ public class SpecimensIndexingHandler
 
             _indexingService.IndexMany(indices);
 
+            stopwatch.Stop();
 
-            _logger.LogInformation($"Indexing of {tasks.Length} specimens completed");
+            _logger.LogInformation($"Indexing of {tasks.Length} specimens completed in {Math.Round(stopwatch.Elapsed.TotalSeconds, 2)}s");
         });
     }
 }
