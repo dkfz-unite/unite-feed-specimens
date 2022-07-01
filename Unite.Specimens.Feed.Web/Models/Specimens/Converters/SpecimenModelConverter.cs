@@ -9,7 +9,7 @@ public class SpecimenModelConverter
     {
         var target = GetSpecimenModel(source);
 
-        target.CreationDate = source.CreationDate;
+        target.CreationDate = FromDateTime(source.CreationDate);
         target.CreationDay = source.CreationDay;
         target.Donor = GetDonorModel(source.DonorId);
         target.Parent = GetSpecimenModel(source.ParentId, source.ParentType);
@@ -137,9 +137,9 @@ public class SpecimenModelConverter
                 {
                     Type = intervention.Type,
                     Details = intervention.Details,
-                    StartDate = intervention.StartDate,
+                    StartDate = FromDateTime(intervention.StartDate),
                     StartDay = intervention.StartDay,
-                    EndDate = intervention.EndDate,
+                    EndDate = FromDateTime(intervention.EndDate),
                     DurationDays = intervention.DurationDays,
                     Results = intervention.Results
                 };
@@ -171,9 +171,9 @@ public class SpecimenModelConverter
                 {
                     Type = intervention.Type,
                     Details = intervention.Details,
-                    StartDate = intervention.StartDate,
+                    StartDate = FromDateTime(intervention.StartDate),
                     StartDay = intervention.StartDay,
-                    EndDate = intervention.EndDate,
+                    EndDate = FromDateTime(intervention.EndDate),
                     DurationDays = intervention.DurationDays,
                     Results = intervention.Results
                 };
@@ -228,5 +228,13 @@ public class SpecimenModelConverter
 
             return (start, end);
         }
+    }
+
+
+    private static DateOnly? FromDateTime(DateTime? date)
+    {
+        return date != null
+             ? DateOnly.FromDateTime(date.Value)
+             : null;
     }
 }

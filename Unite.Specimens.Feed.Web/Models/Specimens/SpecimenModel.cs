@@ -8,7 +8,7 @@ public class SpecimenModel
     public string ParentId { get; set; }
     public SpecimenType? ParentType { get; set; }
     public string DonorId { get; set; }
-    public DateOnly? CreationDate { get; set; }
+    public DateTime? CreationDate { get; set; }
     public int? CreationDay { get; set; }
 
     public TissueModel Tissue { get; set; }
