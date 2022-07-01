@@ -3,7 +3,7 @@
 public class SpecimenModel
 {
     public string ReferenceId { get; set; }
-    public DateTime? CreationDate { get; set; }
+    public DateOnly? CreationDate { get; set; }
     public int? CreationDay { get; set; }
 
     public virtual SpecimenModel Parent { get; set; }

@@ -56,7 +56,7 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
         return index;
     }
 
-    private SpecimenIndex CreateSpecimenIndex(Specimen specimen, DateTime? diagnosisDate)
+    private SpecimenIndex CreateSpecimenIndex(Specimen specimen, DateOnly? diagnosisDate)
     {
         var isTumorTissue = specimen.Tissue?.TypeId == TissueType.Tumor;
 
@@ -103,7 +103,7 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
     }
 
 
-    private SpecimenIndex CreateParentSpecimenIndex(int specimeId, DateTime? diagnosisDate)
+    private SpecimenIndex CreateParentSpecimenIndex(int specimeId, DateOnly? diagnosisDate)
     {
         var specimen = LoadParentSpecimen(specimeId);
 
@@ -117,7 +117,7 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
         return index;
     }
 
-    private SpecimenIndex CreateParentSpecimenIndex(Specimen specimen, DateTime? diagnosisDate)
+    private SpecimenIndex CreateParentSpecimenIndex(Specimen specimen, DateOnly? diagnosisDate)
     {
         var index = new SpecimenIndex();
 
@@ -140,7 +140,7 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
     }
 
 
-    private SpecimenIndex[] CreateChildSpecimenIndices(int specimenId, DateTime? diagnosisDate)
+    private SpecimenIndex[] CreateChildSpecimenIndices(int specimenId, DateOnly? diagnosisDate)
     {
         var specimens = LoadChildSpecimens(specimenId);
 
@@ -156,7 +156,7 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
         return indices;
     }
 
-    private SpecimenIndex CreateChildSpecimenIndex(Specimen specimen, DateTime? diagnosisDate)
+    private SpecimenIndex CreateChildSpecimenIndex(Specimen specimen, DateOnly? diagnosisDate)
     {
         var index = new SpecimenIndex();
 
@@ -226,7 +226,7 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
     }
 
 
-    private ImageIndex[] CreateImageIndices(int donorId, DateTime? diagnosisDate)
+    private ImageIndex[] CreateImageIndices(int donorId, DateOnly? diagnosisDate)
     {
         var images = LoadImages(donorId);
 
@@ -242,7 +242,7 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
         return indices;
     }
 
-    private ImageIndex CreateImageIndex(Image image, DateTime? diagnosisDate)
+    private ImageIndex CreateImageIndex(Image image, DateOnly? diagnosisDate)
     {
         var index = new ImageIndex();
 
