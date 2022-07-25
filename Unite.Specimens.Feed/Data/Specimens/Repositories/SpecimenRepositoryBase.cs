@@ -8,7 +8,6 @@ internal abstract class SpecimenRepositoryBase<TModel> where TModel : SpecimenMo
 {
     protected readonly DomainDbContext _dbContext;
 
-
     public SpecimenRepositoryBase(DomainDbContext dbContext)
     {
         _dbContext = dbContext;

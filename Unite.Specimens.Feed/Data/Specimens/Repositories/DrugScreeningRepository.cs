@@ -1,36 +1,32 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Unite.Data.Entities.Specimens.Xenografts;
+using Unite.Data.Entities.Specimens;
 using Unite.Data.Services;
 using Unite.Specimens.Feed.Data.Specimens.Models;
 
 namespace Unite.Specimens.Feed.Data.Specimens.Repositories;
 
-internal class XenograftInterventionRepository
+internal class DrugScreeningRepository
 {
     private readonly DomainDbContext _dbContext;
 
 
-    public XenograftInterventionRepository(DomainDbContext dbContext)
+    public DrugScreeningRepository(DomainDbContext dbContext)
     {
         _dbContext = dbContext;
     }
 
 
-    public Intervention Find(int specimenId, XenograftInterventionModel model)
+    public DrugScreening Find(int specimenId, DrugScreeningModel model)
     {
-        var entity = _dbContext.Set<Intervention>()
-            .Include(entity => entity.Type)
+        return _dbContext.Set<DrugScreening>()
+            .Include(entity => entity.Drug)
             .FirstOrDefault(entity =>
                 entity.SpecimenId == specimenId &&
-                entity.Type.Name == model.Type &&
-                entity.StartDate == model.StartDate &&
-                entity.StartDay == model.StartDay
+                entity.Drug.Name == model.Drug
             );
-
-        return entity;
     }
 
-    public IEnumerable<Intervention> CreateOrUpdate(int specimenId, IEnumerable<XenograftInterventionModel> models)
+    public IEnumerable<DrugScreening> CreateOrUpdate(int specimenId, IEnumerable<DrugScreeningModel> models)
     {
         RemoveRedundant(specimenId, models);
 
@@ -41,9 +37,9 @@ internal class XenograftInterventionRepository
         return Enumerable.Concat(created, updated);
     }
 
-    public IEnumerable<Intervention> CreateMissing(int specimenId, IEnumerable<XenograftInterventionModel> models)
+    public IEnumerable<DrugScreening> CreateMissing(int specimenId, IEnumerable<DrugScreeningModel> models)
     {
-        var entitiesToAdd = new List<Intervention>();
+        var entitiesToAdd = new List<DrugScreening>();
 
         foreach (var model in models)
         {
@@ -51,12 +47,12 @@ internal class XenograftInterventionRepository
 
             if (entity == null)
             {
-                var typeId = GetInterventionType(model.Type).Id;
+                var drugId = GetDrug(model.Drug).Id;
 
-                entity = new Intervention()
+                entity = new DrugScreening()
                 {
                     SpecimenId = specimenId,
-                    TypeId = typeId
+                    DrugId = drugId
                 };
 
                 Map(model, ref entity);
@@ -74,9 +70,9 @@ internal class XenograftInterventionRepository
         return entitiesToAdd;
     }
 
-    public IEnumerable<Intervention> UpdateExisting(int specimenId, IEnumerable<XenograftInterventionModel> models)
+    public IEnumerable<DrugScreening> UpdateExisting(int specimenId, IEnumerable<DrugScreeningModel> models)
     {
-        var entitiesToUpdate = new List<Intervention>();
+        var entitiesToUpdate = new List<DrugScreening>();
 
         foreach (var model in models)
         {
@@ -99,13 +95,13 @@ internal class XenograftInterventionRepository
         return entitiesToUpdate;
     }
 
-    public void RemoveRedundant(int specimenId, IEnumerable<XenograftInterventionModel> models)
+    public void RemoveRedundant(int specimenId, IEnumerable<DrugScreeningModel> models)
     {
-        var typeNames = models.Select(model => model.Type);
+        var drugNames = models.Select(model => model.Drug);
 
-        var entitiesToRemove = _dbContext.Set<Intervention>()
-            .Include(entity => entity.Type)
-            .Where(entity => entity.SpecimenId == specimenId && !typeNames.Contains(entity.Type.Name))
+        var entitiesToRemove = _dbContext.Set<DrugScreening>()
+            .Include(entity => entity.Drug)
+            .Where(entity => entity.SpecimenId == specimenId && !drugNames.Contains(entity.Drug.Name))
             .ToArray();
 
         if (entitiesToRemove.Any())
@@ -116,21 +112,21 @@ internal class XenograftInterventionRepository
     }
 
 
-    private InterventionType GetInterventionType(string name)
+    private Drug GetDrug(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
             return null;
         }
 
-        var entity = _dbContext.Set<InterventionType>()
+        var entity = _dbContext.Set<Drug>()
             .FirstOrDefault(entity =>
                 entity.Name == name
             );
 
         if (entity == null)
         {
-            entity = new InterventionType { Name = name };
+            entity = new Drug { Name = name };
 
             _dbContext.Add(entity);
             _dbContext.SaveChanges();
@@ -140,13 +136,14 @@ internal class XenograftInterventionRepository
     }
 
 
-    private static void Map(in XenograftInterventionModel model, ref Intervention entity)
+    private static void Map(in DrugScreeningModel model, ref DrugScreening entity)
     {
-        entity.Details = model.Details;
-        entity.StartDate = model.StartDate;
-        entity.StartDay = model.StartDay;
-        entity.EndDate = model.EndDate;
-        entity.DurationDays = model.DurationDays;
-        entity.Results = model.Results;
+        entity.MinConcentration = model.MinConcentration;
+        entity.MaxConcentration = model.MaxConcentration;
+        entity.Dss = model.Dss;
+        entity.DssSelective = model.DssSelective;
+        entity.AbsIC25 = model.AbsIC25;
+        entity.AbsIC50 = model.AbsIC50;
+        entity.AbsIC75 = model.AbsIC75;
     }
 }

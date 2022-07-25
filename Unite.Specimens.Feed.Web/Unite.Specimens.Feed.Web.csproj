@@ -7,10 +7,12 @@
 	<ItemGroup>
 		<Folder Include="Controllers\" />
 		<Folder Include="Models\" />
-		<Folder Include="Models\Specimens\" />
-		<Folder Include="Models\Specimens\Enums\" />
-		<Folder Include="Models\Specimens\Validators\" />
-		<Folder Include="Models\Specimens\Converters\" />
+		<Folder Include="Models\Base\" />
+		<Folder Include="Models\Base\Enums\" />
+		<Folder Include="Models\Base\Validators\" />
+		<Folder Include="Models\Base\Converters\" />
+		<Folder Include="Models\Converters\" />
+		<Folder Include="Models\Validators\" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Unite.Specimens.Feed\Unite.Specimens.Feed.csproj">
@@ -28,5 +30,11 @@
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="FluentValidation.AspNetCore" />
+		<None Remove="Models\Base\" />
+		<None Remove="Models\Base\Enums\" />
+		<None Remove="Models\Base\Validators\" />
+		<None Remove="Models\Base\Converters\" />
+		<None Remove="Models\Converters\" />
+		<None Remove="Models\Validators\" />
 	</ItemGroup>
 </Project>

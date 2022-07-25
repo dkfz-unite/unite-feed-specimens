@@ -90,13 +90,13 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
     private Specimen LoadSpecimen(int specimenId)
     {
         var specimen = _dbContext.Set<Specimen>()
-            .Include(specimen => specimen.Donor)
-                .ThenInclude(donor => donor.ClinicalData)
+            .Include(specimen => specimen.Donor).ThenInclude(donor => donor.ClinicalData) // Required for diagnosis date
             .IncludeTissue()
             .IncludeCellLine()
             .IncludeOrganoid()
             .IncludeXenograft()
             .IncludeMolecularData()
+            .IncludeDrugScreeningData()
             .FirstOrDefault(specimen => specimen.Id == specimenId);
 
         return specimen;
@@ -133,7 +133,6 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
             .IncludeParentCellLine()
             .IncludeParentOrganoid()
             .IncludeParentXenograft()
-            .IncludeParentMolecularData()
             .FirstOrDefault(specimen => specimen.Id == specimeId).Parent;
 
         return specimen;
@@ -174,7 +173,6 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
             .IncludeCellLine()
             .IncludeOrganoid()
             .IncludeXenograft()
-            .IncludeMolecularData()
             .Where(specimen => specimen.ParentId == specimenId)
             .ToArray();
 

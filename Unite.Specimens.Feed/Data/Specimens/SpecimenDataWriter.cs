@@ -12,12 +12,14 @@ public class SpecimenDataWriter : DataWriter<SpecimenModel, SpecimensUploadAudit
 {
     private readonly DonorRepository _donorRepository;
     private readonly SpecimenRepository _specimenRepository;
+    private readonly DrugScreeningRepository _drugScreeningRepository;
 
 
     public SpecimenDataWriter(DomainDbContext dbContext) : base(dbContext)
     {
         _donorRepository = new DonorRepository(dbContext);
         _specimenRepository = new SpecimenRepository(dbContext);
+        _drugScreeningRepository = new DrugScreeningRepository(dbContext);
     }
 
 
@@ -33,11 +35,25 @@ public class SpecimenDataWriter : DataWriter<SpecimenModel, SpecimensUploadAudit
         {
             specimen = CreateSpecimen(donor.Id, parentSpecimen?.Id, model, ref audit);
 
+            if (model.DrugScreeningData?.Length > 0)
+            {
+                var drugScreenings = _drugScreeningRepository.CreateMissing(specimen.Id, model.DrugScreeningData);
+
+                audit.DrugScreeningsCreated += drugScreenings.Count();
+            }
+
             audit.Specimens.Add(specimen.Id);
         }
         else
         {
             UpdateSpecimen(specimen, model, ref audit);
+
+            if (model.DrugScreeningData?.Length > 0)
+            {
+                var drugScreenings = _drugScreeningRepository.CreateOrUpdate(specimen.Id, model.DrugScreeningData);
+
+                audit.DrugScreeningsUpdated += drugScreenings.Count();
+            }
 
             audit.Specimens.Add(specimen.Id);
         }

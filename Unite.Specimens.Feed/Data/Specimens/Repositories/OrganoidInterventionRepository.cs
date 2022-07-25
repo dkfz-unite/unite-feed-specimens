@@ -23,46 +23,98 @@ internal class OrganoidInterventionRepository
             .FirstOrDefault(entity =>
                 entity.SpecimenId == specimenId &&
                 entity.Type.Name == model.Type &&
+                entity.StartDate == model.StartDate &&
                 entity.StartDay == model.StartDay
             );
 
         return entity;
     }
 
-    public Intervention Create(int specimenId, OrganoidInterventionModel model)
+    public IEnumerable<Intervention> CreateOrUpdate(int specimenId, IEnumerable<OrganoidInterventionModel> models)
     {
-        var entity = new Intervention
+        RemoveRedundant(specimenId, models);
+
+        var created = CreateMissing(specimenId, models);
+
+        var updated = UpdateExisting(specimenId, models);
+
+        return Enumerable.Concat(created, updated);
+    }
+
+    public IEnumerable<Intervention> CreateMissing(int specimenId, IEnumerable<OrganoidInterventionModel> models)
+    {
+        var entitiesToAdd = new List<Intervention>();
+
+        foreach (var model in models)
         {
-            SpecimenId = specimenId
-        };
+            var entity = Find(specimenId, model);
 
-        Map(model, ref entity);
+            if (entity == null)
+            {
+                var typeId = GetInterventionType(model.Type).Id;
 
-        _dbContext.Add(entity);
-        _dbContext.SaveChanges();
+                entity = new Intervention()
+                {
+                    SpecimenId = specimenId,
+                    TypeId = typeId
+                };
 
-        return entity;
+                Map(model, ref entity);
+
+                entitiesToAdd.Add(entity);
+            }
+        }
+
+        if (entitiesToAdd.Any())
+        {
+            _dbContext.AddRange(entitiesToAdd);
+            _dbContext.SaveChanges();
+        }
+
+        return entitiesToAdd;
     }
 
-    public void Update(Intervention entity, OrganoidInterventionModel model)
+    public IEnumerable<Intervention> UpdateExisting(int specimenId, IEnumerable<OrganoidInterventionModel> models)
     {
-        Map(model, ref entity);
+        var entitiesToUpdate = new List<Intervention>();
 
-        _dbContext.Update(entity);
-        _dbContext.SaveChanges();
+        foreach (var model in models)
+        {
+            var entity = Find(specimenId, model);
+
+            if (entity != null)
+            {
+                Map(model, ref entity);
+
+                entitiesToUpdate.Add(entity);
+            }
+        }
+
+        if (entitiesToUpdate.Any())
+        {
+            _dbContext.UpdateRange(entitiesToUpdate);
+            _dbContext.SaveChanges();
+        }
+
+        return entitiesToUpdate;
     }
 
-
-    private void Map(in OrganoidInterventionModel model, ref Intervention entity)
+    public void RemoveRedundant(int specimenId, IEnumerable<OrganoidInterventionModel> models)
     {
-        entity.Type = GetInterventionType(model.Type);
-        entity.Details = model.Details;
-        entity.StartDate = model.StartDate;
-        entity.StartDay = model.StartDay;
-        entity.EndDate = model.EndDate;
-        entity.DurationDays = model.DurationDays;
-        entity.Results = model.Results;
+        var typeNames = models.Select(model => model.Type);
+
+        var entitiesToRemove = _dbContext.Set<Intervention>()
+            .Include(entity => entity.Type)
+            .Where(entity => entity.SpecimenId == specimenId && !typeNames.Contains(entity.Type.Name))
+            .ToArray();
+
+        if (entitiesToRemove.Any())
+        {
+            _dbContext.RemoveRange(entitiesToRemove);
+            _dbContext.SaveChanges();
+        }
     }
+
 
     private InterventionType GetInterventionType(string name)
     {
@@ -85,5 +137,16 @@ internal class OrganoidInterventionRepository
         }
 
         return entity;
+    }
+
+
+    private static void Map(in OrganoidInterventionModel model, ref Intervention entity)
+    {
+        entity.Details = model.Details;
+        entity.StartDate = model.StartDate;
+        entity.StartDay = model.StartDay;
+        entity.EndDate = model.EndDate;
+        entity.DurationDays = model.DurationDays;
+        entity.Results = model.Results;
     }
 }

@@ -13,7 +13,8 @@ public class SpecimensUploadAudit
     public int OrganoidsUpdate;
     public int XenograftsCreated;
     public int XenograftsUpdated;
-    public int MolecularDataCreated;
+    public int DrugScreeningsCreated;
+    public int DrugScreeningsUpdated;
 
     public HashSet<int> Specimens;
 
@@ -37,7 +38,8 @@ public class SpecimensUploadAudit
         message.AppendLine($"{OrganoidsUpdate} organoids updated");
         message.AppendLine($"{XenograftsCreated} xenografts created");
         message.AppendLine($"{XenograftsUpdated} xenografts updated");
-        message.Append($"{MolecularDataCreated} specimen molecular data entries created");
+        message.AppendLine($"{DrugScreeningsCreated} specimen drug screening entries created");
+        message.Append($"{DrugScreeningsUpdated} specimen drug screening entries updated");
 
         return message.ToString();
     }

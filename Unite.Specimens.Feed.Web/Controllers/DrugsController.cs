@@ -2,35 +2,35 @@
 using Unite.Specimens.Feed.Data.Specimens;
 using Unite.Specimens.Feed.Data.Specimens.Exceptions;
 using Unite.Specimens.Feed.Web.Models;
-using Unite.Specimens.Feed.Web.Models.Base.Converters;
+using Unite.Specimens.Feed.Web.Models.Converters;
 using Unite.Specimens.Feed.Web.Services;
 
 namespace Unite.Specimens.Feed.Web.Controllers;
 
 [Route("api/[controller]")]
-public class SpecimensController : Controller
+public class DrugsController : Controller
 {
-    private readonly SpecimenDataWriter _dataWriter;
+    private readonly DrugScreeningDataWriter _dataWriter;
     private readonly SpecimenIndexingTasksService _indexingTaskService;
     private readonly ILogger _logger;
 
-    private readonly SpecimenDataModelConverter _converter;
+    private readonly DrugScreeningDataModelConverter _converter;
 
 
-    public SpecimensController(
-        SpecimenDataWriter dataWriter,
+    public DrugsController(
+        DrugScreeningDataWriter dataWriter,
         SpecimenIndexingTasksService indexingTaskService,
-        ILogger<SpecimensController> logger)
+        ILogger<DrugsController> logger)
     {
         _dataWriter = dataWriter;
         _indexingTaskService = indexingTaskService;
         _logger = logger;
 
-        _converter = new SpecimenDataModelConverter();
+        _converter = new DrugScreeningDataModelConverter();
     }
 
 
-    public IActionResult Post([FromBody] SpecimenDataModel[] models)
+    public IActionResult Post([FromBody] DrugScreeningDataModel[] models)
     {
         try
         {

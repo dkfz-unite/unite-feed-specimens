@@ -6,9 +6,10 @@ public class SpecimenModel
     public DateOnly? CreationDate { get; set; }
     public int? CreationDay { get; set; }
 
-    public virtual SpecimenModel Parent { get; set; }
+    public SpecimenModel Parent { get; set; }
 
-    public virtual DonorModel Donor { get; set; }
+    public DonorModel Donor { get; set; }
 
-    public virtual MolecularDataModel MolecularData { get; set; }
+    public MolecularDataModel MolecularData { get; set; }
+    public DrugScreeningModel[] DrugScreeningData { get; set; }
 }

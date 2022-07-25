@@ -40,10 +40,7 @@ internal class OrganoidRepository : SpecimenRepositoryBase<OrganoidModel>
 
         if (model.Interventions != null && model.Interventions.Any())
         {
-            foreach (var interventionModel in model.Interventions)
-            {
-                _interventionRepository.Create(entity.Id, interventionModel);
-            }
+            _interventionRepository.CreateMissing(entity.Id, model.Interventions);
         }
 
         return entity;
@@ -55,19 +52,7 @@ internal class OrganoidRepository : SpecimenRepositoryBase<OrganoidModel>
 
         if (model.Interventions != null && model.Interventions.Any())
         {
-            foreach (var interventionModel in model.Interventions)
-            {
-                var intervention = _interventionRepository.Find(entity.Id, interventionModel);
-
-                if (intervention == null)
-                {
-                    _interventionRepository.Create(entity.Id, interventionModel);
-                }
-                else
-                {
-                    _interventionRepository.Update(intervention, interventionModel);
-                }
-            }
+            _interventionRepository.CreateOrUpdate(entity.Id, model.Interventions);
         }
     }
 
