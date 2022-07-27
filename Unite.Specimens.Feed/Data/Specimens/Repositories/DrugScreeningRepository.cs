@@ -138,12 +138,14 @@ internal class DrugScreeningRepository
 
     private static void Map(in DrugScreeningModel model, ref DrugScreening entity)
     {
-        entity.MinConcentration = model.MinConcentration;
-        entity.MaxConcentration = model.MaxConcentration;
         entity.Dss = model.Dss;
         entity.DssSelective = model.DssSelective;
+        entity.Gof = model.Gof;
+        entity.MinConcentration = model.MinConcentration;
+        entity.MaxConcentration = model.MaxConcentration;
         entity.AbsIC25 = model.AbsIC25;
         entity.AbsIC50 = model.AbsIC50;
         entity.AbsIC75 = model.AbsIC75;
+        entity.Inhibition = model.Inhibition;
     }
 }

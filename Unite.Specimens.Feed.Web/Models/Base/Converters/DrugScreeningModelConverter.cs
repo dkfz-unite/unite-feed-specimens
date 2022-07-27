@@ -15,13 +15,15 @@ public class DrugScreeningModelConverter
         return new DataModels.DrugScreeningModel
         {
             Drug = source.Drug,
-            MinConcentration = source.MinConcentration,
-            MaxConcentration = source.MaxConcentration,
             Dss = source.Dss,
             DssSelective = source.DssSelective,
+            Gof = source.Gof,
+            MinConcentration = source.MinConcentration,
+            MaxConcentration = source.MaxConcentration,
             AbsIC25 = source.AbsIC25,
             AbsIC50 = source.AbsIC50,
-            AbsIC75 = source.AbsIC75
+            AbsIC75 = source.AbsIC75,
+            Inhibition = source.Inhibition
         };
     }
 

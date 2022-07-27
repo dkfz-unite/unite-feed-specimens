@@ -7,25 +7,70 @@ public class DrugScreeningModelValidator : AbstractValidator<DrugScreeningModel>
     public DrugScreeningModelValidator()
     {
         RuleFor(model => model.Drug)
-            .NotEmpty().WithMessage("Should not be empty")
-            .MaximumLength(255).WithMessage("Maximum length is 255");
+            .NotEmpty()
+            .WithMessage("Should not be empty");
 
-        RuleFor(model => model.MinConcentration)
-            .Must(value => value > 0).WithMessage("Should be greater than 0");
+        RuleFor(model => model.Drug)
+            .MaximumLength(255)
+            .WithMessage("Maximum length is 255");
 
-        RuleFor(model => model.MaxConcentration)
-            .Must(value => value > 0).WithMessage("Should be greater than 0");
-
-        RuleFor(model => model.AbsIC25)
-            .Must(value => value > 0).WithMessage("Should be greater than 0");
-
-        RuleFor(model => model.AbsIC50)
-            .Must(value => value > 0).WithMessage("Should be greater than 0");
-
-        RuleFor(model => model.AbsIC75)
-            .Must(value => value > 0).WithMessage("Should be greater than 0");
 
         RuleFor(model => model.Dss)
-            .NotEmpty().WithMessage("Should not be empty");
+            .NotEmpty()
+            .WithMessage("Should not be empty");
+
+        RuleFor(model => model.Dss)
+            .Must(value => value >= 0 && value <= 100)
+            .WithMessage("Should be in range [0, 100]");
+
+
+        RuleFor(model => model.Dss)
+            .Must(value => value >= -100 && value <= 100)
+            .WithMessage("Should be in range [-100, 100]");
+
+        RuleFor(model => model.Gof)
+            .Must(value => value >= 0 && value <= 1)
+            .WithMessage("Should be in range [0.0, 1.0]");
+
+        RuleFor(model => model.MinConcentration)
+            .Must(value => value > 0)
+            .WithMessage("Should be greater than 0");
+
+        RuleFor(model => model.MaxConcentration)
+            .Must(value => value > 0)
+            .WithMessage("Should be greater than 0");
+
+        RuleFor(model => model.AbsIC25)
+            .Must(value => value > 0)
+            .WithMessage("Should be greater than 0");
+
+        RuleFor(model => model.AbsIC50)
+            .Must(value => value > 0)
+            .WithMessage("Should be greater than 0");
+
+        RuleFor(model => model.AbsIC75)
+            .Must(value => value > 0)
+            .WithMessage("Should be greater than 0");
+
+
+        RuleFor(model => model.PI1)
+            .Must(value => value >= -150 && value <= 150)
+            .WithMessage("Should be in range [-150, 150]");
+
+        RuleFor(model => model.PI2)
+            .Must(value => value >= -150 && value <= 150)
+            .WithMessage("Should be in range [-150, 150]");
+
+        RuleFor(model => model.PI3)
+            .Must(value => value >= -150 && value <= 150)
+            .WithMessage("Should be in range [-150, 150]");
+
+        RuleFor(model => model.PI4)
+            .Must(value => value >= -150 && value <= 150)
+            .WithMessage("Should be in range [-150, 150]");
+
+        RuleFor(model => model.PI5)
+            .Must(value => value >= -150 && value <= 150)
+            .WithMessage("Should be in range [-150, 150]");
     }
 }
