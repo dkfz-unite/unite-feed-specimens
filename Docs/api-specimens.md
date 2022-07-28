@@ -207,7 +207,7 @@ Request implements **UPSERT** logic:
     }
 ]
 ```
-Fields description can be found [here](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-specimens-models.md).
+Fields description can be found [here](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-models-drugs.md).
 
 **Response**
 - `200` - request was processed successfully
