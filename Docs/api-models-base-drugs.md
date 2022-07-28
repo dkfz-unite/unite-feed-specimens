@@ -9,17 +9,17 @@ Includes pre-processed drug screening data.
 **`Dss`*** - Asymmetric Drug Sensitivity Score (DSS).
 - Type: _Number_
 - Limitations: Double, should be in range [0, 100]
-- Example: `33.56601234`
+- Example: `33.56`
 
 **`DssSelective`** - Selective 'DSS' (difference between DSS of samples and controls).
 - Type: _Number_
 - Limitations: Double, should be in range [-100, 100]
-- Example: `28.034167491`
+- Example: `28.03`
 
 **`Gof`** - Goodness of fit.
 - Type: _Number_
 - Limitations: Double, should be in range [0.0, 1.0]
-- Example: `0.995628526049492`
+- Example: `0.99`
 
 **`MinConcentration`** - Minimum tested concentration (in nM).
 - Type: _Number_
@@ -66,17 +66,17 @@ _ Limitations: Should be the same length as 'InhibitionsControl' array
 **`AbsIC25`** - Concentration at 25% inhibition (based on the fitted dose-response curve).
 - Type: _Number_
 - Limitations: Double, greater or equal to 0
-- Example: `2.82359483783524`
+- Example: `2.82`
 
 **`AbsIC50`** - Concentration at 50% inhibition (based on the fitted dose-response curve).
 - Type: _Number_
 - Limitations: Double, greater or equal to 0
-- Example: `9.86839437413983`
+- Example: `9.86`
 
 **`AbsIC75`** - Concentration at 75% inhibition (based on the fitted dose-response curve).
 - Type: _Number_
 - Limitations: Double, greater or equal to 0
-- Example: `48.7482797871684`
+- Example: `48.74`
 
 ##
 **`*`** - Required fields
