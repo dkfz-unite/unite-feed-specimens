@@ -35,9 +35,9 @@ public class SpecimenDataWriter : DataWriter<SpecimenModel, SpecimensUploadAudit
         {
             specimen = CreateSpecimen(donor.Id, parentSpecimen?.Id, model, ref audit);
 
-            if (model.DrugScreeningData?.Length > 0)
+            if (model.DrugsScreeningData?.Length > 0)
             {
-                var drugScreenings = _drugScreeningRepository.CreateMissing(specimen.Id, model.DrugScreeningData);
+                var drugScreenings = _drugScreeningRepository.CreateMissing(specimen.Id, model.DrugsScreeningData);
 
                 audit.DrugScreeningsCreated += drugScreenings.Count();
             }
@@ -48,9 +48,9 @@ public class SpecimenDataWriter : DataWriter<SpecimenModel, SpecimensUploadAudit
         {
             UpdateSpecimen(specimen, model, ref audit);
 
-            if (model.DrugScreeningData?.Length > 0)
+            if (model.DrugsScreeningData?.Length > 0)
             {
-                var drugScreenings = _drugScreeningRepository.CreateOrUpdate(specimen.Id, model.DrugScreeningData);
+                var drugScreenings = _drugScreeningRepository.CreateOrUpdate(specimen.Id, model.DrugsScreeningData);
 
                 audit.DrugScreeningsUpdated += drugScreenings.Count();
             }

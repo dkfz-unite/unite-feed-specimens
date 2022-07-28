@@ -11,5 +11,5 @@ public class SpecimenModel
     public DonorModel Donor { get; set; }
 
     public MolecularDataModel MolecularData { get; set; }
-    public DrugScreeningModel[] DrugScreeningData { get; set; }
+    public DrugScreeningModel[] DrugsScreeningData { get; set; }
 }

@@ -89,7 +89,7 @@ public class SpecimenDataModelValidator : AbstractValidator<SpecimenDataModel>
         RuleFor(model => model.MolecularData)
             .SetValidator(_molecularDataModelValidator);
 
-        RuleForEach(model => model.DrugScreeningData)
+        RuleForEach(model => model.DrugsScreeningData)
             .SetValidator(_drugScreeningModelValidator);
     }
 

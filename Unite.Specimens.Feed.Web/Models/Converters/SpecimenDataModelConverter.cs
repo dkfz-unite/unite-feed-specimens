@@ -33,7 +33,7 @@ public class SpecimenDataModelConverter
         target.Donor = GetDonorModel(source.DonorId);
         target.Parent = GetSpecimenModel(source.ParentId, source.ParentType);
         target.MolecularData = GetMolecularDataModel(source.MolecularData);
-        target.DrugScreeningData = GetDrugScreeningModels(source.DrugScreeningData);
+        target.DrugsScreeningData = GetDrugScreeningModels(source.DrugsScreeningData);
 
         target.CreationDate = FromDateTime(source.CreationDate);
         target.CreationDay = source.CreationDay;

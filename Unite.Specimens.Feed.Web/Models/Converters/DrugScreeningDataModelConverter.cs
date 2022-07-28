@@ -22,7 +22,7 @@ public class DrugScreeningDataModelConverter
         var target = GetSpecimenModel(source.SpecimenId, source.SpecimenType);
 
         target.Donor = GetDonorModel(source.DonorId);
-        target.DrugScreeningData = GetDrugScreeningModels(source.Data);
+        target.DrugsScreeningData = GetDrugScreeningModels(source.Data);
 
         return target;
     }

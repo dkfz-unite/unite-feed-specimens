@@ -25,5 +25,5 @@ public record SpecimenDataModel
     public Base.XenograftModel Xenograft { get; init; }
 
     public Base.MolecularDataModel MolecularData { get; init; }
-    public Base.DrugScreeningModel[] DrugScreeningData { get; init; }
+    public Base.DrugScreeningModel[] DrugsScreeningData { get; init; }
 }
