@@ -24,7 +24,7 @@ public class DrugScreeningModelValidator : AbstractValidator<DrugScreeningModel>
             .WithMessage("Should be in range [0, 100]");
 
 
-        RuleFor(model => model.Dss)
+        RuleFor(model => model.DssSelective)
             .Must(value => value >= -100 && value <= 100)
             .WithMessage("Should be in range [-100, 100]");
 
