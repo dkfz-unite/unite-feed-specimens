@@ -2,7 +2,7 @@
 
 ## General
 Specimens data feed service provides the following functionality:
-- [Specimens data feed web API](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-specimens.md) - REST API for uploading specimens data to the portal (including input data validation).
+- [Specimens data feed web API](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api.md) - REST API for uploading specimens data to the portal (including input data validation).
 - Specimens data indexing service - background service responsible for specimen-centric data index creation.
 
 Specimens data feed service is written in ASP.NET (.NET 5)
