@@ -119,7 +119,7 @@ Request implements **UPSERT** logic:
                 }
             ]
         },
-        "DrugScreeningData": null,
+        "DrugsScreeningData": null,
         "MolecularData": {
             "MgmtStatus": "Methylated",
             "IdhStatus": "Wild Type",
@@ -152,7 +152,7 @@ Request implements **UPSERT** logic:
                 }
             ]
         },
-        "DrugScreeningData": null,
+        "DrugsScreeningData": null,
         "MolecularData": {
             "MgmtStatus": "Methylated",
             "IdhStatus": "Mutant",
