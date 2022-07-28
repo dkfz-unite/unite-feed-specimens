@@ -64,7 +64,7 @@ Request implements **UPSERT** logic:
                 "ExPasyLink": "https://www.expasy.org/"
             }
         },
-        "DrugScreeningData": [
+        "DrugsScreeningData": [
             {
                 "Drug": "A-1155463",
                 "AbsIC25": 2.82359483783524,
