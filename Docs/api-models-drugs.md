@@ -1,5 +1,5 @@
-# Drugs Screening Data Model
-Drugs screening data upload model.
+# Drug Screening Upload Data Model
+Drug screening upload data model.
 
 **`DonorId`*** - Donor pseudonymised identifier.
 - Note: Donor should be present in the system.
