@@ -67,17 +67,18 @@ Request implements **UPSERT** logic:
         "DrugsScreeningData": [
             {
                 "Drug": "A-1155463",
-                "AbsIC25": 2.82359483783524,
-                "AbsIC50": 9.86839437413983,
-                "AbsIC75": 48.7482797871684,
+                "Dss": 33.56,
+                "DssSelective": 28.03,
+                "Gof": 0.99,
                 "MinConcentration": 1,
                 "MaxConcentration": 10000,
-                "Dss": 33.56601234,
-                "DssSelective": 28.034167491,
-                "Gof": 0.995628526049492,
-                "PI": [6.76, 50.25, 82.32, 94.10, 97.42],
-                "PIA": [6.76, 50.25, 82.32, 94.10, 97.42],
-                "PIB": [6.76, 50.25, 82.32, 94.10, 97.42]
+                "Concentration": [1, 10, 100, 1000, 10000],
+                "Inhibition": [6.76, 50.25, 82.32, 94.10, 97.42],
+                "InhibitionControl": [6.76, 50.25, 82.32, 94.10, 97.42],
+                "InhibitionSample": [6.76, 50.25, 82.32, 94.10, 97.42],
+                "AbsIC25": 2.82,
+                "AbsIC50": 9.86,
+                "AbsIC75": 48.74
             }
         ],
         "MolecularData": {
@@ -187,17 +188,18 @@ Request implements **UPSERT** logic:
         "Data": [
             {
                 "Drug": "A-1155463",
-                "AbsIC25": 2.82,
-                "AbsIC50": 9.86,
-                "AbsIC75": 48.74,
-                "MinConcentration": 1,
-                "MaxConcentration": 10000,
                 "Dss": 33.56,
                 "DssSelective": 28.03,
                 "Gof": 0.99,
-                "PI": [6.76, 50.25, 82.32, 94.10, 97.42],
-                "PIA": [6.76, 50.25, 82.32, 94.10, 97.42],
-                "PIB": [6.76, 50.25, 82.32, 94.10, 97.42]
+                "MinConcentration": 1,
+                "MaxConcentration": 10000,
+                "Concentration": [1, 10, 100, 1000, 10000],
+                "Inhibition": [6.76, 50.25, 82.32, 94.10, 97.42],
+                "InhibitionControl": [6.76, 50.25, 82.32, 94.10, 97.42],
+                "InhibitionSample": [6.76, 50.25, 82.32, 94.10, 97.42],
+                "AbsIC25": 2.82,
+                "AbsIC50": 9.86,
+                "AbsIC75": 48.74
             }
         ]
     }
