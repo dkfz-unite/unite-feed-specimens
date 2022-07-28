@@ -1,4 +1,4 @@
-# Drug Screening Data Models
+# Drug Screening Models
 
 ## Drug Screening
 Includes pre-processed drug screening data.
