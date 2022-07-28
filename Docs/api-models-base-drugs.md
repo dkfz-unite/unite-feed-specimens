@@ -31,30 +31,37 @@ Includes pre-processed drug screening data.
 - Limitations: Double, greater or equal to 0
 - Example: `10000`
 
-**`PI1`** - Percent inhibition at 1st (minimum) concentration.
-- Type: _Number_
-- Limitations: Double, should be in range [-150, 150]
-- Example: `6.76124067981132`
+**`Concentration`** - Concentration at corresponding inhibition percent from 'Inhibition' array.
+- Note: Used to plot drug response curve, the more numbers are in the array, the more precise the plot is.
+- Type: _Array_
+_ Limitations: Should be the same length as 'Inhibition' array
+- Element type: _Number_
+- Element limitations: Double, should be greater or equal to 0
+- Example: `[1, 10, 100, 1000, 10000]`
 
-**`PI2`** - Percent inhibition at 2nd (log10) concentration.
-- Type: _Number_
-- Limitations: Double, should be in range [-150, 150]
-- Example: `50.2521862295519`
+**`Inhibition`** - Percent inhibition at corresponding concentration from 'Concentration' array.
+- Note: Used to plot drug response curve, the more numbers are in the array, the more precise the plot is.
+- Type: _Array_
+_ Limitations: Should be the same length as 'Concentration' array
+- Element type: _Number_
+- Element limitations: Double, should be in range [-150, 150]
+- Example: `[6.76, 50.25, 82.32, 94.10, 97.42]`
 
-**`PI3`** - Percent inhibition at 3rd (log10) concentration.
-- Type: _Number_
-- Limitations: Double, should be in range [-150, 150]
-- Example: `82.3287263864255`
+**`InhibitionControl`** - Percent inhibition at (N)th concentration from 'MinConcentration' to 'MaxConcentration' in **control** sample.
+- Note: Used to draw points on drug response curve.
+- Type: _Array_
+_ Limitations: Should be the same length as 'InhibitionSample' array
+- Element type: _Number_
+- Element limitations: Double, should be in range [-150, 150]
+- Example: `[6.76, 50.25, 82.32, 94.10, 97.42]`
 
-**`PI4`** - Percent inhibition at 4th (log10) concentration.
-- Type: _Number_
-- Limitations: Double, should be in range [-150, 150]
-- Example: `94.1096524252287`
-
-**`PI5`** - Percent inhibition at 5th (maximum) concentration.
-- Type: _Number_
-- Limitations: Double, should be in range [-150, 150]
-- Example: `97.4254716797063`
+**`InhibitionSample`** - Percent inhibition at (N)th concentration from 'MinConcentration' to 'MaxConcentration' in **target** sample.
+- Note: Used to draw points on drug response curve.
+- Type: _Array_
+_ Limitations: Should be the same length as 'InhibitionControl' array
+- Element type: _Number_
+- Element limitations: Double, should be in range [-150, 150]
+- Example: `[6.76, 50.25, 82.32, 94.10, 97.42]`
 
 **`AbsIC25`** - Concentration at 25% inhibition (based on the fitted dose-response curve).
 - Type: _Number_
