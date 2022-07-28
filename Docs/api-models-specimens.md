@@ -1,9 +1,7 @@
-# Specimen Data Models
+# Specimen Upload Data Model
+Specimen upload data model.
 
-## Specimen
-Includes general data about the specimen.
-
-**`Id`*** - Specimen pseudonymized identifier.
+**`Id`*** - Specimen identifier.
 - Note: Specimen identifiers are namespaced and should be unique for it's donor across all specimens of the same type.
 - Type: _String_
 - Limitations: Maximum length 255
@@ -59,6 +57,11 @@ Includes general data about the specimen.
 **`MolecularData`** - Specimen molecular data.
 - Type: _Object([MolecularData](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-specimens-models-molecular.md))_
 - Example: `{...}`
+
+**`DrugsScreeningData`** - Specimen drugs screening data.
+- Type: _Array_
+- Element type: _Object([DrugScreeningData](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-models-base-drugs.md))_
+- Example: `[{...}, {...}]`
 
 ##
 **`*`** - Required fields
