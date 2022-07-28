@@ -63,6 +63,40 @@ Request implements **UPSERT** logic:
                 "ExPasyLink": "https://www.expasy.org/"
             }
         },
+        "DrugScreeningData": [
+            {
+                "Drug": "A-1155463",
+                "AbsIC25": 2.82359483783524,
+                "AbsIC50": 9.86839437413983,
+                "AbsIC75": 48.7482797871684,
+                "MinConcentration": 1,
+                "MaxConcentration": 10000,
+                "Dss": 33.56601234,
+                "DssSelective": 28.034167491,
+                "Gof": 0.995628526049492,
+                "PI1": 6.76124067981132,
+                "PI2": 50.2521862295519,
+                "PI3": 82.3287263864255,
+                "PI4": 94.1096524252287,
+                "PI5": 97.4254716797063
+            },
+            {
+                "Drug": "A-1210477",
+                "AbsIC25": 312.120347490476,
+                "AbsIC50": 507.145579053492,
+                "AbsIC75": 722.813667403278,
+                "MinConcentration": 5,
+                "MaxConcentration": 50000,
+                "Dss": 24.165621395,
+                "DssSelective": 11.648917561,
+                "Gof": 0.981321515230676,
+                "PI1": -7.77607961395232,
+                "PI2": -4.22242896178307,
+                "PI3": 49.081055804161,
+                "PI4": 97.6116783301495,
+                "PI5": 97.6121783405896
+            }
+        ],
         "MolecularData": {
             "MgmtStatus": "Methylated",
             "IdhStatus": "Wild Type",
@@ -100,6 +134,7 @@ Request implements **UPSERT** logic:
                 }
             ]
         },
+        "DrugScreeningData": null,
         "MolecularData": {
             "MgmtStatus": "Methylated",
             "IdhStatus": "Wild Type",
@@ -132,6 +167,7 @@ Request implements **UPSERT** logic:
                 }
             ]
         },
+        "DrugScreeningData": null,
         "MolecularData": {
             "MgmtStatus": "Methylated",
             "IdhStatus": "Mutant",
