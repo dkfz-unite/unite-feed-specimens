@@ -51,7 +51,7 @@ Includes pre-processed drug screening data.
 - Limitations: Double, should be in range [-150, 150]
 - Example: `94.1096524252287`
 
-**`PI4`** - Percent inhibition at 5th (maximum) concentration.
+**`PI5`** - Percent inhibition at 5th (maximum) concentration.
 - Type: _Number_
 - Limitations: Double, should be in range [-150, 150]
 - Example: `97.4254716797063`
