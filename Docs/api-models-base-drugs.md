@@ -1,4 +1,4 @@
-# Drug Screening Data Model
+# Drug Screening Model
 Includes pre-processed drug screening data.
 
 **`Drug`*** - Tested drug name.
