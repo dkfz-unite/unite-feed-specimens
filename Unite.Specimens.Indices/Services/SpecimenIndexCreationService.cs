@@ -84,6 +84,12 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
             .Distinct()
             .Count();
 
+        index.NumberOfDrugs = _dbContext.Set<DrugScreening>()
+            .Where(screening => screening.SpecimenId == specimen.Id)
+            .Select(screening => screening.DrugId)
+            .Distinct()
+            .Count();
+
         return index;
     }
 

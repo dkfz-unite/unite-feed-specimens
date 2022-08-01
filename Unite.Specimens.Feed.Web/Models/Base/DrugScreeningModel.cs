@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Unite.Specimens.Feed.Web.Models.Base;
+﻿namespace Unite.Specimens.Feed.Web.Models.Base;
 
 public record DrugScreeningModel
 {
@@ -13,11 +11,10 @@ public record DrugScreeningModel
     private double? _absIC25;
     private double? _absIC50;
     private double? _absIC75;
-    private double? _pI1;
-    private double? _pI2;
-    private double? _pI3;
-    private double? _pI4;
-    private double? _pI5;
+    private double[] _concentrations;
+    private double[] _inhibitions;
+    private double[] _inhibitionsControl;
+    private double[] _inhibitionsSample;
 
 
     /// <summary>
@@ -66,53 +63,22 @@ public record DrugScreeningModel
     public double? AbsIC75 { get => _absIC75; init => _absIC75 = value; }
 
     /// <summary>
-    /// Percent inhibition at 1st step of concentration
+    /// Concentration at corresponding inhibition percent
     /// </summary>
-    public double? PI1 { get => _pI1; set => _pI1 = value; }
+    public double[] Concentrations { get => _concentrations; set => _concentrations = value; }
 
     /// <summary>
-    /// Percent inhibition at 2nd step of concentration
+    /// Percent inhibition at corresponding concentration
     /// </summary>
-    public double? PI2 { get => _pI2; set => _pI2 = value; }
+    public double[] Inhibitions { get => _inhibitions; set => _inhibitions = value; }
 
     /// <summary>
-    /// Percent inhibition at 3rd step of concentration
+    /// Percent inhibition at (N)th concentration in control samples
     /// </summary>
-    public double? PI3 { get => _pI3; set => _pI3 = value; }
+    public double[] InhibitionsControl { get => _inhibitionsControl; set => _inhibitionsControl = value; }
 
     /// <summary>
-    /// Percent inhibition at 4th step of concentration
+    /// Percent inhibition at (N)th concentration in target samples
     /// </summary>
-    public double? PI4 { get => _pI4; set => _pI4 = value; }
-
-    /// <summary>
-    /// Percent inhibition at 5th step of concentration
-    /// </summary>
-    public double? PI5 { get => _pI5; set => _pI5 = value; }
-
-    [JsonIgnore]
-    public double[] Inhibition => GetInhibition();
-
-
-    private double[] GetInhibition()
-    {
-        var inhibition = new List<double>();
-
-        if (PI1 != null)
-            inhibition.Add(PI1.Value);
-
-        if (PI2 != null)
-            inhibition.Add(PI2.Value);
-
-        if (PI3 != null)
-            inhibition.Add(PI3.Value);
-
-        if (PI4 != null)
-            inhibition.Add(PI4.Value);
-
-        if (PI5 != null)
-            inhibition.Add(PI5.Value);
-
-        return inhibition.Any() ? inhibition.ToArray() : null;
-    }
+    public double[] InhibitionsSample { get => _inhibitionsSample; set => _inhibitionsSample = value; }
 }

@@ -53,23 +53,38 @@ public class DrugScreeningModelValidator : AbstractValidator<DrugScreeningModel>
             .WithMessage("Should be greater than 0");
 
 
-        RuleFor(model => model.PI1)
+        RuleForEach(model => model.Concentrations)
+            .NotEmpty()
+            .WithMessage("Should not contain empty values");
+
+        RuleForEach(model => model.Concentrations)
+            .Must(value => value >= 0)
+            .WithMessage("Should be greater than 0");
+
+
+        RuleForEach(model => model.Inhibitions)
+            .NotEmpty()
+            .WithMessage("Should not contain empty values");
+
+        RuleForEach(model => model.Inhibitions)
             .Must(value => value >= -150 && value <= 150)
             .WithMessage("Should be in range [-150, 150]");
 
-        RuleFor(model => model.PI2)
+
+        RuleForEach(model => model.InhibitionsControl)
+            .NotEmpty()
+            .WithMessage("Should not contain empty values");
+
+        RuleForEach(model => model.InhibitionsControl)
             .Must(value => value >= -150 && value <= 150)
             .WithMessage("Should be in range [-150, 150]");
 
-        RuleFor(model => model.PI3)
-            .Must(value => value >= -150 && value <= 150)
-            .WithMessage("Should be in range [-150, 150]");
 
-        RuleFor(model => model.PI4)
-            .Must(value => value >= -150 && value <= 150)
-            .WithMessage("Should be in range [-150, 150]");
+        RuleForEach(model => model.InhibitionsSample)
+           .NotEmpty()
+           .WithMessage("Should not contain empty values");
 
-        RuleFor(model => model.PI5)
+        RuleForEach(model => model.InhibitionsSample)
             .Must(value => value >= -150 && value <= 150)
             .WithMessage("Should be in range [-150, 150]");
     }

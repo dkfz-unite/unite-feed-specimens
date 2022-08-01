@@ -23,7 +23,10 @@ public class DrugScreeningModelConverter
             AbsIC25 = source.AbsIC25,
             AbsIC50 = source.AbsIC50,
             AbsIC75 = source.AbsIC75,
-            Inhibition = source.Inhibition
+            Concentrations = source.Concentrations,
+            Inhibitions = source.Inhibitions,
+            InhibitionsControl = source.InhibitionsControl,
+            InhibitionsSample = source.InhibitionsSample
         };
     }
 
