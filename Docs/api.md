@@ -195,7 +195,7 @@ Request implements **UPSERT** logic:
                 "MaxConcentration": 10000,
                 "Concentration": [1, 10, 100, 1000, 10000],
                 "Inhibition": [6.76, 50.25, 82.32, 94.10, 97.42],
-                "Dose": [6.76, 50.25, 82.32, 94.10, 97.42],
+                "Dose": [1, 10, 100, 1000, 10000],
                 "Response": [6.76, 50.25, 82.32, 94.10, 97.42],
                 "AbsIC25": 2.82,
                 "AbsIC50": 9.86,
