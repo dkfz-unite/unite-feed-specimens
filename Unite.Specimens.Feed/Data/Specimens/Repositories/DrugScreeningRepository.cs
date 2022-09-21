@@ -146,9 +146,9 @@ internal class DrugScreeningRepository
         entity.AbsIC25 = model.AbsIC25;
         entity.AbsIC50 = model.AbsIC50;
         entity.AbsIC75 = model.AbsIC75;
-        entity.Concentrations = model.Concentrations;
-        entity.Inhibitions = model.Inhibitions;
-        entity.InhibitionsControl = model.InhibitionsControl;
-        entity.InhibitionsSample = model.InhibitionsSample;
+        entity.Concentration = model.Concentration;
+        entity.Inhibition = model.Inhibition;
+        entity.Dose = model.Dose;
+        entity.Response = model.Response;
     }
 }

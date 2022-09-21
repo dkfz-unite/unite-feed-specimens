@@ -10,6 +10,8 @@ builder.Logging.AddConsole();
 
 builder.Services.Configure();
 
+builder.Services.AddCors();
+
 builder.Services.AddControllers(options => options.AddMvcOptions())
                 .AddJsonOptions(options => options.AddJsonOptions())
                 .AddFluentValidation();
@@ -18,6 +20,13 @@ builder.Services.AddControllers(options => options.AddMvcOptions())
 var app = builder.Build();
 
 app.UseRouting();
+
+app.UseCors(builder => builder
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true)
+    .AllowCredentials()
+);
 
 app.UseAuthorization();
 

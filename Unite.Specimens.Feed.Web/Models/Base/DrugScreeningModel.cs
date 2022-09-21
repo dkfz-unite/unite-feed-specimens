@@ -1,4 +1,6 @@
-﻿namespace Unite.Specimens.Feed.Web.Models.Base;
+﻿using System.Text.Json;
+
+namespace Unite.Specimens.Feed.Web.Models.Base;
 
 public record DrugScreeningModel
 {
@@ -11,10 +13,10 @@ public record DrugScreeningModel
     private double? _absIC25;
     private double? _absIC50;
     private double? _absIC75;
-    private double[] _concentrations;
-    private double[] _inhibitions;
-    private double[] _inhibitionsControl;
-    private double[] _inhibitionsSample;
+    private double[] _concentration;
+    private double[] _inhibition;
+    private double[] _dose;
+    private double[] _response;
 
 
     /// <summary>
@@ -65,20 +67,20 @@ public record DrugScreeningModel
     /// <summary>
     /// Concentration at corresponding inhibition percent
     /// </summary>
-    public double[] Concentrations { get => _concentrations; set => _concentrations = value; }
+    public double[] Concentration { get => _concentration; set => _concentration = value; }
 
     /// <summary>
     /// Percent inhibition at corresponding concentration
     /// </summary>
-    public double[] Inhibitions { get => _inhibitions; set => _inhibitions = value; }
+    public double[] Inhibition { get => _inhibition; set => _inhibition = value; }
 
     /// <summary>
-    /// Percent inhibition at (N)th concentration in control samples
+    /// Concentration at (N)th inhibition percent (for drug response curve)
     /// </summary>
-    public double[] InhibitionsControl { get => _inhibitionsControl; set => _inhibitionsControl = value; }
+    public double[] Dose { get => _dose; set => _dose = value; }
 
     /// <summary>
-    /// Percent inhibition at (N)th concentration in target samples
+    /// Percent inhibition at (N)th concentration (for drug response curve)
     /// </summary>
-    public double[] InhibitionsSample { get => _inhibitionsSample; set => _inhibitionsSample = value; }
+    public double[] Response { get => _response; set => _response = value; }
 }
