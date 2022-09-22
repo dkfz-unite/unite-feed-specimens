@@ -14,6 +14,7 @@
       "launchUrl": "api",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        "UNITE_API_KEY": "Defautl32BitApiKeyHasToBeChanged",
         "UNITE_SQL_HOST": "localhost",
         "UNITE_SQL_PORT": "5432",
         "UNITE_SQL_USER": "root",
@@ -28,10 +29,10 @@
     "Unite.Specimens.Feed.Web": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api",
       "applicationUrl": "http://localhost:5102",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        "UNITE_API_KEY": "Defautl32BitApiKeyHasToBeChanged",
         "UNITE_SQL_HOST": "localhost",
         "UNITE_SQL_PORT": "5432",
         "UNITE_SQL_USER": "root",

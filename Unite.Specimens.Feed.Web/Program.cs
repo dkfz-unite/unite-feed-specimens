@@ -12,6 +12,9 @@ builder.Services.Configure();
 
 builder.Services.AddCors();
 
+builder.Services.AddAuthentication(options => options.AddJwtAuthenticationOptions())
+                .AddJwtBearer(options => options.AddJwtBearerOptions());
+
 builder.Services.AddControllers(options => options.AddMvcOptions())
                 .AddJsonOptions(options => options.AddJsonOptions())
                 .AddFluentValidation();
@@ -27,6 +30,8 @@ app.UseCors(builder => builder
     .SetIsOriginAllowed(origin => true)
     .AllowCredentials()
 );
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

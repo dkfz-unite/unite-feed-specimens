@@ -27,6 +27,7 @@
 	<ItemGroup>
 		<PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
 		<PackageReference Include="FluentValidation.AspNetCore" Version="11.1.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.7" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="FluentValidation.AspNetCore" />
@@ -36,5 +37,6 @@
 		<None Remove="Models\Base\Converters\" />
 		<None Remove="Models\Converters\" />
 		<None Remove="Models\Validators\" />
+		<None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
 	</ItemGroup>
 </Project>
