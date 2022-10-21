@@ -41,7 +41,7 @@ public class SpecimensIndexingHandler
     {
         var stopwatch = new Stopwatch();
 
-        _taskProcessingService.Process(TaskType.Indexing, TaskTargetType.Specimen, bucketSize, (tasks) =>
+        _taskProcessingService.Process(IndexingTaskType.Specimen, bucketSize, (tasks) =>
         {
             _logger.LogInformation($"Indexing {tasks.Length} specimens");
 

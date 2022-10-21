@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Unite.Data.Entities.Donors;
-using Unite.Data.Entities.Genome.Mutations;
+using Unite.Data.Entities.Genome.Variants;
 using Unite.Data.Entities.Images;
 using Unite.Data.Entities.Specimens;
 using Unite.Data.Entities.Specimens.Tissues.Enums;
@@ -11,12 +11,16 @@ using Unite.Indices.Services;
 using Unite.Specimens.Indices.Services.Extensions;
 using Unite.Specimens.Indices.Services.Mappers;
 
+using CNV = Unite.Data.Entities.Genome.Variants.CNV;
+using SSM = Unite.Data.Entities.Genome.Variants.SSM;
+using SV = Unite.Data.Entities.Genome.Variants.SV;
+
 namespace Unite.Specimens.Indices.Services;
 
 public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
 {
     private readonly DomainDbContext _dbContext;
-    private readonly MutationIndexMapper _mutationIndexMapper;
+    private readonly VariantIndexMapper _variantIndexMapper;
     private readonly DonorIndexMapper _donorIndexMapper;
     private readonly ImageIndexMapper _imageIndexMapper;
     private readonly SpecimenIndexMapper _specimenIndexMapper;
@@ -25,7 +29,7 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
     public SpecimenIndexCreationService(DomainDbContext dbContext)
     {
         _dbContext = dbContext;
-        _mutationIndexMapper = new MutationIndexMapper();
+        _variantIndexMapper = new VariantIndexMapper();
         _donorIndexMapper = new DonorIndexMapper();
         _imageIndexMapper = new ImageIndexMapper();
         _specimenIndexMapper = new SpecimenIndexMapper();
@@ -64,30 +68,40 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
 
         _specimenIndexMapper.Map(specimen, index, diagnosisDate);
 
-        index.Donor = CreateDonorIndex(specimen.DonorId, isTumorTissue);
-
         index.Parent = CreateParentSpecimenIndex(specimen.Id, diagnosisDate);
 
         index.Children = CreateChildSpecimenIndices(specimen.Id, diagnosisDate);
 
-        index.Mutations = CreateMutationIndices(specimen.Id);
+        index.Donor = CreateDonorIndex(specimen.DonorId);
 
-        index.NumberOfMutations = index.Mutations
-            .Select(mutation => mutation.Id)
-            .Distinct()
-            .Count();
+        index.Images = CreateImageIndices(index.Donor.Id, diagnosisDate, isTumorTissue);
 
-        index.NumberOfGenes = index.Mutations
+        index.Variants = CreateVariantIndices(specimen.Id);
+
+        index.NumberOfGenes += index.Variants
             .Where(mutation => mutation.AffectedTranscripts != null)
             .SelectMany(mutation => mutation.AffectedTranscripts)
-            .Select(affectedTranscript => affectedTranscript.Transcript.Gene.Id)
-            .Distinct()
+            .DistinctBy(affectedTranscript => affectedTranscript.Gene.Id)
+            .Count();
+
+        index.NumberOfMutations = index.Variants
+            .Where(variant => variant.Mutation != null)
+            .DistinctBy(variant => variant.Id)
+            .Count();
+
+        index.NumberOfCopyNumberVariants = index.Variants
+            .Where(variant => variant.CopyNumberVariant != null)
+            .DistinctBy(variant => variant.Id)
+            .Count();
+
+        index.NumberStructuralVariants = index.Variants
+            .Where(variant => variant.StructuralVariant != null)
+            .DistinctBy(variant => variant.Id)
             .Count();
 
         index.NumberOfDrugs = _dbContext.Set<DrugScreening>()
             .Where(screening => screening.SpecimenId == specimen.Id)
-            .Select(screening => screening.DrugId)
-            .Distinct()
+            .DistinctBy(screening => screening.DrugId)
             .Count();
 
         return index;
@@ -186,7 +200,7 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
     }
 
 
-    private DonorIndex CreateDonorIndex(int donorId, bool isTumorTissue)
+    private DonorIndex CreateDonorIndex(int donorId)
     {
         var donor = LoadDonor(donorId);
 
@@ -195,24 +209,18 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
             return null;
         }
 
-        var index = CreateDonorIndex(donor, isTumorTissue);
+        var index = CreateDonorIndex(donor);
 
         return index;
     }
 
-    private DonorIndex CreateDonorIndex(Donor donor, bool isTumorTissue)
+    private DonorIndex CreateDonorIndex(Donor donor)
     {
         var index = new DonorIndex();
 
         var diagnosisDate = donor.ClinicalData?.DiagnosisDate;
 
         _donorIndexMapper.Map(donor, index);
-
-        // Images can be associated only with tumor tissues
-        if (isTumorTissue)
-        {
-            index.Images = CreateImageIndices(donor.Id, diagnosisDate);
-        }
 
         return index;
     }
@@ -222,7 +230,7 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
         var donor = _dbContext.Set<Donor>()
             .IncludeClinicalData()
             .IncludeTreatments()
-            .IncludeWorkPackages()
+            .IncludeProjects()
             .IncludeStudies()
             .FirstOrDefault(donor => donor.Id == donorId);
 
@@ -230,8 +238,13 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
     }
 
 
-    private ImageIndex[] CreateImageIndices(int donorId, DateOnly? diagnosisDate)
+    private ImageIndex[] CreateImageIndices(int donorId, DateOnly? diagnosisDate, bool isTumorTissue)
     {
+        if (!isTumorTissue)
+        {
+            return null;
+        }
+
         var images = LoadImages(donorId);
 
         if (images == null)
@@ -266,44 +279,57 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
     }
 
 
-    private MutationIndex[] CreateMutationIndices(int specimenId)
+    private VariantIndex[] CreateVariantIndices(int specimenId)
     {
-        var mutations = LoadMutations(specimenId);
+        var mutations = LoadVariants<SSM.Variant, SSM.VariantOccurrence>(specimenId);
+        var copyNumberVariants = LoadVariants<CNV.Variant, CNV.VariantOccurrence>(specimenId);
+        var structuralVariants = LoadVariants<SV.Variant, SV.VariantOccurrence>(specimenId);
 
-        if (mutations == null)
+        var indices = new List<VariantIndex>();
+
+        if (mutations != null)
         {
-            return null;
+            indices.AddRange(mutations.Select(variant => CreateVariantIndex(variant)));
         }
 
-        var indices = mutations
-            .Select(CreateMutationIndex)
-            .ToArray();
+        if (copyNumberVariants != null)
+        {
+            indices.AddRange(copyNumberVariants.Select(variant => CreateVariantIndex(variant)));
+        }
 
-        return indices;
+        if (structuralVariants != null)
+        {
+            indices.AddRange(structuralVariants.Select(variant => CreateVariantIndex(variant)));
+        }
+
+        return indices.Any() ? indices.ToArray() : null;
     }
 
-    private MutationIndex CreateMutationIndex(Mutation mutation)
+    private VariantIndex CreateVariantIndex<TVariant>(TVariant variant)
+        where TVariant : Variant
     {
-        var index = new MutationIndex();
+        var index = new VariantIndex();
 
-        _mutationIndexMapper.Map(mutation, index);
+        _variantIndexMapper.Map(variant, index);
 
         return index;
     }
 
-    private Mutation[] LoadMutations(int specimenId)
+    private TVariant[] LoadVariants<TVariant, TVariantOccurrence>(int specimenId)
+        where TVariant : Variant
+        where TVariantOccurrence : VariantOccurrence<TVariant>
     {
-        var mutationIds = _dbContext.Set<MutationOccurrence>()
-            .Where(mutationOccurrence => mutationOccurrence.AnalysedSample.Sample.SpecimenId == specimenId)
-            .Select(mutationOccurrence => mutationOccurrence.MutationId)
+        var variantIds = _dbContext.Set<TVariantOccurrence>()
+            .Where(occurrence => occurrence.AnalysedSample.Sample.SpecimenId == specimenId)
+            .Select(occurrence => occurrence.VariantId)
             .Distinct()
             .ToArray();
 
-        var mutations = _dbContext.Mutations
+        var variants = _dbContext.Set<TVariant>()
             .IncludeAffectedTranscripts()
-            .Where(mutation => mutationIds.Contains(mutation.Id))
+            .Where(variant => variantIds.Contains(variant.Id))
             .ToArray();
 
-        return mutations;
+        return variants;
     }
 }
