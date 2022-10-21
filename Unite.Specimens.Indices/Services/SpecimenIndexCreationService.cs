@@ -81,7 +81,8 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
         index.NumberOfGenes += index.Variants
             .Where(mutation => mutation.AffectedTranscripts != null)
             .SelectMany(mutation => mutation.AffectedTranscripts)
-            .DistinctBy(affectedTranscript => affectedTranscript.Gene.Id)
+            .Select(affectedTranscript => affectedTranscript.Gene.Id)
+            .Distinct()
             .Count();
 
         index.NumberOfMutations = index.Variants
@@ -99,10 +100,20 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
             .DistinctBy(variant => variant.Id)
             .Count();
 
-        index.NumberOfDrugs = _dbContext.Set<DrugScreening>()
-            .Where(screening => screening.SpecimenId == specimen.Id)
-            .DistinctBy(screening => screening.DrugId)
-            .Count();
+        index.NumberOfDrugs += index.CellLine?.DrugScreenings?
+            .Select(drugScreening => drugScreening.Drug)
+            .Distinct()
+            .Count() ?? 0;
+
+        index.NumberOfDrugs += index.Organoid?.DrugScreenings?
+            .Select(drugScreening => drugScreening.Drug)
+            .Distinct()
+            .Count() ?? 0;
+
+        index.NumberOfDrugs += index.Xenograft?.DrugScreenings?
+            .Select(drugScreening => drugScreening.Drug)
+            .Distinct()
+            .Count() ?? 0;
 
         return index;
     }
