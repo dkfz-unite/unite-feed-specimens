@@ -70,50 +70,13 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
 
         index.Parent = CreateParentSpecimenIndex(specimen.Id, diagnosisDate);
 
-        index.Children = CreateChildSpecimenIndices(specimen.Id, diagnosisDate);
+        //index.Children = CreateChildSpecimenIndices(specimen.Id, diagnosisDate);
 
         index.Donor = CreateDonorIndex(specimen.DonorId);
 
         index.Images = CreateImageIndices(index.Donor.Id, diagnosisDate, isTumorTissue);
 
         index.Variants = CreateVariantIndices(specimen.Id);
-
-        index.NumberOfGenes += index.Variants
-            .Where(mutation => mutation.AffectedTranscripts != null)
-            .SelectMany(mutation => mutation.AffectedTranscripts)
-            .Select(affectedTranscript => affectedTranscript.Gene.Id)
-            .Distinct()
-            .Count();
-
-        index.NumberOfMutations = index.Variants
-            .Where(variant => variant.Mutation != null)
-            .DistinctBy(variant => variant.Id)
-            .Count();
-
-        index.NumberOfCopyNumberVariants = index.Variants
-            .Where(variant => variant.CopyNumberVariant != null)
-            .DistinctBy(variant => variant.Id)
-            .Count();
-
-        index.NumberStructuralVariants = index.Variants
-            .Where(variant => variant.StructuralVariant != null)
-            .DistinctBy(variant => variant.Id)
-            .Count();
-
-        index.NumberOfDrugs += index.CellLine?.DrugScreenings?
-            .Select(drugScreening => drugScreening.Drug)
-            .Distinct()
-            .Count() ?? 0;
-
-        index.NumberOfDrugs += index.Organoid?.DrugScreenings?
-            .Select(drugScreening => drugScreening.Drug)
-            .Distinct()
-            .Count() ?? 0;
-
-        index.NumberOfDrugs += index.Xenograft?.DrugScreenings?
-            .Select(drugScreening => drugScreening.Drug)
-            .Distinct()
-            .Count() ?? 0;
 
         return index;
     }
@@ -170,45 +133,45 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
     }
 
 
-    private SpecimenIndex[] CreateChildSpecimenIndices(int specimenId, DateOnly? diagnosisDate)
-    {
-        var specimens = LoadChildSpecimens(specimenId);
+    //private SpecimenIndex[] CreateChildSpecimenIndices(int specimenId, DateOnly? diagnosisDate)
+    //{
+    //    var specimens = LoadChildSpecimens(specimenId);
 
-        if (specimens == null)
-        {
-            return null;
-        }
+    //    if (specimens == null)
+    //    {
+    //        return null;
+    //    }
 
-        var indices = specimens
-            .Select(specimen => CreateChildSpecimenIndex(specimen, diagnosisDate))
-            .ToArray();
+    //    var indices = specimens
+    //        .Select(specimen => CreateChildSpecimenIndex(specimen, diagnosisDate))
+    //        .ToArray();
 
-        return indices;
-    }
+    //    return indices;
+    //}
 
-    private SpecimenIndex CreateChildSpecimenIndex(Specimen specimen, DateOnly? diagnosisDate)
-    {
-        var index = new SpecimenIndex();
+    //private SpecimenIndex CreateChildSpecimenIndex(Specimen specimen, DateOnly? diagnosisDate)
+    //{
+    //    var index = new SpecimenIndex();
 
-        _specimenIndexMapper.Map(specimen, index, diagnosisDate);
+    //    _specimenIndexMapper.Map(specimen, index, diagnosisDate);
 
-        index.Children = CreateChildSpecimenIndices(specimen.Id, diagnosisDate);
+    //    index.Children = CreateChildSpecimenIndices(specimen.Id, diagnosisDate);
 
-        return index;
-    }
+    //    return index;
+    //}
 
-    private Specimen[] LoadChildSpecimens(int specimenId)
-    {
-        var specimens = _dbContext.Set<Specimen>()
-            .IncludeTissue()
-            .IncludeCellLine()
-            .IncludeOrganoid()
-            .IncludeXenograft()
-            .Where(specimen => specimen.ParentId == specimenId)
-            .ToArray();
+    //private Specimen[] LoadChildSpecimens(int specimenId)
+    //{
+    //    var specimens = _dbContext.Set<Specimen>()
+    //        .IncludeTissue()
+    //        .IncludeCellLine()
+    //        .IncludeOrganoid()
+    //        .IncludeXenograft()
+    //        .Where(specimen => specimen.ParentId == specimenId)
+    //        .ToArray();
 
-        return specimens;
-    }
+    //    return specimens;
+    //}
 
 
     private DonorIndex CreateDonorIndex(int donorId)
