@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace Unite.Specimens.Feed.Data.Specimens.Models.Audit;
+﻿namespace Unite.Specimens.Feed.Data.Specimens.Models.Audit;
 
 public class DrugScreeningsUploadAudit
 {
@@ -17,10 +15,10 @@ public class DrugScreeningsUploadAudit
 
     public override string ToString()
     {
-        var message = new StringBuilder();
+        var messages = new List<string>();
 
-        message.Append($"{DrugScreeningsCreated} specimen drug screening entries created");
+        messages.Add($"{DrugScreeningsCreated} specimen drug screening entries created");
 
-        return message.ToString();
+        return string.Join(Environment.NewLine, messages);
     }
 }

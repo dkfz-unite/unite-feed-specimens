@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace Unite.Specimens.Feed.Data.Specimens.Models.Audit;
+﻿namespace Unite.Specimens.Feed.Data.Specimens.Models.Audit;
 
 public class SpecimensUploadAudit
 {
@@ -27,20 +25,20 @@ public class SpecimensUploadAudit
 
     public override string ToString()
     {
-        var message = new StringBuilder();
+        var messages = new List<string>();
 
-        message.AppendLine($"{DonorsCreated} donors created");
-        message.AppendLine($"{TissuesCreated} tissues created");
-        message.AppendLine($"{TissuesUpdated} tissues updated");
-        message.AppendLine($"{CellLinesCreated} cell lines created");
-        message.AppendLine($"{CellLinesUpdated} cell lines updated");
-        message.AppendLine($"{OrganoidsCreated} organoids created");
-        message.AppendLine($"{OrganoidsUpdate} organoids updated");
-        message.AppendLine($"{XenograftsCreated} xenografts created");
-        message.AppendLine($"{XenograftsUpdated} xenografts updated");
-        message.AppendLine($"{DrugScreeningsCreated} specimen drug screening entries created");
-        message.Append($"{DrugScreeningsUpdated} specimen drug screening entries updated");
+        messages.Add($"{DonorsCreated} donors created");
+        messages.Add($"{TissuesCreated} tissues created");
+        messages.Add($"{TissuesUpdated} tissues updated");
+        messages.Add($"{CellLinesCreated} cell lines created");
+        messages.Add($"{CellLinesUpdated} cell lines updated");
+        messages.Add($"{OrganoidsCreated} organoids created");
+        messages.Add($"{OrganoidsUpdate} organoids updated");
+        messages.Add($"{XenograftsCreated} xenografts created");
+        messages.Add($"{XenograftsUpdated} xenografts updated");
+        messages.Add($"{DrugScreeningsCreated} specimen drug screening entries created");
+        messages.Add($"{DrugScreeningsUpdated} specimen drug screening entries updated");
 
-        return message.ToString();
+        return string.Join(Environment.NewLine, messages);
     }
 }
