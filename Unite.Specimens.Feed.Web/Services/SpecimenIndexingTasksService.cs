@@ -70,7 +70,7 @@ public class SpecimenIndexingTasksService : IndexingTaskService<Donor, int>
 
         var imageIds = _dbContext.Set<Image>()
             .Where(image => donorIds.Contains(image.DonorId))
-            .Select(image => image.DonorId)
+            .Select(image => image.Id)
             .Distinct()
             .ToArray();
 
