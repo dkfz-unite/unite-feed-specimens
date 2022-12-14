@@ -61,7 +61,7 @@ docker run \
 --net-alias feed.specimens.unite.net \
 -p 127.0.0.1:5102:80 \
 -e ASPNETCORE_ENVIRONMENT=Release \
--e UNITE_API_KEY=[unite-api-key] \
+-e UNITE_API_KEY=[unite_api_key] \
 -e UNITE_ELASTIC_HOST=http://es.unite.net:9200 \
 -e UNITE_ELASTIC_USER=[elasticsearch_user] \
 -e UNITE_ELASTIC_PASSWORD=[elasticsearch_password] \
