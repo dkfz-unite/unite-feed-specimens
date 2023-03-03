@@ -41,15 +41,13 @@ public class SpecimensIndexingHandler
     {
         var stopwatch = new Stopwatch();
 
-        var shouldWait = _taskProcessingService.HasAnnotationTasks();
-
-        if (shouldWait)
-        {
-            return;
-        }
-
         _taskProcessingService.Process(IndexingTaskType.Specimen, bucketSize, (tasks) =>
         {
+            if (_taskProcessingService.HasSubmissionTasks() || _taskProcessingService.HasAnnotationTasks())
+            {
+                return false;
+            }
+
             _logger.LogInformation($"Indexing {tasks.Length} specimens");
 
             stopwatch.Restart();
@@ -71,6 +69,8 @@ public class SpecimensIndexingHandler
             stopwatch.Stop();
 
             _logger.LogInformation($"Indexing of {tasks.Length} specimens completed in {Math.Round(stopwatch.Elapsed.TotalSeconds, 2)}s");
+
+            return true;
         });
     }
 }
