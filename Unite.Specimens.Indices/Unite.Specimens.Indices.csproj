@@ -5,15 +5,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Unite.Data" Version="4.5.0" />
+		<PackageReference Include="Unite.Data" Version="4.6.0" />
 		<PackageReference Include="Unite.Indices" Version="4.2.1" />
-	</ItemGroup>
-	<ItemGroup>
-		<Folder Include="Services\" />
-		<Folder Include="Services\Mappers\" />
-		<Folder Include="Services\Extensions\" />
-	</ItemGroup>
-	<ItemGroup>
-		<None Remove="Services\Extensions\" />
 	</ItemGroup>
 </Project>
