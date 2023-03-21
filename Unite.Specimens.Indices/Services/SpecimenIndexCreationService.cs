@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Unite.Data.Entities.Donors;
+using Unite.Data.Entities.Genome.Transcriptomics;
 using Unite.Data.Entities.Genome.Variants;
 using Unite.Data.Entities.Images;
 using Unite.Data.Entities.Specimens;
@@ -71,10 +72,13 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
         index.Parent = CreateParentSpecimenIndex(specimen.Id, diagnosisDate);
         index.Donor = CreateDonorIndex(specimen.DonorId);
         index.Images = CreateImageIndices(index.Donor.Id, diagnosisDate, isTumorTissue);
+        index.NumberOfImages = index.Images?.Length ?? 0;
         index.NumberOfGenes = stats.NumberOfGenes;
         index.NumberOfMutations = stats.NumberOfMutations;
         index.NumberOfCopyNumberVariants = stats.NumberOfCopyNumberVariants;
         index.NumberOfStructuralVariants = stats.NumberOfStructuralVariants;
+        index.HasDrugScreenings = stats.HasDrugScreenings;
+        index.HasGeneExpressions = stats.HasGeneExpressions;
         
         return index;
     }
@@ -210,7 +214,7 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
     }
 
 
-    private record GenomicStats(int NumberOfGenes, int NumberOfMutations, int NumberOfCopyNumberVariants, int NumberOfStructuralVariants);
+    private record GenomicStats(int NumberOfGenes, int NumberOfMutations, int NumberOfCopyNumberVariants, int NumberOfStructuralVariants, bool HasDrugScreenings, bool HasGeneExpressions);
 
     private GenomicStats LoadGenomicStats(int specimenId)
     {
@@ -221,8 +225,10 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
         var cnvGeneIds = LoadGeneIds<CNV.Variant, CNV.AffectedTranscript>(ssmIds);
         var svGeneIds = LoadGeneIds<SV.Variant, SV.AffectedTranscript>(ssmIds);
         var geneIds = ssmGeneIds.Union(cnvGeneIds).Union(svGeneIds).ToArray();
+        var hasDrugScreenings = CheckDrugScreenings(specimenId);
+        var hasGeneExpressions = CheckGeneExpressions(specimenId);
 
-        return new GenomicStats(geneIds.Length, ssmIds.Length, cnvIds.Length, svIds.Length);
+        return new GenomicStats(geneIds.Length, ssmIds.Length, cnvIds.Length, svIds.Length, hasDrugScreenings, hasGeneExpressions);
     }
 
     private int[] LoadGeneIds(int specimenId)
@@ -262,5 +268,21 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
             .ToArray();
 
         return ids;
+    }
+
+    private bool CheckDrugScreenings(int specimenId)
+    {
+        var hasScreenings = _dbContext.Set<DrugScreening>()
+            .Any(screening => screening.SpecimenId == specimenId);
+
+        return hasScreenings;
+    }
+
+    private bool CheckGeneExpressions(int specimenId)
+    {
+        var hasExpressions = _dbContext.Set<GeneExpression>()
+            .Any(expression => expression.AnalysedSample.Sample.SpecimenId == specimenId);
+
+        return hasExpressions;
     }
 }
