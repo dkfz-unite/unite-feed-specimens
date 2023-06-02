@@ -63,6 +63,8 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
     private SpecimenIndex CreateSpecimenIndex(Specimen specimen, DateOnly? diagnosisDate)
     {
         var isTumorTissue = specimen.Tissue?.TypeId == TissueType.Tumor;
+        var isOranoid = specimen.Organoid != null;
+        var isXenograft = specimen.Xenograft != null;
 
         var index = new SpecimenIndex();
 
@@ -71,14 +73,14 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
         index.Parent = CreateParentSpecimenIndex(specimen.Id, diagnosisDate);
         index.Donor = CreateDonorIndex(specimen.DonorId);
         index.Images = CreateImageIndices(index.Donor.Id, diagnosisDate, isTumorTissue);
-        index.Data = CreateDataIndex(specimen.Id, specimen.Donor.Id, isTumorTissue);
+        index.Data = CreateDataIndex(specimen.Id, specimen.Donor.Id, isTumorTissue, isOranoid, isXenograft);
 
         var stats = LoadGenomicStats(specimen.Id);
 
         index.NumberOfGenes = stats.NumberOfGenes;
-        index.NumberOfSSMs = stats.NumberOfSSMs;
-        index.NumberOfCNVs = stats.NumberOfCNVs;
-        index.NumberOfSVs = stats.NumberOfSVs;
+        index.NumberOfSsms = stats.NumberOfSsms;
+        index.NumberOfCnvs = stats.NumberOfCnvs;
+        index.NumberOfSvs = stats.NumberOfSvs;
         
         return index;
     }
@@ -214,21 +216,46 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
     }
 
 
-    private DataIndex CreateDataIndex(int specimenId, int donorId, bool isTumorTissue)
+    private DataIndex CreateDataIndex(int specimenId, int donorId, bool isTumorTissue, bool isOranoid, bool isXenograft)
     {
         var index = new DataIndex();
 
-        index.MRIs = isTumorTissue ? _dbContext.Set<Image>()
-            .Include(image => image.MriImage)
-            .Where(image => image.DonorId == donorId)
-            .Where(image => image.MriImage != null)
-            .Any() : false;
+        index.Molecular = _dbContext.Set<MolecularData>()
+            .Where(data => data.SpecimenId == specimenId)
+            .Any();
 
-        index.SSMs = CheckVariants<SSM.Variant, SSM.VariantOccurrence>(specimenId);
+        index.Drugs = _dbContext.Set<DrugScreening>()
+            .Where(data => data.SpecimenId == specimenId)
+            .Any();
 
-        index.CNVs = CheckVariants<CNV.Variant, CNV.VariantOccurrence>(specimenId);
+        if (isOranoid)
+        {
+            index.Interventions = _dbContext.Set<Data.Entities.Specimens.Organoids.Intervention>()
+                .Where(intervention => intervention.SpecimenId == specimenId)
+                .Any();
+        }
 
-        index.SVs = CheckVariants<SV.Variant, SV.VariantOccurrence>(specimenId);
+        if (isXenograft)
+        {
+            index.Interventions = _dbContext.Set<Data.Entities.Specimens.Xenografts.Intervention>()
+                .Where(intervention => intervention.SpecimenId == specimenId)
+                .Any();
+        }
+
+        if (isTumorTissue)
+        {
+            index.Mris = _dbContext.Set<Image>()
+                .Include(image => image.MriImage)
+                .Where(image => image.DonorId == donorId)
+                .Where(image => image.MriImage != null)
+                .Any();
+        }
+
+        index.Ssms = CheckVariants<SSM.Variant, SSM.VariantOccurrence>(specimenId);
+
+        index.Cnvs = CheckVariants<CNV.Variant, CNV.VariantOccurrence>(specimenId);
+
+        index.Svs = CheckVariants<SV.Variant, SV.VariantOccurrence>(specimenId);
 
         index.GeneExp = CheckGeneExp(specimenId);
 
@@ -236,7 +263,7 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
     }
 
 
-    private record GenomicStats(int NumberOfGenes, int NumberOfSSMs, int NumberOfCNVs, int NumberOfSVs);
+    private record GenomicStats(int NumberOfGenes, int NumberOfSsms, int NumberOfCnvs, int NumberOfSvs);
 
     private GenomicStats LoadGenomicStats(int specimenId)
     {
@@ -294,17 +321,6 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
             .ToArray();
 
         return ids;
-    }
-
-    /// <summary>
-    /// Checks if drug screening data is available for given specimen.
-    /// </summary>
-    /// <param name="specimenId">Specimen identifier.</param>
-    /// <returns>'true' if drug screening data is available or 'falce' otherwise.</returns>
-    private bool CheckDrugScreenings(int specimenId)
-    {
-        return _dbContext.Set<DrugScreening>()
-            .Any(screening => screening.SpecimenId == specimenId);
     }
 
     /// <summary>
