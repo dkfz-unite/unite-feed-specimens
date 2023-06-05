@@ -268,11 +268,11 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
     private GenomicStats LoadGenomicStats(int specimenId)
     {
         var ssmIds = LoadVariantIds<SSM.Variant, SSM.VariantOccurrence>(specimenId);
-        var cnvIds = LoadVariantIds<CNV.Variant, CNV.VariantOccurrence>(specimenId, occurrence => occurrence.Variant.TypeId != CNV.Enums.CnvType.Neutral);
+        var cnvIds = LoadVariantIds<CNV.Variant, CNV.VariantOccurrence>(specimenId);
         var svIds = LoadVariantIds<SV.Variant, SV.VariantOccurrence>(specimenId);
         var ssmGeneIds = LoadGeneIds<SSM.Variant, SSM.AffectedTranscript>(ssmIds);
-        var cnvGeneIds = LoadGeneIds<CNV.Variant, CNV.AffectedTranscript>(ssmIds);
-        var svGeneIds = LoadGeneIds<SV.Variant, SV.AffectedTranscript>(ssmIds);
+        var cnvGeneIds = LoadGeneIds<CNV.Variant, CNV.AffectedTranscript>(cnvIds, affectedTranscript => affectedTranscript.Variant.TypeId != CNV.Enums.CnvType.Neutral);
+        var svGeneIds = LoadGeneIds<SV.Variant, SV.AffectedTranscript>(svIds);
         var geneIds = ssmGeneIds.Union(cnvGeneIds).Union(svGeneIds).ToArray();
 
         return new GenomicStats(geneIds.Length, ssmIds.Length, cnvIds.Length, svIds.Length);
@@ -282,15 +282,20 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
     /// Loads identifiers of genes affected by given variants.
     /// </summary>
     /// <param name="variantIds">Varians identifiers.</param>
+    /// <param name="filter">Affected transcript filter.</param>
     /// <typeparam name="TVariant">Variant type.</typeparam>
     /// <typeparam name="TAffectedTranscript">Variant affected transcript type.</typeparam>
     /// <returns>Array of genes identifiers.</returns>
-    private int[] LoadGeneIds<TVariant, TAffectedTranscript>(long[] variantIds)
+    private int[] LoadGeneIds<TVariant, TAffectedTranscript>(long[] variantIds, Expression<Func<TAffectedTranscript, bool>> filter = null)
         where TVariant : Variant
         where TAffectedTranscript : VariantAffectedFeature<TVariant, Data.Entities.Genome.Transcript>
     {
+        Expression<Func<TAffectedTranscript, bool>> selectorPredicate = (affectedTranscript => variantIds.Contains(affectedTranscript.VariantId));
+        Expression<Func<TAffectedTranscript, bool>> filterPredicate = filter ?? (affectedTranscript => true);
+
         var ids = _dbContext.Set<TAffectedTranscript>()
-            .Where(affectedTranscript => variantIds.Contains(affectedTranscript.VariantId))
+            .Where(selectorPredicate)
+            .Where(filterPredicate)
             .Select(affectedTranscript => affectedTranscript.Feature.GeneId.Value)
             .Distinct()
             .ToArray();
@@ -310,12 +315,12 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
         where TVariant : Variant
         where TVariantOccurrence : VariantOccurrence<TVariant>
     {
-        Expression<Func<TVariantOccurrence, bool>> specimenPredicate = (occurrence => occurrence.AnalysedSample.Sample.SpecimenId == specimenId);
-        Expression<Func<TVariantOccurrence, bool>> variantPredicate = filter ?? (occurrence => true);
+        Expression<Func<TVariantOccurrence, bool>> selectorPredicate = (occurrence => occurrence.AnalysedSample.Sample.SpecimenId == specimenId);
+        Expression<Func<TVariantOccurrence, bool>> filterPredicate = filter ?? (occurrence => true);
 
         var ids = _dbContext.Set<TVariantOccurrence>()
-            .Where(specimenPredicate)
-            .Where(variantPredicate)
+            .Where(selectorPredicate)
+            .Where(filterPredicate)
             .Select(occurrence => occurrence.VariantId)
             .Distinct()
             .ToArray();
