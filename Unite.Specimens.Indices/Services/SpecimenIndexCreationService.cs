@@ -273,7 +273,7 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
         var ssmGeneIds = LoadGeneIds<SSM.Variant, SSM.AffectedTranscript>(ssmIds);
         var cnvGeneIds = LoadGeneIds<CNV.Variant, CNV.AffectedTranscript>(cnvIds, affectedTranscript => affectedTranscript.Variant.TypeId != CNV.Enums.CnvType.Neutral);
         var svGeneIds = LoadGeneIds<SV.Variant, SV.AffectedTranscript>(svIds);
-        var geneIds = ssmGeneIds.Union(cnvGeneIds).Union(svGeneIds).ToArray();
+        var geneIds = Array.Empty<int>().Union(ssmGeneIds).Union(cnvGeneIds).Union(svGeneIds).ToArray();
 
         return new GenomicStats(geneIds.Length, ssmIds.Length, cnvIds.Length, svIds.Length);
     }
