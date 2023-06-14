@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Unite.Data.Entities.Donors;
+using Unite.Data.Entities.Donors.Clinical;
 using Unite.Data.Entities.Genome.Transcriptomics;
 using Unite.Data.Entities.Genome.Variants;
 using Unite.Data.Entities.Images;
@@ -220,6 +221,14 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
     {
         var index = new DataIndex();
 
+        index.Clinical = _dbContext.Set<ClinicalData>()
+            .Where(data => data.DonorId == donorId)
+            .Any();
+
+        index.Treatments = _dbContext.Set<Treatment>()
+            .Where(data => data.DonorId == donorId)
+            .Any();
+
         index.Molecular = _dbContext.Set<MolecularData>()
             .Where(data => data.SpecimenId == specimenId)
             .Any();
@@ -251,6 +260,8 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
                 .Any();
         }
 
+        index.Cts = false;
+
         index.Ssms = CheckVariants<SSM.Variant, SSM.VariantOccurrence>(specimenId);
 
         index.Cnvs = CheckVariants<CNV.Variant, CNV.VariantOccurrence>(specimenId);
@@ -258,6 +269,8 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
         index.Svs = CheckVariants<SV.Variant, SV.VariantOccurrence>(specimenId);
 
         index.GeneExp = CheckGeneExp(specimenId);
+
+        index.GeneExpSc = false;
 
         return index;
     }
