@@ -1,17 +1,13 @@
 # Specimens Data Feed API
 
 ## GET: [api](http://localhost:5102/api)
-
 Health check.
 
-
-**Response**
-
+### Responses
 `"2022-03-17T09:45:10.9359202Z"` - Current UTC date and time in JSON format, if service is up and running
 
 
 ## POST: [api/specimens](http://localhost:5102/api/specimens)
-
 Submit specimens data (tissue, cell line, organoid or xenograft).
 
 Request implements **UPSERT** logic:
@@ -19,7 +15,7 @@ Request implements **UPSERT** logic:
 - Existing data will be updated
 - Redundand data will be removed
 
-**Boby** (_application/json_)
+### Body - application/json
 ```json
 [
     {
@@ -163,14 +159,14 @@ Request implements **UPSERT** logic:
     },
 ]
 ```
-Fields description can be found [here](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-models-specimens.md).
+Fields description can be found [here](Docs/api-models-specimens.md).
 
-**Response**
+### Responses
 - `200` - request was processed successfully
 - `400` - request data didn't pass validation
 
-## POST: [api/drugs](http://localhost:5102/api/drugs)
 
+## POST: [api/drugs](http://localhost:5102/api/drugs)
 Submit drugs screening data. Donors and specimens should be present in the system.
 
 Request implements **UPSERT** logic:
@@ -178,7 +174,7 @@ Request implements **UPSERT** logic:
 - Existing data will be updated
 - Redundand data will be removed
 
-**Boby** (_application/json_)
+### Body - application/json
 ```json
 [
     {
@@ -205,8 +201,8 @@ Request implements **UPSERT** logic:
     }
 ]
 ```
-Fields description can be found [here](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-models-drugs.md).
+Fields description can be found [here](Docs/api-models-drugs.md).
 
-**Response**
+### Responses
 - `200` - request was processed successfully
 - `400` - request data didn't pass validation

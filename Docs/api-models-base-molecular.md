@@ -25,7 +25,7 @@ Includes molecular data.
 
 **`MethylationSubtype`** - Methylation subtype of the specimen.
 - Type: _String_
-- Possible values: `"	RTKI"`, `"RTKII"`, `"Mesenchymal"`, `"H3-K27"`, `"H3-G34"`
+- Possible values: `"RTKI"`, `"RTKII"`, `"Mesenchymal"`, `"H3-K27"`, `"H3-G34"`
 - Limitations: Can be set only if 'IdhStatus' is 'Wild Type'
 - Example: `"RTKI"`
 

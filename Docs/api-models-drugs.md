@@ -21,7 +21,7 @@ Drug screening upload data model.
 
 **`Data`** - Drugs screening data.
 - Type: _Array_
-- Element type: _Object([DrugScreening](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-models-base-drugs.md))_
+- Element type: _Object([DrugScreening](api-models-base-drugs.md))_
 - Example: `[{...}, {...}]`
 
 ##

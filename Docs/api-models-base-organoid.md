@@ -21,7 +21,7 @@ _At least one field has to be set_
 
 **`Interventions`** - Interventions applied.
 - Type: _Array_
-- Element type: _Object([OrganoidIntervention](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-specimens-models-organoid.md#organoid-intervention))_
+- Element type: _Object([OrganoidIntervention](api-specimens-models-organoid.md#organoid-intervention))_
 - Example: `[{...}, {...}]`
 
 ## Organoid Intervention

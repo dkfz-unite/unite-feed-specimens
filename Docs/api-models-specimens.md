@@ -35,32 +35,32 @@ Specimen upload data model.
 - Example: `36`
 
 **`Tissue`** - Tissue data (if specimen is a tissue).
-- Type: _Object([Tissue](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-models-base-tissue.md))_
+- Type: _Object([Tissue](api-models-base-tissue.md))_
 - Limitations - Only either 'Tissue' or 'CellLine' or 'Organoid' or 'Xenograft' can be set at once.
 - Example: `{...}`
 
 **`CellLine`** - Cell line data (if specimen is a cell line).
-- Type: _Object([CellLine](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-models-base-cellline.md))_
+- Type: _Object([CellLine](api-models-base-cellline.md))_
 - Limitations - Only either 'Tissue' or 'CellLine' or 'Organoid' or 'Xenograft' can be set at once.
 - Example: `{...}`
 
 **`Organoid`** - Organoid data (if specimen is an organoid).
-- Type: _Object([Organoid](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-models-base-organoid.md))_
+- Type: _Object([Organoid](api-models-base-organoid.md))_
 - Limitations - Only either 'Tissue' or 'CellLine' or 'Organoid' or 'Xenograft' can be set at once.
 - Example: `{...}`
 
 **`Xenograft`** - Xenograft data (if specimen is a xenograft).
-- Type: _Object([Xenograft](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-models-base-xenograft.md))_
+- Type: _Object([Xenograft](api-models-base-xenograft.md))_
 - Limitations - Only either 'Tissue' or 'CellLine' or 'Organoid' or 'Xenograft' can be set at once.
 - Example: `{...}`
 
 **`MolecularData`** - Specimen molecular data.
-- Type: _Object([MolecularData](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-models-base-molecular.md))_
+- Type: _Object([MolecularData](api-models-base-molecular.md))_
 - Example: `{...}`
 
 **`DrugsScreeningData`** - Specimen drugs screening data.
 - Type: _Array_
-- Element type: _Object([DrugScreeningData](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Docs/api-models-base-drugs.md))_
+- Element type: _Object([DrugScreeningData](api-models-base-drugs.md))_
 - Example: `[{...}, {...}]`
 
 ##
