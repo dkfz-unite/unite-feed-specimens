@@ -30,7 +30,7 @@ UNITE_SQL_HOST|SQL server host|localhost|sql.unite.net
 UNITE_SQL_PORT|SQL server port|5432|5432
 UNITE_SQL_USER|SQL server user||
 UNITE_SQL_PASSWORD|SQL server password||
-UNITE_INDEXING_BUCKET_SIZE|Indexing bucket size|10|
+UNITE_INDEXING_BUCKET_SIZE|Indexing bucket size|100|100
 
 ## Installation
 
@@ -69,7 +69,7 @@ docker run \
 -e UNITE_SQL_PORT=5432 \
 -e UNITE_SQL_USER=[sql_user] \
 -e UNITE_SQL_PASSWORD=[sql_password] \
--e UNITE_INDEXING_BUCKET_SIZE=10 \
+-e UNITE_INDEXING_BUCKET_SIZE=100 \
 -d \
 unite.specimens.feed:latest
 ```
