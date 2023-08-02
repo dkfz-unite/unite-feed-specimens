@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Unite.Specimens.Feed.Data.Specimens;
 using Unite.Specimens.Feed.Data.Specimens.Exceptions;
 using Unite.Specimens.Feed.Web.Models;
@@ -8,6 +9,7 @@ using Unite.Specimens.Feed.Web.Services;
 namespace Unite.Specimens.Feed.Web.Controllers;
 
 [Route("api/[controller]")]
+[Authorize]
 public class DrugsController : Controller
 {
     private readonly DrugScreeningDataWriter _dataWriter;

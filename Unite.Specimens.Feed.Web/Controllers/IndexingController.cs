@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Unite.Specimens.Feed.Web.Services;
 
 namespace Unite.Specimens.Feed.Web.Controllers;
 
 [Route("api/[controller]/[action]")]
+[Authorize]
 public class IndexingController : Controller
 {
     private readonly SpecimenIndexingTasksService _indexingTaskService;
