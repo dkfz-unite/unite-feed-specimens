@@ -15,6 +15,9 @@ Request implements **UPSERT** logic:
 - Existing data will be updated
 - Redundand data will be removed
 
+### Headers
+- `Authorization: Bearer [token]` - JWT token with `Data.Write` permission.
+
 ### Body - application/json
 ```json
 [
@@ -164,6 +167,8 @@ Fields description can be found [here](Docs/api-models-specimens.md).
 ### Responses
 - `200` - request was processed successfully
 - `400` - request data didn't pass validation
+- `401` - missing JWT token
+- `403` - missing required permissions
 
 
 ## POST: [api/drugs](http://localhost:5102/api/drugs)
@@ -173,6 +178,9 @@ Request implements **UPSERT** logic:
 - Missing data will be populated
 - Existing data will be updated
 - Redundand data will be removed
+
+### Headers
+- `Authorization: Bearer [token]` - JWT token with `Data.Write` permission.
 
 ### Body - application/json
 ```json
@@ -206,3 +214,5 @@ Fields description can be found [here](Docs/api-models-drugs.md).
 ### Responses
 - `200` - request was processed successfully
 - `400` - request data didn't pass validation
+- `401` - missing JWT token
+- `403` - missing required permissions
