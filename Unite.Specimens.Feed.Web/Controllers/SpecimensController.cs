@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Unite.Specimens.Feed.Data.Specimens;
 using Unite.Specimens.Feed.Data.Specimens.Exceptions;
+using Unite.Specimens.Feed.Web.Configuration.Constants;
 using Unite.Specimens.Feed.Web.Models;
 using Unite.Specimens.Feed.Web.Models.Base.Converters;
 using Unite.Specimens.Feed.Web.Services;
@@ -9,7 +10,7 @@ using Unite.Specimens.Feed.Web.Services;
 namespace Unite.Specimens.Feed.Web.Controllers;
 
 [Route("api/[controller]")]
-[Authorize]
+[Authorize(Policy = Policies.Data.Writer)]
 public class SpecimensController : Controller
 {
     private readonly SpecimenDataWriter _dataWriter;
