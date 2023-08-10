@@ -28,7 +28,7 @@
     "Unite.Specimens.Feed.Web": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:5102",
+      "applicationUrl": "http://localhost:5104",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "UNITE_API_KEY": "Defautl32BitApiKeyHasToBeChanged",
