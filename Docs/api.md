@@ -1,13 +1,13 @@
 # Specimens Data Feed API
 
-## GET: [api](http://localhost:5104/api) - [api/specimens-feed](http://localhost:5104/api/specimens-feed)
+## GET: [api](http://localhost:5104/api) - [api/specimens-feed](https://localhost/api/specimens-feed)
 Health check.
 
 ### Responses
 `"2022-03-17T09:45:10.9359202Z"` - Current UTC date and time in JSON format, if service is up and running
 
 
-## POST: [api/specimens](http://localhost:5104/api/specimens) - [api/specimens-feed/specimens](http://localhost:5104/api/specimens-feed/specimens)
+## POST: [api/specimens](http://localhost:5104/api/specimens) - [api/specimens-feed/specimens](https://localhost/api/specimens-feed/specimens)
 Submit specimens data (tissue, cell line, organoid or xenograft).
 
 Request implements **UPSERT** logic:
@@ -171,7 +171,7 @@ Fields description can be found [here](Docs/api-models-specimens.md).
 - `403` - missing required permissions
 
 
-## POST: [api/drugs](http://localhost:5104/api/drugs) - [api/specimens-feed/drugs](http://localhost:5104/api/specimens-feed/drugs)
+## POST: [api/drugs](http://localhost:5104/api/drugs) - [api/specimens-feed/drugs](http://localhost/api/specimens-feed/drugs)
 Submit drugs screening data. Donors and specimens should be present in the system.
 
 Request implements **UPSERT** logic:
