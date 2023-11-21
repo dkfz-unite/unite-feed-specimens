@@ -162,7 +162,7 @@ Request implements **UPSERT** logic:
     },
 ]
 ```
-Fields description can be found [here](Docs/api-models-specimens.md).
+Fields description can be found [here](api-models-specimens.md).
 
 ### Responses
 - `200` - request was processed successfully
@@ -209,7 +209,7 @@ Request implements **UPSERT** logic:
     }
 ]
 ```
-Fields description can be found [here](Docs/api-models-drugs.md).
+Fields description can be found [here](api-models-drugs.md).
 
 ### Responses
 - `200` - request was processed successfully
