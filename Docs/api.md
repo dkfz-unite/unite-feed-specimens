@@ -22,33 +22,33 @@ Request implements **UPSERT** logic:
 ```json
 [
     {
-        "Id": "TI1",
-        "DonorId": "DO1",
-        "ParentId": null,
-        "ParentType": null,
-        "CreationDate": "2020-02-01T00:00:00",
-        "CreationDay": null,
-        "Tissue": {
-            "Type": "Tumor",
-            "TumorType": "Primary",
-            "Source": "Solid tissue"
+        "id": "TI1",
+        "donorId": "DO1",
+        "parentId": null,
+        "parentType": null,
+        "creationDate": "2020-02-01",
+        "creationDay": null,
+        "tissue": {
+            "type": "Tumor",
+            "tumorType": "Primary",
+            "source": "Solid tissue"
         },
-        "MolecularData": {
-            "MgmtStatus": "Methylated",
-            "IdhStatus": "Wild Type",
-            "IdhMutation": null,
-            "GeneExpressionSubtype": "Classical",
-            "MethylationSubtype": "H3-K27",
-            "GcimpMethylation": true
+        "molecularData": {
+            "mgmtStatus": "Methylated",
+            "idhStatus": "Wild Type",
+            "idhMutation": null,
+            "geneExpressionSubtype": "Classical",
+            "methylationSubtype": "H3-K27",
+            "gcimpMethylation": true
         }
     },
     {
-        "Id": "CL1TI1",
-        "DonorId": "DO1",
-        "ParentId": "TI1",
-        "ParentType": "Tissue",
-        "CreationDate": "2020-02-05T00:00:00",
-        "CreationDay": null,
+        "id": "CL1TI1",
+        "donorId": "DO1",
+        "parentId": "TI1",
+        "parentType": "Tissue",
+        "creationDate": "2020-02-05",
+        "creationDay": null,
         "CellLine": {
             "Species": "Human",
             "Type": "Stem Cell",
@@ -57,7 +57,7 @@ Request implements **UPSERT** logic:
                 "Name": "CLP_CL1TI1",
                 "DepositorName": "Erica Polden",
                 "DepositorEstablishment": "Colonord Research Centre",
-                "EstablishmentDate": "2020-02-05T00:00:00",
+                "EstablishmentDate": "2020-02-05",
                 "PubMedLink": "https://pubmed.ncbi.nlm.nih.gov",
                 "AtccLink": "https://www.atcc.org/",
                 "ExPasyLink": "https://www.expasy.org/"
@@ -80,22 +80,22 @@ Request implements **UPSERT** logic:
                 "AbsIC75": 48.74
             }
         ],
-        "MolecularData": {
-            "MgmtStatus": "Methylated",
-            "IdhStatus": "Wild Type",
-            "IdhMutation": null,
-            "GeneExpressionSubtype": "Classical",
-            "MethylationSubtype": "H3-K27",
-            "GcimpMethylation": true
+        "molecularData": {
+            "mgmtStatus": "Methylated",
+            "idhStatus": "Wild Type",
+            "idhMutation": null,
+            "geneExpressionSubtype": "Classical",
+            "methylationSubtype": "H3-K27",
+            "gcimpMethylation": true
         }
     },
     {
-        "Id": "XE1CL1TI1",
-        "DonorId": "DO1",
-        "ParentId": "CL1TI1",
-        "ParentType": "CellLine",
-        "CreationDate": "2020-03-01T00:00:00",
-        "CreationDay": null,
+        "id": "XE1CL1TI1",
+        "donorId": "DO1",
+        "parentId": "CL1TI1",
+        "parentType": "CellLine",
+        "creationDate": "2020-03-01",
+        "creationDay": null,
         "Xenograft": {
             "MouseStrain": "Nude",
             "GroupSize": 9,
@@ -109,31 +109,31 @@ Request implements **UPSERT** logic:
                 {
                     "Type": "Intervention type",
                     "Details": "Intervention details",
-                    "StartDate": "2020-03-05T00:00:00",
+                    "StartDate": "2020-03-05",
                     "StartDay": null,
-                    "EndDate": "2020-03-10T00:00:00",
+                    "EndDate": "2020-03-10",
                     "DurationDays": null,
                     "Results": "Intervention results"
                 }
             ]
         },
         "DrugsScreeningData": null,
-        "MolecularData": {
-            "MgmtStatus": "Methylated",
-            "IdhStatus": "Wild Type",
-            "IdhMutation": null,
-            "GeneExpressionSubtype": "Classical",
-            "MethylationSubtype": "H3-K27",
-            "GcimpMethylation": true
+        "molecularData": {
+            "mgmtStatus": "Methylated",
+            "idhStatus": "Wild Type",
+            "idhMutation": null,
+            "geneExpressionSubtype": "Classical",
+            "methylationSubtype": "H3-K27",
+            "gcimpMethylation": true
         }
     },
     {
-        "Id": "OR1CL1TI1",
-        "DonorId": "DO1",
-        "ParentId": "CL1TI1",
-        "ParentType": "CellLine",
-        "CreationDate": "2020-04-01T00:00:00",
-        "CreationDay": null,
+        "id": "OR1CL1TI1",
+        "donorId": "DO1",
+        "parentId": "CL1TI1",
+        "parentType": "CellLine",
+        "creationDate": "2020-04-01",
+        "creationDay": null,
         "Organoid": {
             "Medium": "Medium 1",
             "ImplantedCellsNumber": 1500000,
@@ -142,22 +142,22 @@ Request implements **UPSERT** logic:
                 {
                     "Type": "Intervention type",
                     "Details": "Intervention details",
-                    "StartDate": "2020-04-05T00:00:00",
+                    "StartDate": "2020-04-05",
                     "StartDay": null,
-                    "EndDate": "2020-04-10T00:00:00",
+                    "EndDate": "2020-04-10",
                     "DurationDays": null,
                     "Results": "Intervention results"
                 }
             ]
         },
         "DrugsScreeningData": null,
-        "MolecularData": {
-            "MgmtStatus": "Methylated",
-            "IdhStatus": "Mutant",
-            "IdhMutation": "IDH1 R132C",
-            "GeneExpressionSubtype": null,
-            "MethylationSubtype": null,
-            "GcimpMethylation": true
+        "molecularData": {
+            "mgmtStatus": "Methylated",
+            "idhStatus": "Mutant",
+            "idhMutation": "IDH1 R132C",
+            "geneExpressionSubtype": null,
+            "methylationSubtype": null,
+            "gcimpMethylation": true
         }
     },
 ]
