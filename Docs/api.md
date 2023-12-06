@@ -171,6 +171,31 @@ Fields description can be found [here](api-models-specimens.md).
 - `403` - missing required permissions
 
 
+## POST: [api/tissues/tsv](http://localhost:5104/api/tissues/tsv) - [api/specimens-feed/tissues/tsv](https://localhost/api/specimens-feed/tissues/tsv)
+Submit specimens tissues data.
+
+Request implements **UPSERT** logic:
+- Missing data will be populated
+- Existing data will be updated
+- Redundand data will be removed
+
+### Headers
+- `Authorization: Bearer [token]` - JWT token with `Data.Write` permission.
+
+### Body - text/tab-separated-values
+```tsv
+id	donorId	parentId	parentType	creationDate	creationDay	type	tumorType	source	mgmtStatus	idhStatus	idhMutation	geneExpressionSubtype	methylationSubtype	gcimpMethylation
+TI1	DO1			2020-02-01		Tumor	Primary	Solid tissue	Methylated	Wild Type		Classical	H3-K27	true
+```
+Fields description can be found [here](api-models-specimens.md).
+
+### Responses
+- `200` - request was processed successfully
+- `400` - request data didn't pass validation
+- `401` - missing JWT token
+- `403` - missing required permissions
+
+
 ## POST: [api/drugs](http://localhost:5104/api/drugs) - [api/specimens-feed/drugs](http://localhost/api/specimens-feed/drugs)
 Submit drugs screening data. Donors and specimens should be present in the system.
 
