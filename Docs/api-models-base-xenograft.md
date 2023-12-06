@@ -65,9 +65,9 @@ Includes xenograft intervention data.
 **`StartDate`** - Date, when intervention has started.
 - Note: It's hidden and protected. Relative date is shown instead, if calculation was possible.
 - Type: _String_
-- Format: "YYYY-MM-DDTHH:MM:SS"
+- Format: "YYYY-MM-DD"
 - Limitations: Only either 'StartDateDate' or 'StartDay' can be set at once, not both
-- Example: `"2020-01-07T00:00:00"`
+- Example: `"2020-01-07"`
 
 **`StartDay`** - Relative number of days since specimen creation, when intervention has started.
 - Type: _Number_
@@ -77,9 +77,9 @@ Includes xenograft intervention data.
 **`EndDate`** - Date, when intervention has ended.
 - Note: It's hidden and protected. Relative date is shown instead, if calculation was possible.
 - Type: _String_
-- Format: "YYYY-MM-DDTHH:MM:SS"
+- Format: "YYYY-MM-DD"
 - Limitations: Only either 'EndDateDate' or 'DurationDays' can be set at once, not both
-- Example: `"2020-01-27T00:00:00"`
+- Example: `"2020-01-27"`
 
 **`DurationDays`** - Intervention duration in days.
 - Type: _Number_
