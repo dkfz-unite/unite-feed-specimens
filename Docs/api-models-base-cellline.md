@@ -44,8 +44,8 @@ _At least one field has to be set_
 
 **`EstablishmentDate`** - Date of the cell line establishment.
 - Type: _String_
-- Format: "YYYY-MM-DDTHH:MM:SS"
-- Example: `"2020-02-05T00:00:00"`
+- Format: "YYYY-MM-DD"
+- Example: `"2020-02-05"`
 
 **`PubMedLink`** - [PubMed](https://pubmed.ncbi.nlm.nih.gov/) publication link.
 - Type: _String_
