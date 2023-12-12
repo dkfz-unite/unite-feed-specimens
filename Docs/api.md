@@ -23,32 +23,32 @@ Request implements **UPSERT** logic:
 [
     {
         "id": "TI1",
-        "donorId": "DO1",
-        "parentId": null,
-        "parentType": null,
-        "creationDate": "2020-02-01",
-        "creationDay": null,
+        "donor_id": "DO1",
+        "parent_id": null,
+        "parent_type": null,
+        "creation_date": "2020-02-01",
+        "creation_day": null,
         "tissue": {
             "type": "Tumor",
-            "tumorType": "Primary",
+            "tumor_type": "Primary",
             "source": "Solid tissue"
         },
-        "molecularData": {
-            "mgmtStatus": "Methylated",
-            "idhStatus": "Wild Type",
-            "idhMutation": null,
-            "geneExpressionSubtype": "Classical",
-            "methylationSubtype": "H3-K27",
-            "gcimpMethylation": true
+        "molecular_data": {
+            "mgmt_status": "Methylated",
+            "idh_status": "Wild Type",
+            "idh_mutation": null,
+            "gene_expression_subtype": "Classical",
+            "methylation_subtype": "H3-K27",
+            "gcimp_methylation": true
         }
     },
     {
         "id": "CL1TI1",
-        "donorId": "DO1",
-        "parentId": "TI1",
-        "parentType": "Tissue",
-        "creationDate": "2020-02-05",
-        "creationDay": null,
+        "donor_id": "DO1",
+        "parent_id": "TI1",
+        "parent_type": "Tissue",
+        "creation_date": "2020-02-05",
+        "creation_day": null,
         "CellLine": {
             "Species": "Human",
             "Type": "Stem Cell",
@@ -80,22 +80,22 @@ Request implements **UPSERT** logic:
                 "AbsIC75": 48.74
             }
         ],
-        "molecularData": {
-            "mgmtStatus": "Methylated",
-            "idhStatus": "Wild Type",
-            "idhMutation": null,
-            "geneExpressionSubtype": "Classical",
-            "methylationSubtype": "H3-K27",
-            "gcimpMethylation": true
+        "molecular_data": {
+            "mgmt_status": "Methylated",
+            "idh_status": "Wild Type",
+            "idh_mutation": null,
+            "gene_expression_subtype": "Classical",
+            "methylation_subtype": "H3-K27",
+            "gcimp_methylation": true
         }
     },
     {
         "id": "XE1CL1TI1",
-        "donorId": "DO1",
-        "parentId": "CL1TI1",
-        "parentType": "CellLine",
-        "creationDate": "2020-03-01",
-        "creationDay": null,
+        "donor_id": "DO1",
+        "parent_id": "CL1TI1",
+        "parent_type": "CellLine",
+        "creation_date": "2020-03-01",
+        "creation_day": null,
         "Xenograft": {
             "MouseStrain": "Nude",
             "GroupSize": 9,
@@ -118,22 +118,22 @@ Request implements **UPSERT** logic:
             ]
         },
         "DrugsScreeningData": null,
-        "molecularData": {
-            "mgmtStatus": "Methylated",
-            "idhStatus": "Wild Type",
-            "idhMutation": null,
-            "geneExpressionSubtype": "Classical",
-            "methylationSubtype": "H3-K27",
-            "gcimpMethylation": true
+        "molecular_data": {
+            "mgmt_status": "Methylated",
+            "idh_status": "Wild Type",
+            "idh_mutation": null,
+            "gene_expression_subtype": "Classical",
+            "methylation_subtype": "H3-K27",
+            "gcimp_methylation": true
         }
     },
     {
         "id": "OR1CL1TI1",
-        "donorId": "DO1",
-        "parentId": "CL1TI1",
-        "parentType": "CellLine",
-        "creationDate": "2020-04-01",
-        "creationDay": null,
+        "donor_id": "DO1",
+        "parent_id": "CL1TI1",
+        "parent_type": "CellLine",
+        "creation_date": "2020-04-01",
+        "creation_day": null,
         "Organoid": {
             "Medium": "Medium 1",
             "ImplantedCellsNumber": 1500000,
@@ -151,13 +151,13 @@ Request implements **UPSERT** logic:
             ]
         },
         "DrugsScreeningData": null,
-        "molecularData": {
-            "mgmtStatus": "Methylated",
-            "idhStatus": "Mutant",
-            "idhMutation": "IDH1 R132C",
-            "geneExpressionSubtype": null,
-            "methylationSubtype": null,
-            "gcimpMethylation": true
+        "molecular_data": {
+            "mgmt_status": "Methylated",
+            "idh_status": "Mutant",
+            "idh_mutation": "IDH1 R132C",
+            "gene_expression_subtype": null,
+            "methylation_subtype": null,
+            "gcimp_methylation": true
         }
     },
 ]
@@ -184,7 +184,7 @@ Request implements **UPSERT** logic:
 
 ### Body - text/tab-separated-values
 ```tsv
-id	donorId	parentId	parentType	creationDate	creationDay	type	tumorType	source	mgmtStatus	idhStatus	idhMutation	geneExpressionSubtype	methylationSubtype	gcimpMethylation
+id	donor_id	parent_id	parent_type	creation_date	creation_day	type	tumor_type	source	mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation
 TI1	DO1			2020-02-01		Tumor	Primary	Solid tissue	Methylated	Wild Type		Classical	H3-K27	true
 ```
 Fields description can be found [here](api-models-specimens.md).
