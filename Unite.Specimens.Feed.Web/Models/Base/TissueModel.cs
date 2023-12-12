@@ -10,7 +10,7 @@ public record TissueModel
 
     [JsonPropertyName("type")]
     public TissueType? Type { get; init; }
-    [JsonPropertyName("tumorType")]
+    [JsonPropertyName("tumor_type")]
     public TumorType? TumorType { get; init; }
     [JsonPropertyName("source")]
     public string Source { get => _source?.Trim(); init => _source = value; }
