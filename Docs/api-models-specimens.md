@@ -7,29 +7,29 @@ Specimen upload data model.
 - Limitations: Maximum length 255
 - Example: `"CL1TI1"`
 
-**`donorId`*** - Specimen donor identifier.
+**`donor_id`*** - Specimen donor identifier.
 - Type: _String_
 - Limitations: Maximum length 255
 - Example: `"DO1"`
 
-**`parentId`** - Parent specimen identifier.
+**`parent_id`** - Parent specimen identifier.
 - Type: _String_
 - Limitations: Maximum length 255
 - Example: `"TI1"`
 
-**`parentType`** - Parent specimen type.
+**`parent_type`** - Parent specimen type.
 - Type: _String_
 - Possible values: `"Tissue"`, `"CellLine"`, `"Organoid"`, `"Xenograft"`
 - Example: `"Tissue"`
 
-**`creationDate`** - Date when specimen was created.
+**`creation_date`** - Date when specimen was created.
 - Note: It's hidden and protected. Relative date is shown instead, if calculation was possible.
 - Type: _String_
 - Format: "YYYY-MM-DD"
 - Limitations: Only either CreationDate-Date or CreationDate-Day can be set at once, not both
 - Example: `"2020-02-05"`
 
-**`creationDay`** - Relative number of days since diagnosis statement when specimen was created.
+**`creation_day`** - Relative number of days since diagnosis statement when specimen was created.
 - Type: _Number_
 - Limitations: Integer, greater or equal to 0, only either CreationDate-Date or CreationDate-Day can be set at once, not both
 - Example: `36`
@@ -54,7 +54,7 @@ Specimen upload data model.
 - Limitations - Only either 'Tissue' or 'CellLine' or 'Organoid' or 'Xenograft' can be set at once.
 - Example: `{...}`
 
-**`molecularData`** - Specimen molecular data.
+**`molecular_data`** - Specimen molecular data.
 - Type: _Object([MolecularData](api-models-base-molecular.md))_
 - Example: `{...}`
 
