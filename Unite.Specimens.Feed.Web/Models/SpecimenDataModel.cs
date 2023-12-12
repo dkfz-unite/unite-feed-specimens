@@ -15,15 +15,15 @@ public record SpecimenDataModel
 
     [JsonPropertyName("id")]
     public string Id { get => _id?.Trim(); init => _id = value; }
-    [JsonPropertyName("parentId")]
+    [JsonPropertyName("parent_id")]
     public string ParentId { get => _parentId?.Trim(); init => _parentId = value; }
-    [JsonPropertyName("parentType")]
+    [JsonPropertyName("parent_type")]
     public SpecimenType? ParentType { get => _parentType; init => _parentType = value; }
-    [JsonPropertyName("donorId")]
+    [JsonPropertyName("donor_id")]
     public string DonorId { get => _donorId?.Trim(); init => _donorId = value; }
-    [JsonPropertyName("creationDate")]
+    [JsonPropertyName("creation_date")]
     public DateTime? CreationDate { get => _creationDate; init => _creationDate = value; }
-    [JsonPropertyName("creationDay")]
+    [JsonPropertyName("creation_day")]
     public int? CreationDay { get => _creationDay; init => _creationDay = value; }
 
     [JsonPropertyName("tissue")]
@@ -32,7 +32,7 @@ public record SpecimenDataModel
     public Base.OrganoidModel Organoid { get; init; }
     public Base.XenograftModel Xenograft { get; init; }
 
-    [JsonPropertyName("molecularData")]
+    [JsonPropertyName("molecular_data")]
     public Base.MolecularDataModel MolecularData { get; init; }
     public Base.DrugScreeningModel[] DrugsScreeningData { get; init; }
 }
