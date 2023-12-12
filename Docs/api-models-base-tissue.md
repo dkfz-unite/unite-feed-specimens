@@ -6,7 +6,7 @@ Includes tissue data.
 - Possible values: `"Control"`, `"Tumor"`
 - Example: `"Tumor"`
 
-**`tumorType`** - Tissue tumor type (if tissue is tumor tissue).
+**`tumor_type`** - Tissue tumor type (if tissue is tumor tissue).
 - Type: _String_
 - Possible values: `"Primary"`, `"Metastasis"`, `"Recurrent"`
 - Example: `"Primary"`
