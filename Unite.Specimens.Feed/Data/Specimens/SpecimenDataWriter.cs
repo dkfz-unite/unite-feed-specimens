@@ -1,6 +1,8 @@
-﻿using Unite.Data.Entities.Donors;
+﻿using Microsoft.EntityFrameworkCore;
+using Unite.Data.Context;
+using Unite.Data.Context.Services;
+using Unite.Data.Entities.Donors;
 using Unite.Data.Entities.Specimens;
-using Unite.Data.Services;
 using Unite.Specimens.Feed.Data.Specimens.Exceptions;
 using Unite.Specimens.Feed.Data.Specimens.Models;
 using Unite.Specimens.Feed.Data.Specimens.Models.Audit;
@@ -15,8 +17,10 @@ public class SpecimenDataWriter : DataWriter<SpecimenModel, SpecimensUploadAudit
     private readonly DrugScreeningRepository _drugScreeningRepository;
 
 
-    public SpecimenDataWriter(DomainDbContext dbContext) : base(dbContext)
+    public SpecimenDataWriter(IDbContextFactory<DomainDbContext> dbContextFactory) : base(dbContextFactory)
     {
+        var dbContext = dbContextFactory.CreateDbContext();
+        
         _donorRepository = new DonorRepository(dbContext);
         _specimenRepository = new SpecimenRepository(dbContext);
         _drugScreeningRepository = new DrugScreeningRepository(dbContext);

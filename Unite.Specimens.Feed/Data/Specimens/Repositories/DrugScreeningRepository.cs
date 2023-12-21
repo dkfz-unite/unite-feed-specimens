@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Unite.Data.Context;
 using Unite.Data.Entities.Specimens;
-using Unite.Data.Services;
 using Unite.Specimens.Feed.Data.Specimens.Models;
 
 namespace Unite.Specimens.Feed.Data.Specimens.Repositories;
@@ -148,7 +148,7 @@ internal class DrugScreeningRepository
         entity.AbsIC75 = model.AbsIC75;
         entity.Concentration = model.Concentration;
         entity.Inhibition = model.Inhibition;
-        entity.Dose = model.Dose;
-        entity.Response = model.Response;
+        entity.ConcentrationLine = model.Dose;
+        entity.InhibitionLine = model.Response;
     }
 }

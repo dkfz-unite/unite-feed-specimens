@@ -1,18 +1,21 @@
-﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Unite.Data.Context;
+using Unite.Data.Context.Extensions.Queryable;
+using Unite.Data.Context.Repositories;
+using Unite.Data.Context.Repositories.Constants;
 using Unite.Data.Entities.Donors;
 using Unite.Data.Entities.Donors.Clinical;
+using Unite.Data.Entities.Genome.Analysis;
 using Unite.Data.Entities.Genome.Transcriptomics;
 using Unite.Data.Entities.Genome.Variants;
 using Unite.Data.Entities.Images;
+using Unite.Data.Entities.Images.Enums;
 using Unite.Data.Entities.Specimens;
-using Unite.Data.Entities.Specimens.Tissues.Enums;
-using Unite.Data.Services;
-using Unite.Data.Services.Extensions;
+using Unite.Data.Entities.Specimens.Enums;
+using Unite.Essentials.Extensions;
+using Unite.Indices.Entities;
 using Unite.Indices.Entities.Specimens;
-using Unite.Indices.Services;
-using Unite.Specimens.Indices.Services.Extensions;
-using Unite.Specimens.Indices.Services.Mappers;
+using Unite.Mapping;
 
 using CNV = Unite.Data.Entities.Genome.Variants.CNV;
 using SSM = Unite.Data.Entities.Genome.Variants.SSM;
@@ -20,20 +23,20 @@ using SV = Unite.Data.Entities.Genome.Variants.SV;
 
 namespace Unite.Specimens.Indices.Services;
 
-public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
+public class SpecimenIndexCreationService
 {
-    private readonly DomainDbContext _dbContext;
-    private readonly DonorIndexMapper _donorIndexMapper;
-    private readonly ImageIndexMapper _imageIndexMapper;
-    private readonly SpecimenIndexMapper _specimenIndexMapper;
+    private record GenomicStats(int NumberOfGenes, int NumberOfSsms, int NumberOfCnvs, int NumberOfSvs);
+
+    private readonly IDbContextFactory<DomainDbContext> _dbContextFactory;
+    private readonly DonorsRepository _donorsRepository;
+    private readonly SpecimensRepository _specimensRepository;
 
 
-    public SpecimenIndexCreationService(DomainDbContext dbContext)
+    public SpecimenIndexCreationService(IDbContextFactory<DomainDbContext> dbContextFactory)
     {
-        _dbContext = dbContext;
-        _donorIndexMapper = new DonorIndexMapper();
-        _imageIndexMapper = new ImageIndexMapper();
-        _specimenIndexMapper = new SpecimenIndexMapper();
+        _dbContextFactory = dbContextFactory;
+        _donorsRepository = new DonorsRepository(dbContextFactory);
+        _specimensRepository = new SpecimensRepository(dbContextFactory);
     }
 
 
@@ -56,27 +59,30 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
             return null;
         }
 
-        var index = CreateSpecimenIndex(specimen, diagnosisDate);
-
-        return index;
+        return CreateSpecimenIndex(specimen, diagnosisDate);
     }
 
     private SpecimenIndex CreateSpecimenIndex(Specimen specimen, DateOnly? diagnosisDate)
     {
-        var isTumorTissue = specimen.Tissue?.TypeId == TissueType.Tumor;
-        var isOranoid = specimen.Organoid != null;
-        var isXenograft = specimen.Xenograft != null;
+        var type = specimen.TypeId;
+        var canHaveMris = Predicates.IsImageRelatedSpecimen.Compile()(specimen);
+        var canHaveCts = Predicates.IsImageRelatedSpecimen.Compile()(specimen);
+        var parent = LoadParentSpecimen(specimen.Id);
+        var stats = LoadGenomicStats(specimen.Id);
 
         var index = new SpecimenIndex();
 
-        _specimenIndexMapper.Map(specimen, index, diagnosisDate);
+        SpecimenIndexMapper.Map(specimen, index, diagnosisDate);
 
-        index.Parent = CreateParentSpecimenIndex(specimen.Id, diagnosisDate);
+        index.DonorId = specimen.DonorId;
+        index.ParentId = parent?.Id;
+        index.ParentReferenceId = parent?.ReferenceId;
+        index.ParentType = parent?.TypeId.ToDefinitionString();
+        
         index.Donor = CreateDonorIndex(specimen.DonorId);
-        index.Images = CreateImageIndices(index.Donor.Id, diagnosisDate, isTumorTissue);
-        index.Data = CreateDataIndex(specimen.Id, specimen.Donor.Id, isTumorTissue, isOranoid, isXenograft);
-
-        var stats = LoadGenomicStats(specimen.Id);
+        index.Images = CreateImageIndices(index.Donor.Id, diagnosisDate, canHaveMris);
+        index.Analyses = CreateAnalysisIndices(specimen.Id, diagnosisDate);
+        index.Data = CreateDataIndex(specimen.Id, specimen.Donor.Id, type, canHaveMris, canHaveCts);
 
         index.NumberOfGenes = stats.NumberOfGenes;
         index.NumberOfSsms = stats.NumberOfSsms;
@@ -88,8 +94,11 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
 
     private Specimen LoadSpecimen(int specimenId)
     {
-        var specimen = _dbContext.Set<Specimen>()
-            .Include(specimen => specimen.Donor).ThenInclude(donor => donor.ClinicalData) // Required for diagnosis date
+        using var dbContext = _dbContextFactory.CreateDbContext();
+
+        return dbContext.Set<Specimen>()
+            .AsNoTracking()
+            .Include(specimen => specimen.Donor.ClinicalData) // Required for diagnosis date
             .IncludeTissue()
             .IncludeCellLine()
             .IncludeOrganoid()
@@ -97,44 +106,43 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
             .IncludeMolecularData()
             .IncludeDrugScreeningData()
             .FirstOrDefault(specimen => specimen.Id == specimenId);
-
-        return specimen;
     }
 
 
-    private SpecimenIndex CreateParentSpecimenIndex(int specimeId, DateOnly? diagnosisDate)
+    private AnalysisIndex[] CreateAnalysisIndices(int specimenId, DateOnly? diagnosisDate)
     {
-        var specimen = LoadParentSpecimen(specimeId);
+        var analyses = LoadAnalyses(specimenId);
 
-        if (specimen == null)
-        {
-            return null;
-        }
+        var indices = analyses.Select(analysis => CreateAnalysisIndex(analysis, diagnosisDate));
 
-        var index = CreateParentSpecimenIndex(specimen, diagnosisDate);
-
-        return index;
+        return indices.Any() ? indices.ToArray() : null;
     }
 
-    private SpecimenIndex CreateParentSpecimenIndex(Specimen specimen, DateOnly? diagnosisDate)
+    private static AnalysisIndex CreateAnalysisIndex(AnalysedSample analysis, DateOnly? diagnosisDate)
     {
-        var index = new SpecimenIndex();
-
-        _specimenIndexMapper.Map(specimen, index, diagnosisDate);
-
-        return index;
+        return AnalysisIndexMapper.CreateFrom<AnalysisIndex>(analysis, diagnosisDate);
     }
+
+    private AnalysedSample[] LoadAnalyses(int specimenId)
+    {
+        using var dbContext = _dbContextFactory.CreateDbContext();
+
+        return dbContext.Set<AnalysedSample>()
+            .AsNoTracking()
+            .Include(analysis => analysis.Analysis)
+            .Where(analysis => analysis.TargetSampleId == specimenId)
+            .ToArray();
+    }
+
 
     private Specimen LoadParentSpecimen(int specimeId)
     {
-        var specimen = _dbContext.Set<Specimen>()
-            .IncludeParentTissue()
-            .IncludeParentCellLine()
-            .IncludeParentOrganoid()
-            .IncludeParentXenograft()
-            .FirstOrDefault(specimen => specimen.Id == specimeId).Parent;
+        using var dbContext = _dbContextFactory.CreateDbContext();
 
-        return specimen;
+        return dbContext.Set<Specimen>()
+            .AsNoTracking()
+            .Include(specimen => specimen.Parent)
+            .FirstOrDefault(specimen => specimen.Id == specimeId).Parent;
     }
 
 
@@ -147,126 +155,147 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
             return null;
         }
 
-        var index = CreateDonorIndex(donor);
-
-        return index;
+        return CreateDonorIndex(donor);
     }
 
-    private DonorIndex CreateDonorIndex(Donor donor)
+    private static DonorIndex CreateDonorIndex(Donor donor)
     {
-        var index = new DonorIndex();
-
-        var diagnosisDate = donor.ClinicalData?.DiagnosisDate;
-
-        _donorIndexMapper.Map(donor, index);
-
-        return index;
+        return DonorIndexMapper.CreateFrom<DonorIndex>(donor);
     }
 
     private Donor LoadDonor(int donorId)
     {
-        var donor = _dbContext.Set<Donor>()
+        using var dbContext = _dbContextFactory.CreateDbContext();
+
+        return dbContext.Set<Donor>()
+            .AsNoTracking()
             .IncludeClinicalData()
             .IncludeTreatments()
             .IncludeProjects()
             .IncludeStudies()
             .FirstOrDefault(donor => donor.Id == donorId);
-
-        return donor;
     }
 
 
-    private ImageIndex[] CreateImageIndices(int donorId, DateOnly? diagnosisDate, bool isTumorTissue)
+    private ImageIndex[] CreateImageIndices(int donorId, DateOnly? diagnosisDate, bool canHaveMris)
     {
-        if (!isTumorTissue)
+        if (!canHaveMris)
         {
             return null;
         }
 
         var images = LoadImages(donorId);
 
-        if (images == null)
-        {
-            return null;
-        }
+        var indices = images.Select(image => CreateImageIndex(image, diagnosisDate));
 
-        var indices = images
-            .Select(image => CreateImageIndex(image, diagnosisDate))
-            .ToArray();
-
-        return indices;
+        return indices.Any() ? indices.ToArray() : null;
     }
 
-    private ImageIndex CreateImageIndex(Image image, DateOnly? diagnosisDate)
+    private static ImageIndex CreateImageIndex(Image image, DateOnly? diagnosisDate)
     {
-        var index = new ImageIndex();
-
-        _imageIndexMapper.Map(image, index, diagnosisDate);
-
-        return index;
+        return ImageIndexMapper.CreateFrom<ImageIndex>(image, diagnosisDate);
     }
 
     private Image[] LoadImages(int donorId)
     {
-        var images = _dbContext.Set<Image>()
-            .Include(image => image.MriImage)
-            .Where(image => image.DonorId == donorId)
-            .ToArray();
+        using var dbContext = _dbContextFactory.CreateDbContext();
 
-        return images;
+        var imageIds = _donorsRepository.GetRelatedImages([donorId]).Result;
+
+        return dbContext.Set<Image>()
+            .AsNoTracking()
+            .Include(image => image.MriImage)
+            .Where(image => imageIds.Contains(image.Id))
+            .ToArray();
     }
 
 
-    private DataIndex CreateDataIndex(int specimenId, int donorId, bool isTumorTissue, bool isOranoid, bool isXenograft)
+    private DataIndex CreateDataIndex(int specimenId, int donorId, SpecimenType typeId, bool canHaveMris = false, bool canHaveCts = false)
     {
+        using var dbContext = _dbContextFactory.CreateDbContext();
+
         var index = new DataIndex();
 
-        index.Clinical = _dbContext.Set<ClinicalData>()
+        index.Clinical = dbContext.Set<ClinicalData>()
+            .AsNoTracking()
             .Where(data => data.DonorId == donorId)
             .Any();
 
-        index.Treatments = _dbContext.Set<Treatment>()
+        index.Treatments = dbContext.Set<Treatment>()
             .Where(data => data.DonorId == donorId)
             .Any();
 
-        index.Molecular = _dbContext.Set<MolecularData>()
-            .Where(data => data.SpecimenId == specimenId)
-            .Any();
-
-        index.Drugs = _dbContext.Set<DrugScreening>()
-            .Where(data => data.SpecimenId == specimenId)
-            .Any();
-
-        if (isOranoid)
+        if (canHaveMris)
         {
-            index.Interventions = _dbContext.Set<Data.Entities.Specimens.Organoids.Intervention>()
-                .Where(intervention => intervention.SpecimenId == specimenId)
-                .Any();
-        }
-
-        if (isXenograft)
-        {
-            index.Interventions = _dbContext.Set<Data.Entities.Specimens.Xenografts.Intervention>()
-                .Where(intervention => intervention.SpecimenId == specimenId)
-                .Any();
-        }
-
-        if (isTumorTissue)
-        {
-            index.Mris = _dbContext.Set<Image>()
-                .Include(image => image.MriImage)
+            index.Mris = dbContext.Set<Image>()
+                .AsNoTracking()
                 .Where(image => image.DonorId == donorId)
-                .Where(image => image.MriImage != null)
+                .Where(image => image.TypeId == ImageType.MRI)
                 .Any();
         }
 
-        index.Cts = false;
+        if (canHaveCts)
+        {
+            index.Cts = false;
+        }
 
-        index.Ssms = CheckVariants<SSM.Variant, SSM.VariantOccurrence>(specimenId);
+        if (typeId == SpecimenType.Tissue)
+        {
+            index.Tissues = true;
 
-        index.Cnvs = CheckVariants<CNV.Variant, CNV.VariantOccurrence>(specimenId);
+            index.TissuesMolecular = dbContext.Set<MolecularData>()
+                .AsNoTracking()
+                .Where(data => data.SpecimenId == specimenId)
+                .Any();
+        }
+        else if (typeId == SpecimenType.CellLine)
+        {
+            index.Cells = true;
 
-        index.Svs = CheckVariants<SV.Variant, SV.VariantOccurrence>(specimenId);
+            index.CellsMolecular = dbContext.Set<MolecularData>()
+                .AsNoTracking()
+                .Where(data => data.SpecimenId == specimenId)
+                .Any();
+
+            index.CellsDrugs = dbContext.Set<DrugScreening>()
+                .AsNoTracking()
+                .Where(data => data.SpecimenId == specimenId)
+                .Any();
+        }
+        else if (typeId == SpecimenType.Organoid)
+        {
+            index.Organoids = true;
+
+            index.OrganoidsMolecular = dbContext.Set<MolecularData>()
+                .AsNoTracking()
+                .Where(data => data.SpecimenId == specimenId)
+                .Any();
+
+            index.OrganoidsInterventions = dbContext.Set<Data.Entities.Specimens.Organoids.Intervention>()
+                .AsNoTracking()
+                .Where(intervention => intervention.SpecimenId == specimenId)
+                .Any();
+        }
+        else if (typeId == SpecimenType.Xenograft)
+        {
+            index.Xenografts = true;
+
+            index.XenograftsMolecular = dbContext.Set<MolecularData>()
+                .AsNoTracking()
+                .Where(data => data.SpecimenId == specimenId)
+                .Any();
+
+            index.XenograftsInterventions = dbContext.Set<Data.Entities.Specimens.Xenografts.Intervention>()
+                .AsNoTracking()
+                .Where(intervention => intervention.SpecimenId == specimenId)
+                .Any();
+        }
+
+        index.Ssms = CheckVariants<SSM.Variant, SSM.VariantEntry>(specimenId);
+
+        index.Cnvs = CheckVariants<CNV.Variant, CNV.VariantEntry>(specimenId);
+
+        index.Svs = CheckVariants<SV.Variant, SV.VariantEntry>(specimenId);
 
         index.GeneExp = CheckGeneExp(specimenId);
 
@@ -276,69 +305,14 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
     }
 
 
-    private record GenomicStats(int NumberOfGenes, int NumberOfSsms, int NumberOfCnvs, int NumberOfSvs);
-
     private GenomicStats LoadGenomicStats(int specimenId)
     {
-        var ssmIds = LoadVariantIds<SSM.Variant, SSM.VariantOccurrence>(specimenId);
-        var cnvIds = LoadVariantIds<CNV.Variant, CNV.VariantOccurrence>(specimenId);
-        var svIds = LoadVariantIds<SV.Variant, SV.VariantOccurrence>(specimenId);
-        var ssmGeneIds = LoadGeneIds<SSM.Variant, SSM.AffectedTranscript>(ssmIds);
-        var cnvGeneIds = LoadGeneIds<CNV.Variant, CNV.AffectedTranscript>(cnvIds, affectedTranscript => affectedTranscript.Variant.TypeId != CNV.Enums.CnvType.Neutral);
-        var svGeneIds = LoadGeneIds<SV.Variant, SV.AffectedTranscript>(svIds);
-        var geneIds = Array.Empty<int>().Union(ssmGeneIds).Union(cnvGeneIds).Union(svGeneIds).ToArray();
+        var ssmIds = _specimensRepository.GetRelatedVariants<SSM.Variant>([specimenId]).Result;
+        var cnvIds = _specimensRepository.GetRelatedVariants<CNV.Variant>([specimenId]).Result;
+        var svIds = _specimensRepository.GetRelatedVariants<SV.Variant>([specimenId]).Result;
+        var geneIds = _specimensRepository.GetVariantRelatedGenes([specimenId]).Result;
 
         return new GenomicStats(geneIds.Length, ssmIds.Length, cnvIds.Length, svIds.Length);
-    }
-
-    /// <summary>
-    /// Loads identifiers of genes affected by given variants.
-    /// </summary>
-    /// <param name="variantIds">Varians identifiers.</param>
-    /// <param name="filter">Affected transcript filter.</param>
-    /// <typeparam name="TVariant">Variant type.</typeparam>
-    /// <typeparam name="TAffectedTranscript">Variant affected transcript type.</typeparam>
-    /// <returns>Array of genes identifiers.</returns>
-    private int[] LoadGeneIds<TVariant, TAffectedTranscript>(long[] variantIds, Expression<Func<TAffectedTranscript, bool>> filter = null)
-        where TVariant : Variant
-        where TAffectedTranscript : VariantAffectedFeature<TVariant, Data.Entities.Genome.Transcript>
-    {
-        Expression<Func<TAffectedTranscript, bool>> selectorPredicate = (affectedTranscript => variantIds.Contains(affectedTranscript.VariantId));
-        Expression<Func<TAffectedTranscript, bool>> filterPredicate = filter ?? (affectedTranscript => true);
-
-        var ids = _dbContext.Set<TAffectedTranscript>()
-            .Where(selectorPredicate)
-            .Where(filterPredicate)
-            .Select(affectedTranscript => affectedTranscript.Feature.GeneId.Value)
-            .Distinct()
-            .ToArray();
-
-        return ids;
-    }
-
-    /// <summary>
-    /// Loads identifiers of variants of given type occurring in given specimens.
-    /// </summary>
-    /// <param name="specimenIds">Specimens identifiers.</param>
-    /// <param name="filter">Variant occurrence filter.</param>
-    /// <typeparam name="TVariant">Variant type.</typeparam>
-    /// <typeparam name="TVariantOccurrence">Variant occurrence type.</typeparam>
-    /// <returns>Array of variants identifiers.</returns>
-    private long[] LoadVariantIds<TVariant, TVariantOccurrence>(int specimenId, Expression<Func<TVariantOccurrence, bool>> filter = null)
-        where TVariant : Variant
-        where TVariantOccurrence : VariantOccurrence<TVariant>
-    {
-        Expression<Func<TVariantOccurrence, bool>> selectorPredicate = (occurrence => occurrence.AnalysedSample.Sample.SpecimenId == specimenId);
-        Expression<Func<TVariantOccurrence, bool>> filterPredicate = filter ?? (occurrence => true);
-
-        var ids = _dbContext.Set<TVariantOccurrence>()
-            .Where(selectorPredicate)
-            .Where(filterPredicate)
-            .Select(occurrence => occurrence.VariantId)
-            .Distinct()
-            .ToArray();
-
-        return ids;
     }
 
     /// <summary>
@@ -346,15 +320,18 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
     /// </summary>
     /// <param name="specimenId">Specimen identifier.</param>
     /// <typeparam name="TVariant">Variant type.</typeparam>
-    /// <typeparam name="TVariantOccurrence">Variant occurrence type.</typeparam>
+    /// <typeparam name="TVariantEntry">Variant occurrence type.</typeparam>
     /// <returns>'true' if variants data exists or 'false' otherwise.</returns>
-    private bool CheckVariants<TVariant, TVariantOccurrence>(int specimenId)
+    private bool CheckVariants<TVariant, TVariantEntry>(int specimenId)
         where TVariant : Variant
-        where TVariantOccurrence : VariantOccurrence<TVariant>
+        where TVariantEntry : VariantEntry<TVariant>
     {
-        return _dbContext.Set<TVariantOccurrence>()
-            .Where(occurrence => occurrence.AnalysedSample.Sample.SpecimenId == specimenId)
-            .Select(occurrence => occurrence.VariantId)
+        using var dbContext = _dbContextFactory.CreateDbContext();
+
+        return dbContext.Set<TVariantEntry>()
+            .AsNoTracking()
+            .Where(entry => entry.AnalysedSample.TargetSampleId == specimenId)
+            .Select(entry => entry.EntityId)
             .Distinct()
             .Any();
     }
@@ -366,9 +343,10 @@ public class SpecimenIndexCreationService : IIndexCreationService<SpecimenIndex>
     /// <returns>'true' if gene expression data exists or 'false' otherwise.</returns>
     private bool CheckGeneExp(int specimenId)
     {
-        var hasExpressions = _dbContext.Set<GeneExpression>()
-            .Any(expression => expression.AnalysedSample.Sample.SpecimenId == specimenId);
+        using var dbContext = _dbContextFactory.CreateDbContext();
 
-        return hasExpressions;
+        return dbContext.Set<BulkExpression>()
+            .AsNoTracking()
+            .Any(expression => expression.AnalysedSample.TargetSampleId == specimenId);
     }
 }

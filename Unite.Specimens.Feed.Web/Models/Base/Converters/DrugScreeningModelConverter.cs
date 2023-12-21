@@ -25,8 +25,8 @@ public class DrugScreeningModelConverter
             AbsIC75 = source.AbsIC75,
             Concentration = source.Concentration,
             Inhibition = source.Inhibition,
-            Dose = source.Dose,
-            Response = source.Response
+            Dose = source.ConcentrationLine,
+            Response = source.InhibitionLine
         };
     }
 

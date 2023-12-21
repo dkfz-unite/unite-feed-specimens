@@ -71,20 +71,20 @@ public class DrugScreeningModelValidator : AbstractValidator<DrugScreeningModel>
             .WithMessage("Should be in range [-150, 150]");
 
 
-        RuleForEach(model => model.Dose)
+        RuleForEach(model => model.ConcentrationLine)
             .NotEmpty()
             .WithMessage("Should not contain empty values");
 
-        RuleForEach(model => model.Dose)
+        RuleForEach(model => model.ConcentrationLine)
             .Must(value => value >= 0)
             .WithMessage("Should be greater than 0");
 
 
-        RuleForEach(model => model.Response)
+        RuleForEach(model => model.InhibitionLine)
            .NotEmpty()
            .WithMessage("Should not contain empty values");
 
-        RuleForEach(model => model.Response)
+        RuleForEach(model => model.InhibitionLine)
             .Must(value => value >= -150 && value <= 150)
             .WithMessage("Should be in range [-150, 150]");
     }

@@ -4,21 +4,14 @@ public class DrugScreeningsUploadAudit
 {
     public int DrugScreeningsCreated;
 
-    public HashSet<int> Specimens;
-
-
-    public DrugScreeningsUploadAudit()
-    {
-        Specimens = new HashSet<int>();
-    }
+    public HashSet<int> Specimens = [];
 
 
     public override string ToString()
     {
-        var messages = new List<string>();
-
-        messages.Add($"{DrugScreeningsCreated} specimen drug screening entries created");
-
-        return string.Join(Environment.NewLine, messages);
+        return string.Join(Environment.NewLine,
+        [
+            $"{DrugScreeningsCreated} specimen drug screening entries created"
+        ]);
     }
 }

@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Unite.Data.Context;
 using Unite.Data.Entities.Specimens;
+using Unite.Data.Entities.Specimens.Enums;
 using Unite.Data.Entities.Specimens.Xenografts;
-using Unite.Data.Services;
 using Unite.Specimens.Feed.Data.Specimens.Models;
 
 namespace Unite.Specimens.Feed.Data.Specimens.Repositories;
@@ -60,6 +61,8 @@ internal class XenograftRepository : SpecimenRepositoryBase<XenograftModel>
     protected override void Map(in XenograftModel model, ref Specimen entity)
     {
         base.Map(model, ref entity);
+
+        entity.TypeId = SpecimenType.Xenograft;
 
         if (entity.Xenograft == null)
         {
