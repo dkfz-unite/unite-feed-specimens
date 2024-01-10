@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Unite.Data.Context;
 using Unite.Data.Entities.Specimens;
 using Unite.Data.Entities.Specimens.Cells;
-using Unite.Data.Services;
+using Unite.Data.Entities.Specimens.Enums;
 using Unite.Specimens.Feed.Data.Specimens.Models;
 
 namespace Unite.Specimens.Feed.Data.Specimens.Repositories;
@@ -34,6 +35,8 @@ internal class CellLineRepository : SpecimenRepositoryBase<CellLineModel>
     protected override void Map(in CellLineModel model, ref Specimen entity)
     {
         base.Map(model, ref entity);
+
+        entity.TypeId = SpecimenType.CellLine;
 
         if (entity.CellLine == null)
         {

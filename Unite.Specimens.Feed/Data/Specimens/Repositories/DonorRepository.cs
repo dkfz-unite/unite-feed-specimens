@@ -1,5 +1,5 @@
-﻿using Unite.Data.Entities.Donors;
-using Unite.Data.Services;
+﻿using Unite.Data.Context;
+using Unite.Data.Entities.Donors;
 using Unite.Specimens.Feed.Data.Specimens.Models;
 
 namespace Unite.Specimens.Feed.Data.Specimens.Repositories;
@@ -27,22 +27,11 @@ internal class DonorRepository
 
     public Donor Create(DonorModel model)
     {
-        var entity = new Donor
-        {
-            ReferenceId = model.ReferenceId
-        };
-
-        Map(model, ref entity);
+        var entity = new Donor{ ReferenceId = model.ReferenceId };
 
         _dbContext.Add(entity);
         _dbContext.SaveChanges();
 
         return entity;
-    }
-
-
-    private void Map(in DonorModel model, ref Donor entity)
-    {
-
     }
 }

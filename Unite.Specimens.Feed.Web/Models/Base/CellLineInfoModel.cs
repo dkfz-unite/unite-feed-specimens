@@ -42,7 +42,7 @@ public record CellLineInfoModel
     /// <summary>
     /// Link to the cell line in PubMed
     /// </summary>
-    [JsonPropertyName("pub_med_link")]
+    [JsonPropertyName("pubmed_link")]
     public string PubMedLink { get => _pubMedLink?.Trim(); init => _pubMedLink = value; }
 
     /// <summary>
@@ -54,6 +54,6 @@ public record CellLineInfoModel
     /// <summary>
     /// Link to the cell line in ExPasy
     /// </summary>
-    [JsonPropertyName("ex_pasy_link")]
+    [JsonPropertyName("expasy_link")]
     public string ExPasyLink { get => _exPasyLink?.Trim(); init => _exPasyLink = value; }
 }

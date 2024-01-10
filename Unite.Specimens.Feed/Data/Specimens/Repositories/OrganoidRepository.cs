@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Unite.Data.Context;
 using Unite.Data.Entities.Specimens;
+using Unite.Data.Entities.Specimens.Enums;
 using Unite.Data.Entities.Specimens.Organoids;
-using Unite.Data.Services;
 using Unite.Specimens.Feed.Data.Specimens.Models;
 
 namespace Unite.Specimens.Feed.Data.Specimens.Repositories;
@@ -60,6 +61,8 @@ internal class OrganoidRepository : SpecimenRepositoryBase<OrganoidModel>
     protected override void Map(in OrganoidModel model, ref Specimen entity)
     {
         base.Map(model, ref entity);
+
+        entity.TypeId = SpecimenType.Organoid;
 
         if (entity.Organoid == null)
         {

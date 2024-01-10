@@ -1,10 +1,11 @@
 ﻿using FluentValidation;
-using Unite.Data.Services;
-using Unite.Data.Services.Configuration.Options;
-using Unite.Data.Services.Tasks;
+using Unite.Data.Context.Configuration.Extensions;
+using Unite.Data.Context.Configuration.Options;
+using Unite.Data.Context.Services.Tasks;
+using Unite.Indices.Context;
+using Unite.Indices.Context.Configuration.Extensions;
+using Unite.Indices.Context.Configuration.Options;
 using Unite.Indices.Entities.Specimens;
-using Unite.Indices.Services;
-using Unite.Indices.Services.Configuration.Options;
 using Unite.Specimens.Feed.Data.Specimens;
 using Unite.Specimens.Feed.Web.Configuration.Options;
 using Unite.Specimens.Feed.Web.Handlers;
@@ -20,12 +21,14 @@ public static class ConfigurationExtensions
 {
     public static void Configure(this IServiceCollection services)
     {
-        services.AddTransient<ISqlOptions, SqlOptions>();
-        services.AddTransient<IElasticOptions, ElasticOptions>();
+        var sqlOptions = new SqlOptions();
 
-        services.AddTransient<IValidator<SpecimenDataModel[]>, SpecimenModelsValidator>();
+        services.AddOptions();
+        services.AddDatabase();
+        services.AddDatabaseFactory(sqlOptions);
+        services.AddIndexServices();
+        services.AddValidators();
 
-        services.AddTransient<DomainDbContext>();
         services.AddTransient<SpecimenDataWriter>();
         services.AddTransient<DrugScreeningDataWriter>();
 
@@ -35,7 +38,24 @@ public static class ConfigurationExtensions
         services.AddHostedService<SpecimensIndexingHostedService>();
         services.AddTransient<SpecimensIndexingOptions>();
         services.AddTransient<SpecimensIndexingHandler>();
-        services.AddTransient<IIndexCreationService<SpecimenIndex>, SpecimenIndexCreationService>();
-        services.AddTransient<IIndexingService<SpecimenIndex>, SpecimensIndexingService>();
+        services.AddTransient<SpecimenIndexCreationService>();
+        services.AddTransient<IIndexService<SpecimenIndex>, SpecimensIndexService>();
+    }
+
+
+    private static IServiceCollection AddOptions(this IServiceCollection services)
+    {
+        services.AddTransient<ApiOptions>();
+        services.AddTransient<ISqlOptions, SqlOptions>();
+        services.AddTransient<IElasticOptions, ElasticOptions>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddValidators(this IServiceCollection services)
+    {
+        services.AddTransient<IValidator<SpecimenDataModel[]>, SpecimenModelsValidator>();
+
+        return services;
     }
 }

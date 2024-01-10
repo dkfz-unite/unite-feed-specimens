@@ -1,5 +1,5 @@
-﻿using Unite.Data.Entities.Specimens;
-using Unite.Data.Services;
+﻿using Unite.Data.Context;
+using Unite.Data.Entities.Specimens;
 using Unite.Specimens.Feed.Data.Specimens.Models;
 
 namespace Unite.Specimens.Feed.Data.Specimens.Repositories;
@@ -21,7 +21,8 @@ internal abstract class SpecimenRepositoryBase<TModel> where TModel : SpecimenMo
         var entity = new Specimen
         {
             DonorId = donorId,
-            ParentId = parentId
+            ParentId = parentId,
+            ReferenceId = model.ReferenceId
         };
 
         Map(model, ref entity);
