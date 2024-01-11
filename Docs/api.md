@@ -2,11 +2,9 @@
 Allows to submit specimens data to the repository.
 
 > [!Note]
-> API is accessible for authorized users only and requires `JWT` token `Authorization` header (Read more about [Identity Service](https://github.com/dkfz-unite/unite-identity)).
+> API is accessible for authorized users only and requires `JWT` token as `Authorization` header (read more about [Identity Service](https://github.com/dkfz-unite/unite-identity)).
 
-> [!Note]
-> API is proxied to main [api](http://localhost/api) and can be accessed at [api/specimens-feed](http://localhost/api/specimens-feed) **without** `api` prefix.
-> http://localhost/api/specimens-feed -> http://localhost:5104/api
+API is **proxied** to main API and can be accessed at [[host]/api/specimens-feed](http://localhost/api/specimens-feed) (**without** `api` prefix).
 
 All data submision request implement **UPSERT** logic:
 - Missing data will be populated
@@ -38,7 +36,10 @@ Health check.
 ## POST: [api/specimens](http://localhost:5104/api/specimens)
 Submit specimens data (tissue, cell line, organoid or xenograft).
 
-### Body - application/json
+Supported formats are:
+- `json` (**empty**) - application/json
+
+### Body
 ```json
 [
     {
@@ -194,7 +195,10 @@ Fields description can be found [here](api-models-specimens.md).
 ## POST: [api/tissues/{type?}](http://localhost:5104/api/tissues)
 Submit tissues data.
 
-### Body(tsv) - text/tab-separated-values
+Supported formats are:
+- `tsv` - text/tab-separated-values
+
+### Body - TSV
 ```tsv
 id	donor_id	parent_id	parent_type	creation_date	creation_day	type	tumor_type	source	mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation
 TI1	DO1			2020-02-01		Tumor	Primary	Solid tissue	Methylated	Wild Type		Classical	H3-K27	true
@@ -211,10 +215,10 @@ Fields description can be found [here](./api-models-specimens.md) and [here](./a
 ## POST: [api/organoids/{type?}](http://localhost:5104/api/organoids)
 Submit organoids data.
 
-supported formats are:
+Supported formats are:
 - `tsv` - text/tab-separated-values
 
-### Body(tsv) - text/tab-separated-values
+### Body - TSV
 ```tsv
 donor_id    specimen_id medium  implanted_cells_number  tumorigenicity  mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation
 DO1	OR1CL1TI1	Medium 1	1500000	false	Methylated	Wild Type		Classical	H3-K27	true
@@ -235,7 +239,7 @@ Supported formats are:
 - `json` (**empty**) - application/json
 - `tsv` - text/tab-separated-values
 
-### Body - application/json
+### Body
 ```json
 [
     {
@@ -256,7 +260,7 @@ Supported formats are:
 ]
 ```
 
-### Body (tsv) - text/tab-separated-values
+### Body - TSV
 ```tsv
 donor_id    specimen_id type    details start_date  start_day   end_date    duration_days   results
 DO1	OR1CL1TI1	Intervention_Type   Intervention_details    2020-04-05	2020-04-10	Intervention_results
@@ -276,7 +280,7 @@ Submit xenografts data.
 Supported formats are:
 - `tsv` - text/tab-separated-values
 
-### Body - application/json
+### Body - TSV
 ```tsv
 donor_id    specimen_id mouse_strain    group_size  implant_type    tissue_location implanted_cells_number  tumorigenicity  tumor_growth_form   survival_days   mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation
 DO1	XE1CL1TI1	Nude	9	Other	Cortical	750000	true	Invasive	20-30	Methylated	Wild Type		Classical	H3-K27	true
@@ -297,7 +301,7 @@ Supported formats are:
 - `json` (**empty**) - application/json
 - `tsv` - text/tab-separated-values
 
-### Body - application/json
+### Body
 ```json
 [
     {
@@ -318,7 +322,7 @@ Supported formats are:
 ]
 ```
 
-### Body (tsv) - text/tab-separated-values
+### Body - TSV
 ```tsv
 donor_id    specimen_id type    details start_date  start_day   end_date    duration_days   results
 DO1	XE1CL1TI1	Intervention_Type   Intervention_details    2020-03-05	2020-03-10	Intervention_results
@@ -339,7 +343,7 @@ Supported formats are:
 - `json` (**empty**) - application/json
 - `tsv` - text/tab-separated-values
 
-### Body - application/json
+### Body
 ```json
 [
     {
