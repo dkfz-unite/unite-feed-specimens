@@ -281,6 +281,7 @@ Supported formats are:
 donor_id    specimen_id mouse_strain    group_size  implant_type    tissue_location implanted_cells_number  tumorigenicity  tumor_growth_form   survival_days   mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation
 DO1	XE1CL1TI1	Nude	9	Other	Cortical	750000	true	Invasive	20-30	Methylated	Wild Type		Classical	H3-K27	true
 ```
+Fields description can be found [here](./api-models-specimens.md) and [here](./api-models-base-xenograft.md).
 
 ### Responses
 - `200` - request was processed successfully
@@ -322,6 +323,7 @@ Supported formats are:
 donor_id    specimen_id type    details start_date  start_day   end_date    duration_days   results
 DO1	XE1CL1TI1	Intervention_Type   Intervention_details    2020-03-05	2020-03-10	Intervention_results
 ```
+Fields description can be found [here](./api-models-specimens.md) and [here](./api-models-base-xenograft.md).
 
 ### Responses
 - `200` - request was processed successfully
