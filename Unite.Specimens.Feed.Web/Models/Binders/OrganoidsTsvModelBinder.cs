@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Unite.Essentials.Tsv;
 using Unite.Specimens.Feed.Web.Models.Binders.Extensions;
 
 namespace Unite.Specimens.Feed.Web.Models.Binders;
 
-public class TissuesTsvModelBinder : IModelBinder
+public class OrganoidsTsvModelBinder : IModelBinder
 {
     public async Task BindModelAsync(ModelBindingContext bindingContext)
     {
@@ -16,9 +16,9 @@ public class TissuesTsvModelBinder : IModelBinder
 
         var map = new ClassMap<SpecimenDataModel>()
             .MapSpecimen(entity => entity)
-            .Map(entity => entity.Tissue.Type, "type")
-            .Map(entity => entity.Tissue.TumorType, "tumor_type")
-            .Map(entity => entity.Tissue.Source, "source")
+            .Map(entity => entity.Organoid.Medium, "medium")
+            .Map(entity => entity.Organoid.ImplantedCellsNumber, "implanted_cells_number")
+            .Map(entity => entity.Organoid.Tumorigenicity, "tumorigenicity")
             .MapMolecularData(entity => entity.MolecularData);
 
         var model = TsvReader.Read(tsv, map).ToArray();

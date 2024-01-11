@@ -1,4 +1,6 @@
-﻿using DataModels = Unite.Specimens.Feed.Data.Specimens.Models;
+﻿using Unite.Essentials.Extensions;
+
+using DataModels = Unite.Specimens.Feed.Data.Specimens.Models;
 
 namespace Unite.Specimens.Feed.Web.Models.Base.Converters;
 
@@ -23,10 +25,9 @@ public class OrganoidModelConverter
         };
     }
 
-
     private static DataModels.OrganoidInterventionModel[] Convert(in OrganoidInterventionModel[] sources)
     {
-        return sources?.Length > 0 ? sources.Select(intervention => Convert(intervention)).ToArray() : null;
+        return sources.IsNotEmpty() ? sources.Select(intervention => Convert(intervention)).ToArray() : null;
     }
 
     private static DataModels.OrganoidInterventionModel Convert(in OrganoidInterventionModel source)
@@ -40,16 +41,11 @@ public class OrganoidModelConverter
         {
             Type = source.Type,
             Details = source.Details,
-            StartDate = FromDateTime(source.StartDate),
+            StartDate = source.StartDate,
             StartDay = source.StartDay,
-            EndDate = FromDateTime(source.EndDate),
+            EndDate = source.EndDate,
             DurationDays = source.DurationDays,
             Results = source.Results
         };
-    }
-
-    private static DateOnly? FromDateTime(in DateTime? date)
-    {
-        return date != null ? DateOnly.FromDateTime(date.Value) : null;
     }
 }

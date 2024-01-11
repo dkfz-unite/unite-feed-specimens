@@ -35,7 +35,7 @@ public class SpecimenDataModelConverter
         target.MolecularData = GetMolecularDataModel(source.MolecularData);
         target.DrugsScreeningData = GetDrugScreeningModels(source.DrugsScreeningData);
 
-        target.CreationDate = FromDateTime(source.CreationDate);
+        target.CreationDate = source.CreationDate;
         target.CreationDay = source.CreationDay;
 
         return target;
@@ -108,11 +108,5 @@ public class SpecimenDataModelConverter
     private DataModels.DrugScreeningModel[] GetDrugScreeningModels(DrugScreeningModel[] sources)
     {
         return _drugScreeningModelConverter.Convert(sources);
-    }
-
-
-    private static DateOnly? FromDateTime(DateTime? date)
-    {
-        return date != null ? DateOnly.FromDateTime(date.Value) : null;
     }
 }

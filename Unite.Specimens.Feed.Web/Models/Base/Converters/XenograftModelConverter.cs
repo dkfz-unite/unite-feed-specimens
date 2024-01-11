@@ -1,4 +1,6 @@
-﻿using DataModels = Unite.Specimens.Feed.Data.Specimens.Models;
+﻿using Unite.Essentials.Extensions;
+
+using DataModels = Unite.Specimens.Feed.Data.Specimens.Models;
 
 namespace Unite.Specimens.Feed.Web.Models.Base.Converters;
 
@@ -32,7 +34,7 @@ public class XenograftModelConverter
 
     private static DataModels.XenograftInterventionModel[] Convert(in XenograftInterventionModel[] sources)
     {
-        return sources?.Length > 0 ? sources.Select(intervention => Convert(intervention)).ToArray() : null;
+        return sources.IsNotEmpty() ? sources.Select(intervention => Convert(intervention)).ToArray() : null;
     }
 
     private static DataModels.XenograftInterventionModel Convert(in XenograftInterventionModel source)
@@ -46,9 +48,9 @@ public class XenograftModelConverter
         {
             Type = source.Type,
             Details = source.Details,
-            StartDate = FromDateTime(source.StartDate),
+            StartDate = source.StartDate,
             StartDay = source.StartDay,
-            EndDate = FromDateTime(source.EndDate),
+            EndDate = source.EndDate,
             DurationDays = source.DurationDays,
             Results = source.Results
         };
@@ -77,10 +79,5 @@ public class XenograftModelConverter
 
             return (start, end);
         }
-    }
-
-    private static DateOnly? FromDateTime(DateTime? date)
-    {
-        return date != null ? DateOnly.FromDateTime(date.Value) : null;
     }
 }

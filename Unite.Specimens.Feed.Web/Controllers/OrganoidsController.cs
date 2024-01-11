@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Unite.Specimens.Feed.Data.Specimens;
 using Unite.Specimens.Feed.Web.Configuration.Constants;
@@ -8,21 +8,21 @@ using Unite.Specimens.Feed.Web.Services;
 
 namespace Unite.Specimens.Feed.Web.Controllers;
 
-[Route("api/tissues")]
+[Route("api/organoids")]
 [Authorize(Policy = Policies.Data.Writer)]
-public class TissuesController : SpecimensControllerBase
+public class OrganoidsController : SpecimensControllerBase
 {
-    public TissuesController(
+    public OrganoidsController(
         SpecimenDataWriter dataWriter,
         SpecimenIndexingTasksService indexingTaskService,
-        ILogger<TissuesController> logger) : base(dataWriter, indexingTaskService, logger)
+        ILogger<OrganoidsController> logger) : base(dataWriter, indexingTaskService, logger)
     {
     }
 
 
     [HttpPost("tsv")]
     [Consumes("text/tab-separated-values")]
-    public IActionResult PostTsv([ModelBinder(typeof(TissuesTsvModelBinder))] SpecimenDataModel[] models)
+    public IActionResult PostTsv([ModelBinder(typeof(OrganoidsTsvModelBinder))]SpecimenDataModel[] models)
     {
         return PostData(models);
     }

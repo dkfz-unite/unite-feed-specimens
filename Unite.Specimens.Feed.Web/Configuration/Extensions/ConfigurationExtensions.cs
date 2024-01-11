@@ -55,6 +55,10 @@ public static class ConfigurationExtensions
     private static IServiceCollection AddValidators(this IServiceCollection services)
     {
         services.AddTransient<IValidator<SpecimenDataModel[]>, SpecimenModelsValidator>();
+        services.AddTransient<IValidator<OrganoidInterventionsDataModel[]>, OrganoidInterventionsDataModelsValidator>();
+        services.AddTransient<IValidator<OrganoidInterventionDataTsvModel[]>, OrganoidInterventionDataTsvModelsValidator>();
+        services.AddTransient<IValidator<XenograftInterventionsDataModel[]>, XenograftInterventionsDataModelsValidator>();
+        services.AddTransient<IValidator<XenograftInterventionDataTsvModel[]>, XenograftInterventionDataTsvModelsValidator>();
 
         return services;
     }

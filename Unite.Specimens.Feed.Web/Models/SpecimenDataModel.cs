@@ -9,7 +9,7 @@ public record SpecimenDataModel
     private string _parentId;
     private SpecimenType? _parentType;
     private string _donorId;
-    private DateTime? _creationDate;
+    private DateOnly? _creationDate;
     private int? _creationDay;
 
 
@@ -26,7 +26,7 @@ public record SpecimenDataModel
     public string DonorId { get => _donorId?.Trim(); init => _donorId = value; }
 
     [JsonPropertyName("creation_date")]
-    public DateTime? CreationDate { get => _creationDate; init => _creationDate = value; }
+    public DateOnly? CreationDate { get => _creationDate; init => _creationDate = value; }
 
     [JsonPropertyName("creation_day")]
     public int? CreationDay { get => _creationDay; init => _creationDay = value; }
