@@ -12,7 +12,7 @@ namespace Unite.Specimens.Feed.Web.Controllers;
 public class SpecimensController : SpecimensControllerBase
 {
     public SpecimensController(
-        SpecimenDataWriter dataWriter,
+        SpecimensDataWriter dataWriter,
         SpecimenIndexingTasksService indexingTaskService,
         ILogger<SpecimensController> logger) : base(dataWriter, indexingTaskService, logger)
     {

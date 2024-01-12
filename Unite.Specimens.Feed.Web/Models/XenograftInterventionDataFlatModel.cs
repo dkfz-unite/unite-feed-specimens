@@ -2,11 +2,11 @@ using System.Text.Json.Serialization;
 
 namespace Unite.Specimens.Feed.Web.Models;
 
-public class OrganoidInterventionDataTsvModel : Base.OrganoidInterventionModel
+public class XenograftInterventionDataFlatModel : Base.XenograftInterventionModel
 {
     private string _donorId;
     private string _specimenId;
-
+    
     [JsonPropertyName("donor_id")]
     public string DonorId { get => _donorId?.Trim(); set => _donorId = value; }
 

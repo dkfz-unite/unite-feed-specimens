@@ -3,9 +3,9 @@ using Unite.Specimens.Feed.Web.Models.Base.Validators;
 
 namespace Unite.Specimens.Feed.Web.Models.Validators;
 
-public class OrganoidInterventionDataTsvModelValidator : AbstractValidator<OrganoidInterventionDataTsvModel>
+public class OrganoidInterventionDataFlatModelValidator : AbstractValidator<OrganoidInterventionDataFlatModel>
 {
-    public OrganoidInterventionDataTsvModelValidator()
+    public OrganoidInterventionDataFlatModelValidator()
     {
         RuleFor(model => model.DonorId)
             .NotEmpty()
@@ -28,12 +28,12 @@ public class OrganoidInterventionDataTsvModelValidator : AbstractValidator<Organ
     }
 }
 
-public class OrganoidInterventionDataTsvModelsValidator : AbstractValidator<IEnumerable<OrganoidInterventionDataTsvModel>>
+public class OrganoidInterventionDataFlatModelsValidator : AbstractValidator<IEnumerable<OrganoidInterventionDataFlatModel>>
 {
-    public OrganoidInterventionDataTsvModelsValidator()
+    public OrganoidInterventionDataFlatModelsValidator()
     {
         RuleForEach(model => model)
-            .SetValidator(new OrganoidInterventionDataTsvModelValidator());
+            .SetValidator(new OrganoidInterventionDataFlatModelValidator());
 
         RuleFor(model => model)
             .Must(HaveAtLeastOneIntervention);
@@ -43,12 +43,12 @@ public class OrganoidInterventionDataTsvModelsValidator : AbstractValidator<IEnu
     }
 
 
-    private static bool HaveAtLeastOneIntervention(IEnumerable<OrganoidInterventionDataTsvModel> models)
+    private static bool HaveAtLeastOneIntervention(IEnumerable<OrganoidInterventionDataFlatModel> models)
     {
         return models.Any();
     }
 
-    private static bool HaveUniqueSpecimenGroups(IEnumerable<OrganoidInterventionDataTsvModel> models)
+    private static bool HaveUniqueSpecimenGroups(IEnumerable<OrganoidInterventionDataFlatModel> models)
     {
         var groups = models.GroupBy(model => new { model.DonorId, model.SpecimenId });
 

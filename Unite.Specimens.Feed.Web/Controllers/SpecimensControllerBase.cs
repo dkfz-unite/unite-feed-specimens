@@ -2,14 +2,14 @@ using Microsoft.AspNetCore.Mvc;
 using Unite.Specimens.Feed.Data.Specimens;
 using Unite.Specimens.Feed.Data.Specimens.Exceptions;
 using Unite.Specimens.Feed.Web.Models;
-using Unite.Specimens.Feed.Web.Models.Base.Converters;
+using Unite.Specimens.Feed.Web.Models.Converters;
 using Unite.Specimens.Feed.Web.Services;
 
 namespace Unite.Specimens.Feed.Web.Controllers;
 
 public abstract class SpecimensControllerBase : Controller
 {
-    protected readonly SpecimenDataWriter _dataWriter;
+    protected readonly SpecimensDataWriter _dataWriter;
     protected readonly SpecimenIndexingTasksService _indexingTaskService;
     protected readonly ILogger _logger;
 
@@ -17,7 +17,7 @@ public abstract class SpecimensControllerBase : Controller
 
 
     public SpecimensControllerBase(
-        SpecimenDataWriter dataWriter,
+        SpecimensDataWriter dataWriter,
         SpecimenIndexingTasksService indexingTaskService,
         ILogger<SpecimensControllerBase> logger)
     {

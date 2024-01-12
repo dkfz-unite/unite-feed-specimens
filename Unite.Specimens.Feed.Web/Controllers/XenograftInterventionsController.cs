@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Unite.Specimens.Feed.Data.Specimens;
+using Unite.Specimens.Feed.Data.Specimens.Exceptions;
 using Unite.Specimens.Feed.Web.Configuration.Constants;
 using Unite.Specimens.Feed.Web.Models;
 using Unite.Specimens.Feed.Web.Models.Binders;
@@ -11,19 +12,27 @@ namespace Unite.Specimens.Feed.Web.Controllers;
 
 [Route("api/xenograft-interventions")]
 [Authorize(Policy = Policies.Data.Writer)]
-public class XenograftInterventionsController : SpecimensControllerBase
+public class XenograftInterventionsController : Controller
 {
-    private readonly XenograftInterventionsDataModelConverter _interventionModelConverter;
-    private readonly XenograftInterventionDataTsvModelConverter _interventionTsvModelConverter;
+    private readonly XenograftInterventionsDataWriter _dataWriter;
+    private readonly SpecimenIndexingTasksService _indexingTaskService;
+    private readonly ILogger _logger;
+
+    private readonly XenograftInterventionsDataModelsConverter _defaultModelsConverter;
+    private readonly XenograftInterventionDataFlatModelsConverter _flatModelsConverter;
     
 
     public XenograftInterventionsController(
-        SpecimenDataWriter dataWriter, 
+        XenograftInterventionsDataWriter dataWriter, 
         SpecimenIndexingTasksService indexingTaskService, 
-        ILogger<SpecimensControllerBase> logger) : base(dataWriter, indexingTaskService, logger)
+        ILogger<SpecimensControllerBase> logger)
     {
-        _interventionModelConverter = new XenograftInterventionsDataModelConverter();
-        _interventionTsvModelConverter = new XenograftInterventionDataTsvModelConverter();
+        _dataWriter = dataWriter;
+        _indexingTaskService = indexingTaskService;
+        _logger = logger;
+
+        _defaultModelsConverter = new XenograftInterventionsDataModelsConverter();
+        _flatModelsConverter = new XenograftInterventionDataFlatModelsConverter();
     }
 
 
@@ -31,15 +40,38 @@ public class XenograftInterventionsController : SpecimensControllerBase
     [Consumes("application/json")]
     public IActionResult Post([FromBody]XenograftInterventionsDataModel[] models)
     {
-        var specimenModels = _interventionModelConverter.Convert(models);
-        return PostData(specimenModels);
+        var dataModels = _defaultModelsConverter.Convert(models);
+        
+        return PostData(dataModels);
     }
 
     [HttpPost("tsv")]
     [Consumes("text/tab-separated-values")]
-    public IActionResult PostTsv([ModelBinder(typeof(XenograftsInterventionsTsvModelBinder))]XenograftInterventionDataTsvModel[] models)
+    public IActionResult PostTsv([ModelBinder(typeof(XenograftInterventionFlatModelsBinder))]XenograftInterventionDataFlatModel[] models)
     {
-        var specimenModels = _interventionTsvModelConverter.Convert(models);
-        return PostData(specimenModels);
+        var dataModels = _flatModelsConverter.Convert(models);
+
+        return PostData(dataModels);
+    }
+
+
+    private IActionResult PostData(Data.Specimens.Models.SpecimenModel[] models)
+    {
+        try
+        {
+            _dataWriter.SaveData(models, out var audit);
+
+            _logger.LogInformation("{audit}", audit.ToString());
+
+            _indexingTaskService.PopulateTasks(audit.Specimens);
+
+            return Ok();
+        }
+        catch (NotFoundException exception)
+        {
+            _logger.LogError("{error}", exception.Message);
+
+            return BadRequest(exception.Message);
+        }
     }
 }

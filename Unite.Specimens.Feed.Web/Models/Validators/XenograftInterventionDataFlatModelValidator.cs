@@ -3,9 +3,9 @@ using Unite.Specimens.Feed.Web.Models.Base.Validators;
 
 namespace Unite.Specimens.Feed.Web.Models.Validators;
 
-public class XenograftInterventionDataTsvModelValidator : AbstractValidator<XenograftInterventionDataTsvModel>
+public class XenograftInterventionDataFlatModelValidator : AbstractValidator<XenograftInterventionDataFlatModel>
 {
-    public XenograftInterventionDataTsvModelValidator()
+    public XenograftInterventionDataFlatModelValidator()
     {
         RuleFor(model => model.DonorId)
             .NotEmpty()
@@ -28,11 +28,11 @@ public class XenograftInterventionDataTsvModelValidator : AbstractValidator<Xeno
     }
 }
 
-public class XenograftInterventionDataTsvModelsValidator : AbstractValidator<IEnumerable<XenograftInterventionDataTsvModel>>
+public class XenograftInterventionDataFlatModelsValidator : AbstractValidator<IEnumerable<XenograftInterventionDataFlatModel>>
 {
-    private readonly XenograftInterventionDataTsvModelValidator _validator = new();
+    private readonly XenograftInterventionDataFlatModelValidator _validator = new();
 
-    public XenograftInterventionDataTsvModelsValidator()
+    public XenograftInterventionDataFlatModelsValidator()
     {
         RuleForEach(model => model)
             .SetValidator(_validator);
@@ -42,7 +42,7 @@ public class XenograftInterventionDataTsvModelsValidator : AbstractValidator<IEn
             .WithMessage("Each donor should have unique specimens");
     }
 
-    private bool BeUniquePerDonor(IEnumerable<XenograftInterventionDataTsvModel> interventions)
+    private bool BeUniquePerDonor(IEnumerable<XenograftInterventionDataFlatModel> interventions)
     {
         return interventions
             .GroupBy(model => model.DonorId)

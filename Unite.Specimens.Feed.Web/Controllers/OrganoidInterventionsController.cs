@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Unite.Specimens.Feed.Data.Specimens;
+using Unite.Specimens.Feed.Data.Specimens.Exceptions;
 using Unite.Specimens.Feed.Web.Configuration.Constants;
 using Unite.Specimens.Feed.Web.Models;
 using Unite.Specimens.Feed.Web.Models.Binders;
@@ -11,19 +12,27 @@ namespace Unite.Specimens.Feed.Web.Controllers;
 
 [Route("api/organoid-interventions")]
 [Authorize(Policy = Policies.Data.Writer)]
-public class OrganoidInterventionsController : SpecimensControllerBase
+public class OrganoidInterventionsController : Controller
 {
-    private readonly OrganoidInterventionsDataModelConverter _interventionModelConverter;
-    private readonly OrganoidInterventionDataTsvModelConverter _interventionTsvModelConverter;
+    private readonly OrganoidInterventionsDataWriter _dataWriter;
+    private readonly SpecimenIndexingTasksService _indexingTaskService;
+    private readonly ILogger _logger;
+
+    private readonly OrganoidInterventionsDataModelsConverter _defaultModelsConverter;
+    private readonly OrganoidInterventionDataFlatModelsConverter _flatModelsConverter;
     
     
     public OrganoidInterventionsController(
-        SpecimenDataWriter dataWriter, 
+        OrganoidInterventionsDataWriter dataWriter, 
         SpecimenIndexingTasksService indexingTaskService, 
-        ILogger<SpecimensControllerBase> logger) : base(dataWriter, indexingTaskService, logger)
+        ILogger<OrganoidInterventionsController> logger)
     {
-        _interventionModelConverter = new OrganoidInterventionsDataModelConverter();
-        _interventionTsvModelConverter = new OrganoidInterventionDataTsvModelConverter();
+        _dataWriter = dataWriter;
+        _indexingTaskService = indexingTaskService;
+        _logger = logger;
+
+        _defaultModelsConverter = new OrganoidInterventionsDataModelsConverter();
+        _flatModelsConverter = new OrganoidInterventionDataFlatModelsConverter();
     }
 
 
@@ -31,15 +40,38 @@ public class OrganoidInterventionsController : SpecimensControllerBase
     [Consumes("application/json")]
     public IActionResult Post([FromBody]OrganoidInterventionsDataModel[] models)
     {
-        var specimenModels = _interventionModelConverter.Convert(models);
-        return PostData(specimenModels);
+        var dataModels = _defaultModelsConverter.Convert(models);
+
+        return PostData(dataModels);
     }
 
     [HttpPost("tsv")]
     [Consumes("text/tab-separated-values")]
-    public IActionResult PosTsv([ModelBinder(typeof(OrganoidsInterventionsTsvModelBinder))]OrganoidInterventionDataTsvModel[] models)
+    public IActionResult PosTsv([ModelBinder(typeof(OrganoidInterventionFlatModelsBinder))]OrganoidInterventionDataFlatModel[] models)
     {
-        var specimenModels = _interventionTsvModelConverter.Convert(models);
-        return PostData(specimenModels);
+        var dataModels = _flatModelsConverter.Convert(models);
+
+        return PostData(dataModels);
+    }
+
+
+    private IActionResult PostData(Data.Specimens.Models.SpecimenModel[] models)
+    {
+        try
+        {
+            _dataWriter.SaveData(models, out var audit);
+
+            _logger.LogInformation("{audit}", audit.ToString());
+
+            _indexingTaskService.PopulateTasks(audit.Specimens);
+
+            return Ok();
+        }
+        catch (NotFoundException exception)
+        {
+            _logger.LogError("{error}", exception.Message);
+
+            return BadRequest(exception.Message);
+        }
     }
 }

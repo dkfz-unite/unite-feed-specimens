@@ -32,12 +32,12 @@ public class XenograftModelConverter
     }
 
 
-    private static DataModels.XenograftInterventionModel[] Convert(in XenograftInterventionModel[] sources)
+    public DataModels.XenograftInterventionModel[] Convert(in XenograftInterventionModel[] sources)
     {
         return sources.IsNotEmpty() ? sources.Select(intervention => Convert(intervention)).ToArray() : null;
     }
 
-    private static DataModels.XenograftInterventionModel Convert(in XenograftInterventionModel source)
+    public DataModels.XenograftInterventionModel Convert(in XenograftInterventionModel source)
     {
         if (source == null)
         {

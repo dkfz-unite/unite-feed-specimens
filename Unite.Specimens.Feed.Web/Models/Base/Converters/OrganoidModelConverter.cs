@@ -25,12 +25,12 @@ public class OrganoidModelConverter
         };
     }
 
-    private static DataModels.OrganoidInterventionModel[] Convert(in OrganoidInterventionModel[] sources)
+    public DataModels.OrganoidInterventionModel[] Convert(in OrganoidInterventionModel[] sources)
     {
         return sources.IsNotEmpty() ? sources.Select(intervention => Convert(intervention)).ToArray() : null;
     }
 
-    private static DataModels.OrganoidInterventionModel Convert(in OrganoidInterventionModel source)
+    public DataModels.OrganoidInterventionModel Convert(in OrganoidInterventionModel source)
     {
         if (source == null)
         {

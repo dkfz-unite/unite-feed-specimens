@@ -13,7 +13,7 @@ namespace Unite.Specimens.Feed.Web.Controllers;
 public class OrganoidsController : SpecimensControllerBase
 {
     public OrganoidsController(
-        SpecimenDataWriter dataWriter,
+        SpecimensDataWriter dataWriter,
         SpecimenIndexingTasksService indexingTaskService,
         ILogger<OrganoidsController> logger) : base(dataWriter, indexingTaskService, logger)
     {
@@ -22,7 +22,7 @@ public class OrganoidsController : SpecimensControllerBase
 
     [HttpPost("tsv")]
     [Consumes("text/tab-separated-values")]
-    public IActionResult PostTsv([ModelBinder(typeof(OrganoidsTsvModelBinder))]SpecimenDataModel[] models)
+    public IActionResult PostTsv([ModelBinder(typeof(OrganoidFlatModelsBinder))]SpecimenDataModel[] models)
     {
         return PostData(models);
     }

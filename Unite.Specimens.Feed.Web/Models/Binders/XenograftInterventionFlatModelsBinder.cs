@@ -3,7 +3,7 @@ using Unite.Essentials.Tsv;
 
 namespace Unite.Specimens.Feed.Web.Models.Binders;
 
-public class XenograftsInterventionsTsvModelBinder : IModelBinder
+public class XenograftInterventionFlatModelsBinder : IModelBinder
 {
     public async Task BindModelAsync(ModelBindingContext bindingContext)
     {
@@ -13,7 +13,7 @@ public class XenograftsInterventionsTsvModelBinder : IModelBinder
 
         var tsv = await reader.ReadToEndAsync();
 
-        var map = new ClassMap<XenograftInterventionDataTsvModel>()
+        var map = new ClassMap<XenograftInterventionDataFlatModel>()
             .Map(entity => entity.DonorId, "donor_id")
             .Map(entity => entity.SpecimenId, "specimen_id")
             .Map(entity => entity.Type, "type")

@@ -10,14 +10,14 @@ using Unite.Specimens.Feed.Data.Specimens.Repositories;
 
 namespace Unite.Specimens.Feed.Data.Specimens;
 
-public class SpecimenDataWriter : DataWriter<SpecimenModel, SpecimensUploadAudit>
+public class SpecimensDataWriter : DataWriter<SpecimenModel, SpecimensUploadAudit>
 {
     private readonly DonorRepository _donorRepository;
     private readonly SpecimenRepository _specimenRepository;
     private readonly DrugScreeningRepository _drugScreeningRepository;
 
 
-    public SpecimenDataWriter(IDbContextFactory<DomainDbContext> dbContextFactory) : base(dbContextFactory)
+    public SpecimensDataWriter(IDbContextFactory<DomainDbContext> dbContextFactory) : base(dbContextFactory)
     {
         var dbContext = dbContextFactory.CreateDbContext();
         

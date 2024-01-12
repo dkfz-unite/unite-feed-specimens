@@ -1,8 +1,10 @@
-﻿using Unite.Specimens.Feed.Web.Models.Base.Enums;
+﻿using Unite.Specimens.Feed.Web.Models.Base;
+using Unite.Specimens.Feed.Web.Models.Base.Converters;
+using Unite.Specimens.Feed.Web.Models.Base.Enums;
 
 using DataModels = Unite.Specimens.Feed.Data.Specimens.Models;
 
-namespace Unite.Specimens.Feed.Web.Models.Base.Converters;
+namespace Unite.Specimens.Feed.Web.Models.Converters;
 
 
 public class SpecimenDataModelConverter

@@ -29,8 +29,10 @@ public static class ConfigurationExtensions
         services.AddIndexServices();
         services.AddValidators();
 
-        services.AddTransient<SpecimenDataWriter>();
-        services.AddTransient<DrugScreeningDataWriter>();
+        services.AddTransient<SpecimensDataWriter>();
+        services.AddTransient<OrganoidInterventionsDataWriter>();
+        services.AddTransient<XenograftInterventionsDataWriter>();
+        services.AddTransient<DrugScreeningsDataWriter>();
 
         services.AddTransient<SpecimenIndexingTasksService>();
         services.AddTransient<TasksProcessingService>();
@@ -39,7 +41,6 @@ public static class ConfigurationExtensions
         services.AddTransient<SpecimensIndexingOptions>();
         services.AddTransient<SpecimensIndexingHandler>();
         services.AddTransient<SpecimenIndexCreationService>();
-        services.AddTransient<IIndexService<SpecimenIndex>, SpecimensIndexService>();
     }
 
 
@@ -56,9 +57,9 @@ public static class ConfigurationExtensions
     {
         services.AddTransient<IValidator<SpecimenDataModel[]>, SpecimenModelsValidator>();
         services.AddTransient<IValidator<OrganoidInterventionsDataModel[]>, OrganoidInterventionsDataModelsValidator>();
-        services.AddTransient<IValidator<OrganoidInterventionDataTsvModel[]>, OrganoidInterventionDataTsvModelsValidator>();
+        services.AddTransient<IValidator<OrganoidInterventionDataFlatModel[]>, OrganoidInterventionDataFlatModelsValidator>();
         services.AddTransient<IValidator<XenograftInterventionsDataModel[]>, XenograftInterventionsDataModelsValidator>();
-        services.AddTransient<IValidator<XenograftInterventionDataTsvModel[]>, XenograftInterventionDataTsvModelsValidator>();
+        services.AddTransient<IValidator<XenograftInterventionDataFlatModel[]>, XenograftInterventionDataFlatModelsValidator>();
 
         return services;
     }

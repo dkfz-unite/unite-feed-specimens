@@ -13,7 +13,7 @@ namespace Unite.Specimens.Feed.Web.Controllers;
 [Authorize(Policy = Policies.Data.Writer)]
 public class DrugsController : Controller
 {
-    private readonly DrugScreeningDataWriter _dataWriter;
+    private readonly DrugScreeningsDataWriter _dataWriter;
     private readonly SpecimenIndexingTasksService _indexingTaskService;
     private readonly ILogger _logger;
 
@@ -21,7 +21,7 @@ public class DrugsController : Controller
 
 
     public DrugsController(
-        DrugScreeningDataWriter dataWriter,
+        DrugScreeningsDataWriter dataWriter,
         SpecimenIndexingTasksService indexingTaskService,
         ILogger<DrugsController> logger)
     {

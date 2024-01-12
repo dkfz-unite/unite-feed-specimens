@@ -4,7 +4,7 @@ using Unite.Specimens.Feed.Web.Models.Binders.Extensions;
 
 namespace Unite.Specimens.Feed.Web.Models.Binders;
 
-public class OrganoidsTsvModelBinder : IModelBinder
+public class XenograftFlatModelsBinder : IModelBinder
 {
     public async Task BindModelAsync(ModelBindingContext bindingContext)
     {
@@ -16,9 +16,14 @@ public class OrganoidsTsvModelBinder : IModelBinder
 
         var map = new ClassMap<SpecimenDataModel>()
             .MapSpecimen(entity => entity)
-            .Map(entity => entity.Organoid.Medium, "medium")
-            .Map(entity => entity.Organoid.ImplantedCellsNumber, "implanted_cells_number")
-            .Map(entity => entity.Organoid.Tumorigenicity, "tumorigenicity")
+            .Map(entity => entity.Xenograft.MouseStrain, "mouse_strain")
+            .Map(entity => entity.Xenograft.GroupSize, "group_size")
+            .Map(entity => entity.Xenograft.ImplantType, "implant_type")
+            .Map(entity => entity.Xenograft.TissueLocation, "tissue_location")
+            .Map(entity => entity.Xenograft.ImplantedCellsNumber, "implanted_cells_number")
+            .Map(entity => entity.Xenograft.Tumorigenicity, "tumorigenicity")
+            .Map(entity => entity.Xenograft.TumorGrowthForm, "tumor_growth_form")
+            .Map(entity => entity.Xenograft.SurvivalDays, "survival_days")
             .MapMolecularData(entity => entity.MolecularData);
 
         var model = TsvReader.Read(tsv, map).ToArray();

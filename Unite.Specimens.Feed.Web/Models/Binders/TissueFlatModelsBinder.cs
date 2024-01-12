@@ -4,7 +4,7 @@ using Unite.Specimens.Feed.Web.Models.Binders.Extensions;
 
 namespace Unite.Specimens.Feed.Web.Models.Binders;
 
-public class TissuesTsvModelBinder : IModelBinder
+public class TissueFlatModelsBinder : IModelBinder
 {
     public async Task BindModelAsync(ModelBindingContext bindingContext)
     {
