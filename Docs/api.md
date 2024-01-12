@@ -112,6 +112,39 @@ Supported formats are:
         }
     },
     {
+        "id": "OR1CL1TI1",
+        "donor_id": "DO1",
+        "parent_id": "CL1TI1",
+        "parent_type": "CellLine",
+        "creation_date": "2020-04-01",
+        "creation_day": null,
+        "organoid": {
+            "medium": "Medium 1",
+            "implanted_cells_number": 1500000,
+            "tumorigenicity": false,
+            "interventions": [
+                {
+                    "type": "Intervention type",
+                    "details": "Intervention details",
+                    "start_date": "2020-04-05",
+                    "start_day": null,
+                    "end_date": "2020-04-10",
+                    "duration_days": null,
+                    "results": "Intervention results"
+                }
+            ]
+        },
+        "drugs_screening_data": null,
+        "molecular_data": {
+            "mgmt_status": "Methylated",
+            "idh_status": "Mutant",
+            "idh_mutation": "IDH1 R132C",
+            "gene_expression_subtype": null,
+            "methylation_subtype": null,
+            "gcimp_methylation": true
+        }
+    },
+    {
         "id": "XE1CL1TI1",
         "donor_id": "DO1",
         "parent_id": "CL1TI1",
@@ -148,40 +181,7 @@ Supported formats are:
             "methylation_subtype": "H3-K27",
             "gcimp_methylation": true
         }
-    },
-    {
-        "id": "OR1CL1TI1",
-        "donor_id": "DO1",
-        "parent_id": "CL1TI1",
-        "parent_type": "CellLine",
-        "creation_date": "2020-04-01",
-        "creation_day": null,
-        "organoid": {
-            "medium": "Medium 1",
-            "implanted_cells_number": 1500000,
-            "tumorigenicity": false,
-            "interventions": [
-                {
-                    "type": "Intervention type",
-                    "details": "Intervention details",
-                    "start_date": "2020-04-05",
-                    "start_day": null,
-                    "end_date": "2020-04-10",
-                    "duration_days": null,
-                    "results": "Intervention results"
-                }
-            ]
-        },
-        "drugs_screening_data": null,
-        "molecular_data": {
-            "mgmt_status": "Methylated",
-            "idh_status": "Mutant",
-            "idh_mutation": "IDH1 R132C",
-            "gene_expression_subtype": null,
-            "methylation_subtype": null,
-            "gcimp_methylation": true
-        }
-    },
+    }
 ]
 ```
 
