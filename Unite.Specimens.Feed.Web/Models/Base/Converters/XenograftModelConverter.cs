@@ -20,7 +20,7 @@ public class XenograftModelConverter
             MouseStrain = source.MouseStrain,
             GroupSize = source.GroupSize,
             ImplantType = source.ImplantType,
-            TissueLocation = source.TissueLocation,
+            ImplantLocation = source.ImplantLocation,
             ImplantedCellsNumber = source.ImplantedCellsNumber,
             Tumorigenicity = source.Tumorigenicity,
             TumorGrowthForm = source.TumorGrowthForm,

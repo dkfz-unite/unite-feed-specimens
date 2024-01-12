@@ -5,8 +5,6 @@ Specimens data feed service provides the following functionality:
 - [Specimens data feed web API](Docs/api.md) - REST API for uploading specimens data to the portal (including input data validation).
 - Specimens data indexing service - background service responsible for specimen-centric data index creation.
 
-Specimens data feed service is written in ASP.NET (.NET 6)
-
 ## Dependencies
 - [SQL](https://github.com/dkfz-unite/unite-environment/tree/main/programs/postgresql) - SQL server with domain data and user identity data.
 - [Elasticsearch](https://github.com/dkfz-unite/unite-environment/tree/main/programs/elasticsearch) - Elasticsearch server with indices of domain data.
@@ -19,18 +17,18 @@ Docker|http://feed.specimens.unite.net|80
 
 ## Configuration
 To configure the application, change environment variables in either docker or [launchSettings.json](Unite.Specimens.Feed.Web/Properties/launchSettings.json) file (if running locally):
-Variable|Description|Default(Local)|Default(Docker)
---------|-----------|--------------|---------------
-ASPNETCORE_ENVIRONMENT|ASP.NET environment|Debug|Release
-UNITE_API_KEY|Unite api key||
-UNITE_ELASTIC_HOST|ES service host|http://localhost:9200|es.unite.net:9200
-UNITE_ELASTIC_USER|ES service user||
-UNITE_ELASTIC_PASSWORD|ES service password||
-UNITE_SQL_HOST|SQL server host|localhost|sql.unite.net
-UNITE_SQL_PORT|SQL server port|5432|5432
-UNITE_SQL_USER|SQL server user||
-UNITE_SQL_PASSWORD|SQL server password||
-UNITE_INDEXING_BUCKET_SIZE|Indexing bucket size|100|100
+
+- `ASPNETCORE_ENVIRONMENT` - ASP.NET environment (`Release`).
+- `UNITE_API_KEY` - API key for decription of JWT token and user authorization.
+- `UNITE_ELASTIC_HOST` - Elasticsearch service host (`es.unite.net:9200`).
+- `UNITE_ELASTIC_USER` - Elasticsearch service user.
+- `UNITE_ELASTIC_PASSWORD` - Elasticsearch service password.
+- `UNITE_SQL_HOST` - SQL server host (`sql.unite.net`).
+- `UNITE_SQL_PORT` - SQL server port (`5432`).
+- `UNITE_SQL_USER` - SQL server user.
+- `UNITE_SQL_PASSWORD` - SQL server password.
+- `UNITE_INDEXING_BUCKET_SIZE` - Indexing bucket size (`100`).
+
 
 ## Installation
 
@@ -40,7 +38,10 @@ The easiest way to install the application is to use docker-compose:
 - Specimens data feed service configuration and installation scripts: https://github.com/dkfz-unite/unite-environment/tree/main/applications/unite-specimens-feed
 
 ### Docker
-[Dockerfile](https://github.com/dkfz-unite/unite-specimens-feed/blob/main/Dockerfile) is used to build an image of the application.
+The image of the service is available in our [registry](https://github.com/dkfz-unite/unite-specimens-feed/pkgs/container/unite-specimens-feed) for the following environments:
+- `linux/amd64`
+
+[Dockerfile](./Dockerfile) is used to build an image of the application.
 To build an image run the following command:
 ```
 docker build -t unite.specimens.feed:latest .

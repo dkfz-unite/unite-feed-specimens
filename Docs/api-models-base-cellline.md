@@ -6,22 +6,22 @@ Inlcudes cell line data.
 
 _At least one field has to be set_
 
-**`Species`** - Whom the cell line was initially taken from.
+**`species`** - Whom the cell line was initially taken from.
 - Type: _String_
 - Possible values: `"Human"`, `"Mouse"`
 - Example: `"Human"`
 
-**`Type`** - Type of the cell line.
+**`type`** - Type of the cell line.
 - Type: _String_
 - Possible values: `"Stem Cell"`, `"Differentiated"`
 - Example: `"Stem Cell"`
 
-**`CultureType`** - Way of cells harvesting.
+**`culture_type`** - Way of cells harvesting.
 - Type: _String_
 - Possible values: `"Suspension"`, `"Adherent"`, `"Both"`
 - Example: `"Both"`
 
-**`Info`** - public information about the cell line.
+**`info`** - public information about the cell line.
 - Type: _Object([CellLineInfo](api-specimens-models-cellline.md#cell-line-info))_
 - Example: `{...}`
 
@@ -30,31 +30,31 @@ Includes public information about the cell line.
 
 _At least one field has to be set_
 
-**`Name`** - Name given to the cell line at publication.
+**`name`** - Name given to the cell line at publication.
 - Type: _String_
 - Example: `"CLP_CL1TI1"`
 
-**`DepositorName`** - Author of the study.
+**`depositor_name`** - Author of the study.
 - Type: _String_
 - Example: `"Erica Polden"`
 
-**`DepositorEstablishment`** - Establishment where the study was held.
+**`depositor_establishment`** - Establishment where the study was held.
 - Type: _String_
 - Example: `"Colonord Research Centre"`
 
-**`EstablishmentDate`** - Date of the cell line establishment.
+**`establishment_date`** - Date of the cell line establishment.
 - Type: _String_
 - Format: "YYYY-MM-DD"
 - Example: `"2020-02-05"`
 
-**`PubMedLink`** - [PubMed](https://pubmed.ncbi.nlm.nih.gov/) publication link.
+**`pubmed_link`** - [PubMed](https://pubmed.ncbi.nlm.nih.gov/) publication link.
 - Type: _String_
 - Example: `"https://pubmed.ncbi.nlm.nih.gov"`
 
-**`AtccLink`** - [ATCC](https://www.lgcstandards-atcc.org/) publication link.
+**`atcc_link`** - [ATCC](https://www.lgcstandards-atcc.org/) publication link.
 - Type: _String_
 - Example: `"https://www.atcc.org/"`
 
-**`ExPasyLink`** - [ExPasy](https://web.expasy.org/) publication link.
+**`expasy_link`** - [ExPasy](https://web.expasy.org/) publication link.
 - Type: _String_
 - Example: `"https://www.expasy.org/"`

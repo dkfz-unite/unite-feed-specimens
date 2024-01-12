@@ -73,7 +73,7 @@ internal class XenograftRepository : SpecimenRepositoryBase<XenograftModel>
         entity.Xenograft.MouseStrain = model.MouseStrain;
         entity.Xenograft.GroupSize = model.GroupSize;
         entity.Xenograft.ImplantTypeId = model.ImplantType;
-        entity.Xenograft.TissueLocationId = model.TissueLocation;
+        entity.Xenograft.ImplantLocationId = model.ImplantLocation;
         entity.Xenograft.ImplantedCellsNumber = model.ImplantedCellsNumber;
         entity.Xenograft.Tumorigenicity = model.Tumorigenicity;
         entity.Xenograft.TumorGrowthFormId = model.TumorGrowthForm;

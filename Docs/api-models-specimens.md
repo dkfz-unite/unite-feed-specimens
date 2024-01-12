@@ -26,39 +26,39 @@ Specimen upload data model.
 - Note: It's hidden and protected. Relative date is shown instead, if calculation was possible.
 - Type: _String_
 - Format: "YYYY-MM-DD"
-- Limitations: Only either CreationDate-Date or CreationDate-Day can be set at once, not both
+- Limitations: Only either `creation_date` or `creation_day` can be set at once, not both
 - Example: `"2020-02-05"`
 
 **`creation_day`** - Relative number of days since diagnosis statement when specimen was created.
 - Type: _Number_
-- Limitations: Integer, greater or equal to 0, only either CreationDate-Date or CreationDate-Day can be set at once, not both
+- Limitations: Integer, greater or equal to 0, only either `creation_date` or `creation_day` can be set at once, not both
 - Example: `36`
 
 **`tissue`** - Tissue data (if specimen is a tissue).
 - Type: _Object([Tissue](api-models-base-tissue.md))_
-- Limitations - Only either 'Tissue' or 'CellLine' or 'Organoid' or 'Xenograft' can be set at once.
+- Limitations - Only either `tissue`, `cell_line`, `organoid` or `xenograft` can be set at once.
 - Example: `{...}`
 
-**`CellLine`** - Cell line data (if specimen is a cell line).
+**`cell_line`** - Cell line data (if specimen is a cell line).
 - Type: _Object([CellLine](api-models-base-cellline.md))_
-- Limitations - Only either 'Tissue' or 'CellLine' or 'Organoid' or 'Xenograft' can be set at once.
+- Limitations - Only either `tissue`, `cell_line`, `organoid` or `xenograft` can be set at once.
 - Example: `{...}`
 
-**`Organoid`** - Organoid data (if specimen is an organoid).
+**`organoid`** - Organoid data (if specimen is an organoid).
 - Type: _Object([Organoid](api-models-base-organoid.md))_
-- Limitations - Only either 'Tissue' or 'CellLine' or 'Organoid' or 'Xenograft' can be set at once.
+- Limitations - Only either `tissue`, `cell_line`, `organoid` or `xenograft` can be set at once.
 - Example: `{...}`
 
-**`Xenograft`** - Xenograft data (if specimen is a xenograft).
+**`xenograft`** - Xenograft data (if specimen is a xenograft).
 - Type: _Object([Xenograft](api-models-base-xenograft.md))_
-- Limitations - Only either 'Tissue' or 'CellLine' or 'Organoid' or 'Xenograft' can be set at once.
+- Limitations - Only either `tissue`, `cell_line`, `organoid` or `xenograft` can be set at once.
 - Example: `{...}`
 
 **`molecular_data`** - Specimen molecular data.
 - Type: _Object([MolecularData](api-models-base-molecular.md))_
 - Example: `{...}`
 
-**`DrugsScreeningData`** - Specimen drugs screening data.
+**`drugs_screening_data`** - Specimen drugs screening data.
 - Type: _Array_
 - Element type: _Object([DrugScreeningData](api-models-base-drugs.md))_
 - Example: `[{...}, {...}]`

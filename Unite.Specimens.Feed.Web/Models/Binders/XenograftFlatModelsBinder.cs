@@ -19,7 +19,7 @@ public class XenograftFlatModelsBinder : IModelBinder
             .Map(entity => entity.Xenograft.MouseStrain, "mouse_strain")
             .Map(entity => entity.Xenograft.GroupSize, "group_size")
             .Map(entity => entity.Xenograft.ImplantType, "implant_type")
-            .Map(entity => entity.Xenograft.TissueLocation, "tissue_location")
+            .Map(entity => entity.Xenograft.ImplantLocation, "tissue_location")
             .Map(entity => entity.Xenograft.ImplantedCellsNumber, "implanted_cells_number")
             .Map(entity => entity.Xenograft.Tumorigenicity, "tumorigenicity")
             .Map(entity => entity.Xenograft.TumorGrowthForm, "tumor_growth_form")

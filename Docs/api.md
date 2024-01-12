@@ -99,7 +99,7 @@ Supported formats are:
                 "concentration": [1, 10, 100, 1000, 10000],
                 "inhibition": [6.76, 50.25, 82.32, 94.10, 97.42],
                 "concentration_line": [1, 10, 100, 1000, 10000],
-                "inhibitions_line": [6.76, 50.25, 82.32, 94.10, 97.42]
+                "inhibition_line": [6.76, 50.25, 82.32, 94.10, 97.42]
             }
         ],
         "molecular_data": {
@@ -155,7 +155,7 @@ Supported formats are:
             "mouse_strain": "Nude",
             "group_size": 9,
             "implant_type": "Other",
-            "tissue_location": "Cortical",
+            "implant_location": "Cortical",
             "implanted_cells_number": 750000,
             "tumorigenicity": true,
             "tumor_growth_form": "Invasive",
@@ -201,13 +201,15 @@ Submit tissues data.
 Supported formats are:
 - `tsv` - text/tab-separated-values
 
+For `json` upload see [POST: api/specimens](#post-apispecimens).
+
 ##### tsv - text/tab-separated-values
 ```tsv
 id	donor_id	parent_id	parent_type	creation_date	creation_day	type	tumor_type	source	mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation
 TI1	DO1			2020-02-01		Tumor	Primary	Solid tissue	Methylated	Wild Type		Classical	H3-K27	true
 ```
 
-Fields description can be found [here](./api-models-specimens.md) and [here](./api-models-base-tissue.md).
+Fields description can be found [here](api-models-specimens.md) and [here](api-models-base-tissue.md).
 
 ### Responses
 - `200` - request was processed successfully
@@ -223,13 +225,15 @@ Submit organoids data.
 Supported formats are:
 - `tsv` - text/tab-separated-values
 
+For `json` upload see [POST: api/specimens](#post-apispecimens).
+
 #### tsv - text/tab-separated-values
 ```tsv
 donor_id    specimen_id medium  implanted_cells_number  tumorigenicity  mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation
 DO1	OR1CL1TI1	Medium 1	1500000	false	Methylated	Wild Type		Classical	H3-K27	true
 ```
 
-Fields description can be found [here](./api-models-specimens.md) and [here](./api-models-base-organoid.md).
+Fields description can be found [here](api-models-specimens.md) and [here](api-models-base-organoid.md).
 
 ### Responses
 - `200` - request was processed successfully
@@ -273,7 +277,7 @@ donor_id    specimen_id type    details start_date  start_day   end_date    dura
 DO1	OR1CL1TI1	Intervention_Type   Intervention_details    2020-04-05	2020-04-10	Intervention_results
 ```
 
-Fields description can be found [here](./api-models-specimens.md) and [here](./api-models-base-organoid.md).
+Fields description can be found [here](api-models-organoid-interventions.md).
 
 ### Responses
 - `200` - request was processed successfully
@@ -289,9 +293,11 @@ Submit xenografts data.
 Supported formats are:
 - `tsv` - text/tab-separated-values
 
+For `json` upload see [POST: api/specimens](#post-apispecimens).
+
 ### tsv - text/tab-separated-values
 ```tsv
-donor_id    specimen_id mouse_strain    group_size  implant_type    tissue_location implanted_cells_number  tumorigenicity  tumor_growth_form   survival_days   mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation
+donor_id    specimen_id mouse_strain    group_size  implant_type    implant_location implanted_cells_number  tumorigenicity  tumor_growth_form   survival_days   mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation
 DO1	XE1CL1TI1	Nude	9	Other	Cortical	750000	true	Invasive	20-30	Methylated	Wild Type		Classical	H3-K27	true
 ```
 
@@ -339,7 +345,7 @@ donor_id    specimen_id type    details start_date  start_day   end_date    dura
 DO1	XE1CL1TI1	Intervention_Type   Intervention_details    2020-03-05	2020-03-10	Intervention_results
 ```
 
-Fields description can be found [here](./api-models-specimens.md) and [here](./api-models-base-xenograft.md).
+Fields description can be found [here](./api-models-xenograft-interventions.md).
 
 ### Responses
 - `200` - request was processed successfully
