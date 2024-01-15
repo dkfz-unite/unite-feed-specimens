@@ -4,12 +4,12 @@ using Unite.Specimens.Feed.Web.Models.Base.Validators;
 
 namespace Unite.Specimens.Feed.Web.Models.Validators;
 
-public class DrugScreeningDataModelValidator : AbstractValidator<DrugScreeningDataModel>
+public class DrugScreeningsDataModelValidator : AbstractValidator<DrugScreeningsDataModel>
 {
     private readonly IValidator<DrugScreeningModel> _drugScreeningModelValidator;
 
 
-    public DrugScreeningDataModelValidator()
+    public DrugScreeningsDataModelValidator()
     {
         _drugScreeningModelValidator = new DrugScreeningModelValidator();
 
