@@ -6,18 +6,18 @@ using DataModels = Unite.Specimens.Feed.Data.Specimens.Models;
 namespace Unite.Specimens.Feed.Web.Models.Converters;
 
 
-public class DrugScreeningDataModelConverter
+public class DrugScreeningsDataModelConverter
 {
     private readonly DrugScreeningModelConverter _drugScreeningModelConverter;
 
 
-    public DrugScreeningDataModelConverter()
+    public DrugScreeningsDataModelConverter()
     {
         _drugScreeningModelConverter = new DrugScreeningModelConverter();
     }
 
 
-    public DataModels.SpecimenModel Convert(in DrugScreeningDataModel source)
+    public DataModels.SpecimenModel Convert(in DrugScreeningsDataModel source)
     {
         var target = GetSpecimenModel(source.SpecimenId, source.SpecimenType);
 
