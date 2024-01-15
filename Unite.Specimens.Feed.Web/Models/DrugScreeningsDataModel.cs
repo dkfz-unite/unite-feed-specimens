@@ -3,7 +3,7 @@ using Unite.Specimens.Feed.Web.Models.Base.Enums;
 
 namespace Unite.Specimens.Feed.Web.Models;
 
-public record DrugScreeningDataModel
+public record DrugScreeningsDataModel
 {
     private string _donorId;
     private string _specimenId;
