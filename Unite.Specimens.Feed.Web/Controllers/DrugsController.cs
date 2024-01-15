@@ -4,6 +4,7 @@ using Unite.Specimens.Feed.Data.Specimens;
 using Unite.Specimens.Feed.Data.Specimens.Exceptions;
 using Unite.Specimens.Feed.Web.Configuration.Constants;
 using Unite.Specimens.Feed.Web.Models;
+using Unite.Specimens.Feed.Web.Models.Binders;
 using Unite.Specimens.Feed.Web.Models.Converters;
 using Unite.Specimens.Feed.Web.Services;
 
@@ -17,7 +18,8 @@ public class DrugsController : Controller
     private readonly SpecimenIndexingTasksService _indexingTaskService;
     private readonly ILogger _logger;
 
-    private readonly DrugScreeningDataModelConverter _converter;
+    private readonly DrugScreeningsDataModelConverter _defaultConverter;
+    private readonly DrugScreeningDataFlatModelConverter _flatConverter;
 
 
     public DrugsController(
@@ -29,17 +31,33 @@ public class DrugsController : Controller
         _indexingTaskService = indexingTaskService;
         _logger = logger;
 
-        _converter = new DrugScreeningDataModelConverter();
+        _defaultConverter = new DrugScreeningsDataModelConverter();
+        _flatConverter = new DrugScreeningDataFlatModelConverter();
     }
 
+    [HttpPost("")]
+    [Consumes("application/json")]
+    public IActionResult Post([FromBody] DrugScreeningsDataModel[] models)
+    {
+        var dataModels = models.Select(model => _defaultConverter.Convert(model)).ToArray();
 
-    public IActionResult Post([FromBody] DrugScreeningDataModel[] models)
+        return PostData(dataModels);
+    }
+
+    [HttpPost("tsv")]
+    [Consumes("text/tab-separated-values")]
+    public IActionResult PostTsv([ModelBinder(typeof(DrugsTsvModelBinder))] DrugScreeningDataFlatModel[] models)
+    {
+        var dataModels = models.Select(model => _flatConverter.Convert(model)).ToArray();
+
+        return PostData(dataModels);
+    }
+
+    private IActionResult PostData(Data.Specimens.Models.SpecimenModel[] models)
     {
         try
         {
-            var dataModels = models.Select(model => _converter.Convert(model));
-
-            _dataWriter.SaveData(dataModels, out var audit);
+            _dataWriter.SaveData(models, out var audit);
 
             _logger.LogInformation(audit.ToString());
 
