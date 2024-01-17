@@ -6,21 +6,23 @@ namespace Unite.Specimens.Feed.Web.Models.Validators;
 
 public class SpecimenDataModelValidator : AbstractValidator<SpecimenDataModel>
 {
-    private readonly IValidator<TissueModel> _tissueModelValidator;
-    private readonly IValidator<CellLineModel> _cellLineModelValidator;
+    private readonly IValidator<MaterialModel> _materialModelValidator;
+    private readonly IValidator<LineModel> _lineModelValidator;
     private readonly IValidator<OrganoidModel> _organoidModelValidator;
     private readonly IValidator<XenograftModel> _xenograftModelValidator;
     private readonly IValidator<MolecularDataModel> _molecularDataModelValidator;
+    private readonly IValidator<InterventionModel> _interventionModelValidator;
     private readonly IValidator<DrugScreeningModel> _drugScreeningModelValidator;
 
 
     public SpecimenDataModelValidator()
     {
-        _tissueModelValidator = new TissueModelValidator();
-        _cellLineModelValidator = new CellLineModelValidator();
+        _materialModelValidator = new MaterialModelValidator();
+        _lineModelValidator = new LineModelValidator();
         _organoidModelValidator = new OrganoidModelValidator();
         _xenograftModelValidator = new XenograftModelValidator();
         _molecularDataModelValidator = new MolecularDataModelValidator();
+        _interventionModelValidator = new InterventionModelValidator();
         _drugScreeningModelValidator = new DrugScreeningModelValidator();
 
 
@@ -74,11 +76,11 @@ public class SpecimenDataModelValidator : AbstractValidator<SpecimenDataModel>
             .WithMessage("Specific specimen data (Tissue, CellLine or Xenograft) has to be set");
 
 
-        RuleFor(model => model.Tissue)
-            .SetValidator(_tissueModelValidator);
+        RuleFor(model => model.Material)
+            .SetValidator(_materialModelValidator);
 
-        RuleFor(model => model.CellLine)
-            .SetValidator(_cellLineModelValidator);
+        RuleFor(model => model.Line)
+            .SetValidator(_lineModelValidator);
 
         RuleFor(model => model.Organoid)
             .SetValidator(_organoidModelValidator);
@@ -89,15 +91,18 @@ public class SpecimenDataModelValidator : AbstractValidator<SpecimenDataModel>
         RuleFor(model => model.MolecularData)
             .SetValidator(_molecularDataModelValidator);
 
-        RuleForEach(model => model.DrugsScreeningData)
+        RuleForEach(model => model.Interventions)
+            .SetValidator(_interventionModelValidator);
+
+        RuleForEach(model => model.DrugScreenings)
             .SetValidator(_drugScreeningModelValidator);
     }
 
 
     private bool HaveModelSet(SpecimenDataModel model)
     {
-        return model.Tissue != null
-            || model.CellLine != null
+        return model.Material != null
+            || model.Line != null
             || model.Organoid != null
             || model.Xenograft != null;
     }

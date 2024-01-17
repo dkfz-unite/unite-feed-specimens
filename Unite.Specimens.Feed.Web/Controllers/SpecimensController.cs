@@ -7,7 +7,7 @@ using Unite.Specimens.Feed.Web.Services;
 
 namespace Unite.Specimens.Feed.Web.Controllers;
 
-[Route("api/specimens")]
+[Route("api/[controller]")]
 [Authorize(Policy = Policies.Data.Writer)]
 public class SpecimensController : SpecimensControllerBase
 {

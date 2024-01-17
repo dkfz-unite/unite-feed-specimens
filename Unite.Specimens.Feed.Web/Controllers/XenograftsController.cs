@@ -8,7 +8,7 @@ using Unite.Specimens.Feed.Web.Services;
 
 namespace Unite.Specimens.Feed.Web.Controllers;
 
-[Route("api/xenografts")]
+[Route("api/[controller]")]
 [Authorize(Policy = Policies.Data.Writer)]
 public class XenograftsController : SpecimensControllerBase
 {
@@ -22,7 +22,7 @@ public class XenograftsController : SpecimensControllerBase
 
     [HttpPost("tsv")]
     [Consumes("text/tab-separated-values")]
-    public IActionResult PostTsv([ModelBinder(typeof(XenograftFlatModelsBinder))]SpecimenDataModel[] models)
+    public IActionResult PostTsv([ModelBinder(typeof(XenograftTsvModelsBinder))]SpecimenDataModel[] models)
     {
         return PostData(models);
     }

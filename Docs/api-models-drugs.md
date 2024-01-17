@@ -1,4 +1,4 @@
-# Drug Screening Upload Data Model
+# Drug ScreeningS Upload Data Model
 Drug screening upload data model.
 
 **`donor_id`*** - Donor pseudonymised identifier.
@@ -13,15 +13,15 @@ Drug screening upload data model.
 - Limitations: Maximum length 255
 - Example: `"CL1TI1"`
 
-**`specimen_type`** - Specimen type.
-- Note: Drugs screening data can not be uploaded for tissues.
+**`specimen_type`*** - Specimen type.
+- Note: Drugs screening data can not be uploaded for donor materials.
 - Type: _String_
-- Possible values: `"CellLine"`, `"Organoid"`, `"Xenograft"`
-- Example: `"CellLine"`
+- Possible values: `"Line"`, `"Organoid"`, `"Xenograft"`
+- Example: `"Line"`
 
-**`data`** - Drugs screening data.
+**`data`*** - Drugs screening data.
 - Type: _Array_
-- Element type: _Object([DrugScreening](api-models-base-drugs.md))_
+- Element type: _Object([DrugScreening](api-models-base-drug.md))_
 - Example: `[{...}, {...}]`
 
 ##

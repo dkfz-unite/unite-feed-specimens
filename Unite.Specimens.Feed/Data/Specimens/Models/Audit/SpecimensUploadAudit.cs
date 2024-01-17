@@ -3,14 +3,16 @@
 public class SpecimensUploadAudit
 {
     public int DonorsCreated;
-    public int TissuesCreated;
-    public int TissuesUpdated;
-    public int CellLinesCreated;
-    public int CellLinesUpdated;
+    public int MaterialsCreated;
+    public int MaterialsUpdated;
+    public int LinesCreated;
+    public int LinesUpdated;
     public int OrganoidsCreated;
     public int OrganoidsUpdate;
     public int XenograftsCreated;
     public int XenograftsUpdated;
+    public int InterventionsCreated;
+    public int InterventionsUpdated;
     public int DrugScreeningsCreated;
     public int DrugScreeningsUpdated;
 
@@ -21,14 +23,16 @@ public class SpecimensUploadAudit
         return string.Join(Environment.NewLine,
         [
             $"{DonorsCreated} donors created",
-            $"{TissuesCreated} tissues created",
-            $"{TissuesUpdated} tissues updated",
-            $"{CellLinesCreated} cell lines created",
-            $"{CellLinesUpdated} cell lines updated",
+            $"{MaterialsCreated} materials created",
+            $"{MaterialsUpdated} materials updated",
+            $"{LinesCreated} lines created",
+            $"{LinesUpdated} lines updated",
             $"{OrganoidsCreated} organoids created",
             $"{OrganoidsUpdate} organoids updated",
             $"{XenograftsCreated} xenografts created",
             $"{XenograftsUpdated} xenografts updated",
+            $"{InterventionsCreated} interventions created",
+            $"{InterventionsUpdated} interventions updated",
             $"{DrugScreeningsCreated} specimen drug screening entries created",
             $"{DrugScreeningsUpdated} specimen drug screening entries updated"
         ]);

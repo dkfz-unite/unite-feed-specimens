@@ -2,10 +2,8 @@
 using Unite.Data.Context.Configuration.Extensions;
 using Unite.Data.Context.Configuration.Options;
 using Unite.Data.Context.Services.Tasks;
-using Unite.Indices.Context;
 using Unite.Indices.Context.Configuration.Extensions;
 using Unite.Indices.Context.Configuration.Options;
-using Unite.Indices.Entities.Specimens;
 using Unite.Specimens.Feed.Data.Specimens;
 using Unite.Specimens.Feed.Web.Configuration.Options;
 using Unite.Specimens.Feed.Web.Handlers;
@@ -30,8 +28,7 @@ public static class ConfigurationExtensions
         services.AddValidators();
 
         services.AddTransient<SpecimensDataWriter>();
-        services.AddTransient<OrganoidInterventionsDataWriter>();
-        services.AddTransient<XenograftInterventionsDataWriter>();
+        services.AddTransient<InterventionsDataWriter>();
         services.AddTransient<DrugScreeningsDataWriter>();
 
         services.AddTransient<SpecimenIndexingTasksService>();
@@ -56,10 +53,8 @@ public static class ConfigurationExtensions
     private static IServiceCollection AddValidators(this IServiceCollection services)
     {
         services.AddTransient<IValidator<SpecimenDataModel[]>, SpecimenModelsValidator>();
-        services.AddTransient<IValidator<OrganoidInterventionsDataModel[]>, OrganoidInterventionsDataModelsValidator>();
-        services.AddTransient<IValidator<OrganoidInterventionDataFlatModel[]>, OrganoidInterventionDataFlatModelsValidator>();
-        services.AddTransient<IValidator<XenograftInterventionsDataModel[]>, XenograftInterventionsDataModelsValidator>();
-        services.AddTransient<IValidator<XenograftInterventionDataFlatModel[]>, XenograftInterventionDataFlatModelsValidator>();
+        services.AddTransient<IValidator<InterventionsDataModel[]>, InterventionsDataModelsValidator>();
+        services.AddTransient<IValidator<InterventionDataFlatModel[]>, InterventionDataFlatModelsValidator>();
 
         return services;
     }

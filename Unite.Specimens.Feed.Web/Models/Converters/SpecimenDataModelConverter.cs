@@ -1,29 +1,31 @@
-﻿using Unite.Specimens.Feed.Web.Models.Base;
+﻿using Unite.Data.Entities.Specimens.Enums;
+using Unite.Specimens.Feed.Web.Models.Base;
 using Unite.Specimens.Feed.Web.Models.Base.Converters;
-using Unite.Specimens.Feed.Web.Models.Base.Enums;
 
 using DataModels = Unite.Specimens.Feed.Data.Specimens.Models;
 
 namespace Unite.Specimens.Feed.Web.Models.Converters;
 
 
-public class SpecimenDataModelConverter
+public class SpecimenDataModelConverter : BaseConverter
 {
-    private readonly TissueModelConverter _tissueModelConverter;
-    private readonly CellLineModelConverter _cellLineModelConverter;
+    private readonly MaterialModelConverter _materialModelConverter;
+    private readonly LineModelConverter _lineModelConverter;
     private readonly OrganoidModelConverter _organoidModelConverter;
     private readonly XenograftModelConverter _xenograftModelConverter;
     private readonly MolecularDataModelConverter _molecularDataModelConverter;
+    private readonly InterventionModelConverter _interventionModelConverter;
     private readonly DrugScreeningModelConverter _drugScreeningModelConverter;
 
 
     public SpecimenDataModelConverter()
     {
-        _tissueModelConverter = new TissueModelConverter();
-        _cellLineModelConverter = new CellLineModelConverter();
+        _materialModelConverter = new MaterialModelConverter();
+        _lineModelConverter = new LineModelConverter();
         _organoidModelConverter = new OrganoidModelConverter();
         _xenograftModelConverter = new XenograftModelConverter();
         _molecularDataModelConverter = new MolecularDataModelConverter();
+        _interventionModelConverter = new InterventionModelConverter();
         _drugScreeningModelConverter = new DrugScreeningModelConverter();
     }
 
@@ -35,7 +37,8 @@ public class SpecimenDataModelConverter
         target.Donor = GetDonorModel(source.DonorId);
         target.Parent = GetSpecimenModel(source.ParentId, source.ParentType);
         target.MolecularData = GetMolecularDataModel(source.MolecularData);
-        target.DrugsScreeningData = GetDrugScreeningModels(source.DrugsScreeningData);
+        target.Interventions = GetInterventionModels(source.Interventions);
+        target.DrugScreenings = GetDrugScreeningModels(source.DrugScreenings);
 
         target.CreationDate = source.CreationDate;
         target.CreationDay = source.CreationDay;
@@ -46,65 +49,34 @@ public class SpecimenDataModelConverter
 
     private DataModels.SpecimenModel GetSpecimenModel(SpecimenDataModel source)
     {
-        if (source.Tissue != null)
-        {
-            return _tissueModelConverter.Convert(source.Id, source.Tissue);
-        }
-        else if (source.CellLine != null)
-        {
-            return _cellLineModelConverter.Convert(source.Id, source.CellLine);
-        }
+        if (source.Material != null)
+            return _materialModelConverter.Convert(source.Id, source.Material);
+        else if (source.Line != null)
+            return _lineModelConverter.Convert(source.Id, source.Line);
         else if (source.Organoid != null)
-        {
             return _organoidModelConverter.Convert(source.Id, source.Organoid);
-        }
         else if (source.Xenograft != null)
-        {
             return _xenograftModelConverter.Convert(source.Id, source.Xenograft);
-        }
         else
-        {
             throw new NotImplementedException("Specimen type is not supported yet");
-        }
     }
 
-    private DataModels.SpecimenModel GetSpecimenModel(string id, SpecimenType? type)
+    protected DataModels.SpecimenModel GetSpecimenModel(string id, SpecimenType? type)
     {
         if (string.IsNullOrWhiteSpace(id) || type == null)
-        {
             return null;
-        }
 
-        if (type == SpecimenType.Tissue)
-        {
-            return new DataModels.TissueModel { ReferenceId = id };
-        }
-        else if (type == SpecimenType.CellLine)
-        {
-            return new DataModels.CellLineModel { ReferenceId = id };
-        }
-        else if (type == SpecimenType.Organoid)
-        {
-            return new DataModels.OrganoidModel { ReferenceId = id };
-        }
-        else if (type == SpecimenType.Xenograft)
-        {
-            return new DataModels.XenograftModel { ReferenceId = id };
-        }
-        else
-        {
-            throw new NotImplementedException("Specimen type is not supported yet");
-        }
-    }
-
-    private DataModels.DonorModel GetDonorModel(string id)
-    {
-        return new DataModels.DonorModel { ReferenceId = id };
+        return base.GetSpecimenModel(id, type.Value);
     }
 
     private DataModels.MolecularDataModel GetMolecularDataModel(MolecularDataModel source)
     {
         return _molecularDataModelConverter.Convert(source);
+    }
+
+    private DataModels.InterventionModel[] GetInterventionModels(InterventionModel[] sources)
+    {
+        return _interventionModelConverter.Convert(sources);
     }
 
     private DataModels.DrugScreeningModel[] GetDrugScreeningModels(DrugScreeningModel[] sources)

@@ -141,14 +141,14 @@ internal class DrugScreeningRepository
         entity.Dss = model.Dss;
         entity.DssSelective = model.DssSelective;
         entity.Gof = model.Gof;
-        entity.MinConcentration = model.MinConcentration;
-        entity.MaxConcentration = model.MaxConcentration;
         entity.AbsIC25 = model.AbsIC25;
         entity.AbsIC50 = model.AbsIC50;
         entity.AbsIC75 = model.AbsIC75;
+        entity.MinConcentration = model.MinConcentration;
+        entity.MaxConcentration = model.MaxConcentration;
         entity.Concentration = model.Concentration;
         entity.Inhibition = model.Inhibition;
-        entity.ConcentrationLine = model.Dose;
-        entity.InhibitionLine = model.Response;
+        entity.ConcentrationLine = model.ConcentrationLine;
+        entity.InhibitionLine = model.IngibitionLine;
     }
 }

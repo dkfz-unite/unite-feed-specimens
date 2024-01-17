@@ -17,7 +17,7 @@ public class DrugsController : Controller
     private readonly SpecimenIndexingTasksService _indexingTaskService;
     private readonly ILogger _logger;
 
-    private readonly DrugScreeningDataModelConverter _converter;
+    private readonly DrugScreeningsDataModelConverter _converter;
 
 
     public DrugsController(
@@ -29,11 +29,11 @@ public class DrugsController : Controller
         _indexingTaskService = indexingTaskService;
         _logger = logger;
 
-        _converter = new DrugScreeningDataModelConverter();
+        _converter = new DrugScreeningsDataModelConverter();
     }
 
 
-    public IActionResult Post([FromBody] DrugScreeningDataModel[] models)
+    public IActionResult Post([FromBody] DrugScreeningsDataModel[] models)
     {
         try
         {

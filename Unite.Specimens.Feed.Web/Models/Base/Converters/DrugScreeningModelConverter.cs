@@ -1,4 +1,6 @@
-﻿using DataModels = Unite.Specimens.Feed.Data.Specimens.Models;
+﻿using Unite.Essentials.Extensions;
+
+using DataModels = Unite.Specimens.Feed.Data.Specimens.Models;
 
 namespace Unite.Specimens.Feed.Web.Models.Base.Converters;
 
@@ -25,13 +27,13 @@ public class DrugScreeningModelConverter
             AbsIC75 = source.AbsIC75,
             Concentration = source.Concentration,
             Inhibition = source.Inhibition,
-            Dose = source.ConcentrationLine,
-            Response = source.InhibitionLine
+            ConcentrationLine = source.ConcentrationLine,
+            IngibitionLine = source.InhibitionLine
         };
     }
 
     public DataModels.DrugScreeningModel[] Convert(in DrugScreeningModel[] sources)
     {
-        return sources?.Length > 0 ? sources.Select(source => Convert(source)).ToArray() : null;
+        return sources.IsNotEmpty() ? sources.Select(source => Convert(source)).ToArray() : null;
     }
 }

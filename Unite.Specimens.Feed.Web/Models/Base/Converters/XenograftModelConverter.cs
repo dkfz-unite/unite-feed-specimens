@@ -1,6 +1,4 @@
-﻿using Unite.Essentials.Extensions;
-
-using DataModels = Unite.Specimens.Feed.Data.Specimens.Models;
+﻿using DataModels = Unite.Specimens.Feed.Data.Specimens.Models;
 
 namespace Unite.Specimens.Feed.Web.Models.Base.Converters;
 
@@ -25,36 +23,10 @@ public class XenograftModelConverter
             Tumorigenicity = source.Tumorigenicity,
             TumorGrowthForm = source.TumorGrowthForm,
             SurvivalDaysFrom = ParseDuration(source.SurvivalDays)?.From,
-            SurvivalDaysTo = ParseDuration(source.SurvivalDays)?.To,
-
-            Interventions = Convert(source.Interventions)
+            SurvivalDaysTo = ParseDuration(source.SurvivalDays)?.To
         };
     }
 
-
-    public DataModels.XenograftInterventionModel[] Convert(in XenograftInterventionModel[] sources)
-    {
-        return sources.IsNotEmpty() ? sources.Select(intervention => Convert(intervention)).ToArray() : null;
-    }
-
-    public DataModels.XenograftInterventionModel Convert(in XenograftInterventionModel source)
-    {
-        if (source == null)
-        {
-            return null;
-        }
-
-        return new DataModels.XenograftInterventionModel
-        {
-            Type = source.Type,
-            Details = source.Details,
-            StartDate = source.StartDate,
-            StartDay = source.StartDay,
-            EndDate = source.EndDate,
-            DurationDays = source.DurationDays,
-            Results = source.Results
-        };
-    }
 
     private static (int From, int To)? ParseDuration(string duration)
     {

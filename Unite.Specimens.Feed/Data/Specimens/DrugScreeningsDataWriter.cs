@@ -33,7 +33,7 @@ public class DrugScreeningsDataWriter : DataWriter<SpecimenModel, DrugScreenings
         var specimen = _specimenRepository.Find(donor.Id, null, model)
             ?? throw new NotFoundException($"Specimen with id '{model.ReferenceId}' was not found");
             
-        var drugScreenings = _drugScreeningRepository.CreateOrUpdate(specimen.Id, model.DrugsScreeningData);
+        var drugScreenings = _drugScreeningRepository.CreateOrUpdate(specimen.Id, model.DrugScreenings);
 
         audit.DrugScreeningsCreated += drugScreenings.Count();
 

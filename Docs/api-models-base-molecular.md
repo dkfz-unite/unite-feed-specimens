@@ -1,6 +1,8 @@
 # Molecular Data Model
 Includes molecular data.
 
+_At least one field has to be set_
+
 **`mgmt_status`** - MGMT status of the specimen.
 - Type: _String_
 - Possible values: `"Methylated"`, `"Unmethylated"`
@@ -32,6 +34,3 @@ Includes molecular data.
 **`gcimp_methylation`** - Indicates whether specimen has G-CIMP methylation.
 - Type: _Boolean_
 - Example: `"True"`
-
-##
-At least one filed has to be set

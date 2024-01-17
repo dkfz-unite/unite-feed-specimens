@@ -9,12 +9,8 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories;
 
 internal class OrganoidRepository : SpecimenRepositoryBase<OrganoidModel>
 {
-    private readonly OrganoidInterventionRepository _interventionRepository;
-
-
     public OrganoidRepository(DomainDbContext dbContext) : base(dbContext)
     {
-        _interventionRepository = new OrganoidInterventionRepository(dbContext);
     }
 
 
@@ -32,29 +28,6 @@ internal class OrganoidRepository : SpecimenRepositoryBase<OrganoidModel>
             );
 
         return entity;
-    }
-
-
-    public override Specimen Create(int donorId, int? parentId, in OrganoidModel model)
-    {
-        var entity = base.Create(donorId, parentId, model);
-
-        if (model.Interventions != null && model.Interventions.Any())
-        {
-            _interventionRepository.CreateMissing(entity.Id, model.Interventions);
-        }
-
-        return entity;
-    }
-
-    public override void Update(ref Specimen entity, in OrganoidModel model)
-    {
-        base.Update(ref entity, model);
-
-        if (model.Interventions != null && model.Interventions.Any())
-        {
-            _interventionRepository.CreateOrUpdate(entity.Id, model.Interventions);
-        }
     }
 
 

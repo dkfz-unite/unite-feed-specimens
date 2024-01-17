@@ -6,16 +6,16 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories;
 
 internal class SpecimenRepository
 {
-    private readonly SpecimenRepositoryBase<TissueModel> _tissueRepository;
-    private readonly SpecimenRepositoryBase<CellLineModel> _cellLineRepository;
+    private readonly SpecimenRepositoryBase<MaterialModel> _materialRepository;
+    private readonly SpecimenRepositoryBase<LineModel> _lineRepository;
     private readonly SpecimenRepositoryBase<OrganoidModel> _organoidRepository;
     private readonly SpecimenRepositoryBase<XenograftModel> _xenograftRepository;
 
 
     public SpecimenRepository(DomainDbContext dbContext)
     {
-        _tissueRepository = new TissueRepository(dbContext);
-        _cellLineRepository = new CellLineRepository(dbContext);
+        _materialRepository = new MaterialRepository(dbContext);
+        _lineRepository = new LineRepository(dbContext);
         _organoidRepository = new OrganoidRepository(dbContext);
         _xenograftRepository = new XenograftRepository(dbContext);
     }
@@ -23,13 +23,13 @@ internal class SpecimenRepository
 
     public Specimen Find(int donorId, int? parentId, SpecimenModel model)
     {
-        if (model is TissueModel tissueModel)
+        if (model is MaterialModel materialModel)
         {
-            return _tissueRepository.Find(donorId, parentId, tissueModel);
+            return _materialRepository.Find(donorId, parentId, materialModel);
         }
-        else if (model is CellLineModel cellLineModel)
+        else if (model is LineModel lineModel)
         {
-            return _cellLineRepository.Find(donorId, parentId, cellLineModel);
+            return _lineRepository.Find(donorId, parentId, lineModel);
         }
         else if (model is OrganoidModel organoidModel)
         {
@@ -47,13 +47,13 @@ internal class SpecimenRepository
 
     public Specimen Create(int donorId, int? parentId, SpecimenModel model)
     {
-        if (model is TissueModel tissueModel)
+        if (model is MaterialModel materialModel)
         {
-            return _tissueRepository.Create(donorId, parentId, tissueModel);
+            return _materialRepository.Create(donorId, parentId, materialModel);
         }
-        else if (model is CellLineModel cellLineModel)
+        else if (model is LineModel lineModel)
         {
-            return _cellLineRepository.Create(donorId, parentId, cellLineModel);
+            return _lineRepository.Create(donorId, parentId, lineModel);
         }
         else if (model is OrganoidModel organoidModel)
         {
@@ -71,13 +71,13 @@ internal class SpecimenRepository
 
     public void Update(ref Specimen entity, in SpecimenModel model)
     {
-        if (model is TissueModel tissueModel)
+        if (model is MaterialModel materialModel)
         {
-            _tissueRepository.Update(ref entity, tissueModel);
+            _materialRepository.Update(ref entity, materialModel);
         }
-        else if (model is CellLineModel cellLineModel)
+        else if (model is LineModel lineModel)
         {
-            _cellLineRepository.Update(ref entity, cellLineModel);
+            _lineRepository.Update(ref entity, lineModel);
         }
         else if (model is OrganoidModel organoidModel)
         {

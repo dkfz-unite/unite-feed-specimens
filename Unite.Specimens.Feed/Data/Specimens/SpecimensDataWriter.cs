@@ -3,6 +3,7 @@ using Unite.Data.Context;
 using Unite.Data.Context.Services;
 using Unite.Data.Entities.Donors;
 using Unite.Data.Entities.Specimens;
+using Unite.Essentials.Extensions;
 using Unite.Specimens.Feed.Data.Specimens.Exceptions;
 using Unite.Specimens.Feed.Data.Specimens.Models;
 using Unite.Specimens.Feed.Data.Specimens.Models.Audit;
@@ -14,6 +15,7 @@ public class SpecimensDataWriter : DataWriter<SpecimenModel, SpecimensUploadAudi
 {
     private readonly DonorRepository _donorRepository;
     private readonly SpecimenRepository _specimenRepository;
+    private readonly InterventionRepository _interventionRepository;
     private readonly DrugScreeningRepository _drugScreeningRepository;
 
 
@@ -23,6 +25,7 @@ public class SpecimensDataWriter : DataWriter<SpecimenModel, SpecimensUploadAudi
         
         _donorRepository = new DonorRepository(dbContext);
         _specimenRepository = new SpecimenRepository(dbContext);
+        _interventionRepository = new InterventionRepository(dbContext);
         _drugScreeningRepository = new DrugScreeningRepository(dbContext);
     }
 
@@ -39,9 +42,16 @@ public class SpecimensDataWriter : DataWriter<SpecimenModel, SpecimensUploadAudi
         {
             specimen = CreateSpecimen(donor.Id, parentSpecimen?.Id, model, ref audit);
 
-            if (model.DrugsScreeningData?.Length > 0)
+            if (model.Interventions.IsNotEmpty())
             {
-                var drugScreenings = _drugScreeningRepository.CreateMissing(specimen.Id, model.DrugsScreeningData);
+                var interventions = _interventionRepository.CreateMissing(specimen.Id, model.Interventions);
+
+                audit.InterventionsCreated += interventions.Count();
+            }
+
+            if (model.DrugScreenings.IsNotEmpty())
+            {
+                var drugScreenings = _drugScreeningRepository.CreateMissing(specimen.Id, model.DrugScreenings);
 
                 audit.DrugScreeningsCreated += drugScreenings.Count();
             }
@@ -52,9 +62,16 @@ public class SpecimensDataWriter : DataWriter<SpecimenModel, SpecimensUploadAudi
         {
             UpdateSpecimen(specimen, model, ref audit);
 
-            if (model.DrugsScreeningData?.Length > 0)
+            if (model.Interventions.IsNotEmpty())
             {
-                var drugScreenings = _drugScreeningRepository.CreateOrUpdate(specimen.Id, model.DrugsScreeningData);
+                var interventions = _interventionRepository.CreateOrUpdate(specimen.Id, model.Interventions);
+
+                audit.InterventionsUpdated += interventions.Count();
+            }
+
+            if (model.DrugScreenings.IsNotEmpty())
+            {
+                var drugScreenings = _drugScreeningRepository.CreateOrUpdate(specimen.Id, model.DrugScreenings);
 
                 audit.DrugScreeningsUpdated += drugScreenings.Count();
             }
@@ -101,13 +118,13 @@ public class SpecimensDataWriter : DataWriter<SpecimenModel, SpecimensUploadAudi
     {
         var entity = _specimenRepository.Create(donorId, parentId, model);
 
-        if (entity.Tissue != null)
+        if (entity.Material != null)
         {
-            audit.TissuesCreated++;
+            audit.MaterialsCreated++;
         }
-        else if (entity.CellLine != null)
+        else if (entity.Line != null)
         {
-            audit.CellLinesCreated++;
+            audit.LinesCreated++;
         }
         else if (entity.Organoid != null)
         {
@@ -125,13 +142,13 @@ public class SpecimensDataWriter : DataWriter<SpecimenModel, SpecimensUploadAudi
     {
         _specimenRepository.Update(ref entity, model);
 
-        if (entity.Tissue != null)
+        if (entity.Material != null)
         {
-            audit.TissuesUpdated++;
+            audit.MaterialsUpdated++;
         }
-        else if (entity.CellLine != null)
+        else if (entity.Line != null)
         {
-            audit.CellLinesUpdated++;
+            audit.LinesUpdated++;
         }
         else if (entity.Organoid != null)
         {

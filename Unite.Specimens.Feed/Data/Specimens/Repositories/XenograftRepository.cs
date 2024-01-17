@@ -9,12 +9,8 @@ namespace Unite.Specimens.Feed.Data.Specimens.Repositories;
 
 internal class XenograftRepository : SpecimenRepositoryBase<XenograftModel>
 {
-    private readonly XenograftInterventionRepository _interventionRepository;
-
-
     public XenograftRepository(DomainDbContext dbContext) : base(dbContext)
     {
-        _interventionRepository = new XenograftInterventionRepository(dbContext);
     }
 
 
@@ -32,29 +28,6 @@ internal class XenograftRepository : SpecimenRepositoryBase<XenograftModel>
             );
 
         return entity;
-    }
-
-
-    public override Specimen Create(int donorId, int? parentId, in XenograftModel model)
-    {
-        var entity = base.Create(donorId, parentId, model);
-
-        if (model.Interventions != null && model.Interventions.Any())
-        {
-            _interventionRepository.CreateMissing(entity.Id, model.Interventions);
-        }
-
-        return entity;
-    }
-
-    public override void Update(ref Specimen entity, in XenograftModel model)
-    {
-        base.Update(ref entity, model);
-
-        if (model.Interventions != null && model.Interventions.Any())
-        {
-            _interventionRepository.CreateOrUpdate(entity.Id, model.Interventions);
-        }
     }
 
 

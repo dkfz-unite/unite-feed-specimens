@@ -15,11 +15,10 @@ All data submision request implement **UPSERT** logic:
 ## Overview
 - get:[api](#get-api) - health check.
 - post:[api/specimens](#post-apispecimens) - submit all specimens data.
-- post:[api/tissues/{type?}](#post-apitissuestype) - submit tissues data in given type.
+- post:[api/meterials/{type?}](#post-apimaterialstype) - submit donor materials data in given type.
 - post:[api/organoids/{type?}](#post-apiorganoidstype) - submit organoids data in given type.
-- post:[api/organoid-interventions/{type?}](#post-apiorganoid-interventionstype) - submit organoid interventions data in given type.
 - post:[api/xenografts/{type?}](#post-apixenograftstype) - submit xenografts data in given type.
-- post:[api/xenograft-interventions/{type?}](#post-apixenograft-interventionstype) - submit xenograft interventions data in given type.
+- post:[api/interventions/{type?}](#post-apiinterventionstype) - submit interventions data in given type.
 - post:[api/drugs/{type?}](#post-apidrugs) - submit drugs screening data.
 
 > [!Note]
@@ -50,7 +49,7 @@ Supported formats are:
         "parent_type": null,
         "creation_date": "2020-02-01",
         "creation_day": null,
-        "tissue": {
+        "material": {
             "type": "Tumor",
             "tumor_type": "Primary",
             "source": "Solid tissue"
@@ -71,10 +70,10 @@ Supported formats are:
         "parent_type": "Tissue",
         "creation_date": "2020-02-05",
         "creation_day": null,
-        "cell_line": {
-            "species": "Human",
-            "type": "Stem Cell",
-            "cultureType": "Both",
+        "line": {
+            "cells_species": "Human",
+            "cells_type": "Stem Cell",
+            "cells_culture_type": "Both",
             "info": {
                 "name": "CLP_CL1TI1",
                 "depositor_name": "Erica Polden",
@@ -85,23 +84,6 @@ Supported formats are:
                 "expasy_link": "https://www.expasy.org/"
             }
         },
-        "drugs_screening_data": [
-            {
-                "drug": "A-1155463",
-                "dss": 33.56,
-                "dss_selective": 28.03,
-                "gof": 0.99,
-                "abs_ic_25": 2.82,
-                "abs_ic_50": 9.86,
-                "abs_ic_75": 48.74,
-                "min_concentration": 1,
-                "max_concentration": 10000,
-                "concentration": [1, 10, 100, 1000, 10000],
-                "inhibition": [6.76, 50.25, 82.32, 94.10, 97.42],
-                "concentration_line": [1, 10, 100, 1000, 10000],
-                "inhibition_line": [6.76, 50.25, 82.32, 94.10, 97.42]
-            }
-        ],
         "molecular_data": {
             "mgmt_status": "Methylated",
             "idh_status": "Wild Type",
@@ -109,7 +91,8 @@ Supported formats are:
             "gene_expression_subtype": "Classical",
             "methylation_subtype": "H3-K27",
             "gcimp_methylation": true
-        }
+        },
+        "drug_screenings": null
     },
     {
         "id": "OR1CL1TI1",
@@ -121,20 +104,8 @@ Supported formats are:
         "organoid": {
             "medium": "Medium 1",
             "implanted_cells_number": 1500000,
-            "tumorigenicity": false,
-            "interventions": [
-                {
-                    "type": "Intervention type",
-                    "details": "Intervention details",
-                    "start_date": "2020-04-05",
-                    "start_day": null,
-                    "end_date": "2020-04-10",
-                    "duration_days": null,
-                    "results": "Intervention results"
-                }
-            ]
+            "tumorigenicity": false
         },
-        "drugs_screening_data": null,
         "molecular_data": {
             "mgmt_status": "Methylated",
             "idh_status": "Mutant",
@@ -142,7 +113,9 @@ Supported formats are:
             "gene_expression_subtype": null,
             "methylation_subtype": null,
             "gcimp_methylation": true
-        }
+        },
+        "interventions": null,
+        "drug_screenings": null
     },
     {
         "id": "XE1CL1TI1",
@@ -160,19 +133,7 @@ Supported formats are:
             "tumorigenicity": true,
             "tumor_growth_form": "Invasive",
             "survival_days": "20-30",
-            "interventions": [
-                {
-                    "type": "Intervention type",
-                    "details": "Intervention details",
-                    "start_date": "2020-03-05",
-                    "start_day": null,
-                    "end_date": "2020-03-10",
-                    "duration_days": null,
-                    "results": "Intervention results"
-                }
-            ]
         },
-        "drugs_screening_data": null,
         "molecular_data": {
             "mgmt_status": "Methylated",
             "idh_status": "Wild Type",
@@ -180,7 +141,9 @@ Supported formats are:
             "gene_expression_subtype": "Classical",
             "methylation_subtype": "H3-K27",
             "gcimp_methylation": true
-        }
+        },
+        "interventions": null,
+        "drug_screenings": null
     }
 ]
 ```
@@ -194,8 +157,8 @@ Fields description can be found [here](api-models-specimens.md).
 - `403` - missing required permissions
 
 
-## POST: [api/tissues/{type?}](http://localhost:5104/api/tissues)
-Submit tissues data.
+## POST: [api/materials/{type?}](http://localhost:5104/api/materials)
+Submit donor materials data.
 
 ### Body
 Supported formats are:
@@ -209,7 +172,7 @@ id	donor_id	parent_id	parent_type	creation_date	creation_day	type	tumor_type	sou
 TI1	DO1			2020-02-01		Tumor	Primary	Solid tissue	Methylated	Wild Type		Classical	H3-K27	true
 ```
 
-Fields description can be found [here](api-models-specimens.md) and [here](api-models-base-tissue.md).
+Fields description can be found [here](api-models-base-material.md).
 
 ### Responses
 - `200` - request was processed successfully
@@ -233,51 +196,7 @@ donor_id    specimen_id medium  implanted_cells_number  tumorigenicity  mgmt_sta
 DO1	OR1CL1TI1	Medium 1	1500000	false	Methylated	Wild Type		Classical	H3-K27	true
 ```
 
-Fields description can be found [here](api-models-specimens.md) and [here](api-models-base-organoid.md).
-
-### Responses
-- `200` - request was processed successfully
-- `400` - request data didn't pass validation
-- `401` - missing JWT token
-- `403` - missing required permissions
-
-
-## POST: [api/organoid-interventions/{type?}](http://localhost:5104/api/organoid-interventions)
-Submit organoid interventions data. Donors and specimens should be present in the system.
-
-### Body
-Supported formats are:
-- `json` (**empty**) - application/json
-- `tsv` - text/tab-separated-values
-
-#### json - application/json
-```json
-[
-    {
-        "donor_id": "DO1",
-        "specimen_id": "OR1CL1TI1",
-        "data": [
-            {
-                "type": "Intervention type",
-                "details": "Intervention details",
-                "start_date": "2020-04-05",
-                "start_day": null,
-                "end_date": "2020-04-10",
-                "duration_days": null,
-                "results": "Intervention results"
-            }
-        ]
-    }
-]
-```
-
-#### tsv - text/tab-separated-values
-```tsv
-donor_id    specimen_id type    details start_date  start_day   end_date    duration_days   results
-DO1	OR1CL1TI1	Intervention_Type   Intervention_details    2020-04-05	2020-04-10	Intervention_results
-```
-
-Fields description can be found [here](api-models-organoid-interventions.md).
+Fields description can be found [here](api-models-base-organoid.md).
 
 ### Responses
 - `200` - request was processed successfully
@@ -301,7 +220,7 @@ donor_id    specimen_id mouse_strain    group_size  implant_type    implant_loca
 DO1	XE1CL1TI1	Nude	9	Other	Cortical	750000	true	Invasive	20-30	Methylated	Wild Type		Classical	H3-K27	true
 ```
 
-Fields description can be found [here](./api-models-specimens.md) and [here](./api-models-base-xenograft.md).
+Fields description can be found [here](./api-models-base-xenograft.md).
 
 ### Responses
 - `200` - request was processed successfully
@@ -310,8 +229,8 @@ Fields description can be found [here](./api-models-specimens.md) and [here](./a
 - `403` - missing required permissions
 
 
-## POST: [api/xenograft-interventions/{type?}](http://localhost:5104/api/xenograft-interventions)
-Submit xenograft interventions data. Donors and specimens should be present in the system.
+## POST: [api/interventions/{type?}](http://localhost:5104/api/interventions)
+Submit interventions data. Donors and specimens should be present in the system.
 
 ### Body
 Supported formats are:
@@ -324,6 +243,7 @@ Supported formats are:
     {
         "donor_id": "DO1",
         "specimen_id": "XE1CL1TI1",
+        "specimen_type": "Organoid",
         "data": [
             {
                 "type": "Intervention type",
@@ -341,11 +261,11 @@ Supported formats are:
 
 #### tsv - text/tab-separated-values
 ```tsv
-donor_id    specimen_id type    details start_date  start_day   end_date    duration_days   results
-DO1	XE1CL1TI1	Intervention_Type   Intervention_details    2020-03-05	2020-03-10	Intervention_results
+donor_id    specimen_id specimen_type type    details start_date  start_day   end_date    duration_days   results
+DO1	XE1CL1TI1   Organoid	Intervention_Type   Intervention_details    2020-03-05	2020-03-10	Intervention_results
 ```
 
-Fields description can be found [here](./api-models-xenograft-interventions.md).
+Fields description can be found [here](./api-models-interventions.md).
 
 ### Responses
 - `200` - request was processed successfully
@@ -368,7 +288,7 @@ Supported formats are:
     {
         "donor_id": "DO1",
         "specimen_id": "CL1TI1",
-        "specimen_type": "CellLine",
+        "specimen_type": "Line",
         "data": [
             {
                 "drug": "A-1155463",

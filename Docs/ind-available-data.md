@@ -7,10 +7,9 @@ All fields are booleand and indicate whether the data is available or not.
 - **`Clinical`** - Specimen donor clinical data
 - **`Treatments`** - Specimen donor treatments data
 - **`Molecular`** - Molecular data
-- **`Drugs`** - Drugs screening data (not available for Tissues)
+- **`Drugs`** - Drugs screening data (not available for donor Materials)
 - **`Interventions`** - Interventions data (available for Orgaoids and Xenografts)
-- **`Mris`** - MRI images data (available for tumor Tissues)
-- **`Cts`** - CT images data (available for tumor Tissues and Xenografts) (Currently not implementd)
+- **`Mris`** - MRI images data (available for donor tumor materials)
 - **`Ssms`** - Simple somatic mutations data (SSM)
 - **`Cnvs`** - Copy number variants data (CNV)
 - **`Svs`** - Structural variants data (SV)

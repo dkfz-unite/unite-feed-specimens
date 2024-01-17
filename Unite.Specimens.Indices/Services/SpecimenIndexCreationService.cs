@@ -99,12 +99,13 @@ public class SpecimenIndexCreationService
         return dbContext.Set<Specimen>()
             .AsNoTracking()
             .Include(specimen => specimen.Donor.ClinicalData) // Required for diagnosis date
-            .IncludeTissue()
-            .IncludeCellLine()
+            .IncludeMaterial()
+            .IncludeLine()
             .IncludeOrganoid()
             .IncludeXenograft()
             .IncludeMolecularData()
-            .IncludeDrugScreeningData()
+            .IncludeInterventions()
+            .IncludeDrugScreenings()
             .FirstOrDefault(specimen => specimen.Id == specimenId);
     }
 
@@ -239,25 +240,25 @@ public class SpecimenIndexCreationService
             index.Cts = false;
         }
 
-        if (typeId == SpecimenType.Tissue)
+        if (typeId == SpecimenType.Material)
         {
-            index.Tissues = true;
+            index.Materials = true;
 
-            index.TissuesMolecular = dbContext.Set<MolecularData>()
+            index.MaterialsMolecular = dbContext.Set<MolecularData>()
                 .AsNoTracking()
                 .Where(data => data.SpecimenId == specimenId)
                 .Any();
         }
-        else if (typeId == SpecimenType.CellLine)
+        else if (typeId == SpecimenType.Line)
         {
-            index.Cells = true;
+            index.Lines = true;
 
-            index.CellsMolecular = dbContext.Set<MolecularData>()
+            index.LinesMolecular = dbContext.Set<MolecularData>()
                 .AsNoTracking()
                 .Where(data => data.SpecimenId == specimenId)
                 .Any();
 
-            index.CellsDrugs = dbContext.Set<DrugScreening>()
+            index.LinesDrugs = dbContext.Set<DrugScreening>()
                 .AsNoTracking()
                 .Where(data => data.SpecimenId == specimenId)
                 .Any();
@@ -271,9 +272,14 @@ public class SpecimenIndexCreationService
                 .Where(data => data.SpecimenId == specimenId)
                 .Any();
 
-            index.OrganoidsInterventions = dbContext.Set<Data.Entities.Specimens.Organoids.Intervention>()
+            index.OrganoidsInterventions = dbContext.Set<Intervention>()
                 .AsNoTracking()
                 .Where(intervention => intervention.SpecimenId == specimenId)
+                .Any();
+
+            index.OrganoidsDrugs = dbContext.Set<DrugScreening>()
+                .AsNoTracking()
+                .Where(data => data.SpecimenId == specimenId)
                 .Any();
         }
         else if (typeId == SpecimenType.Xenograft)
@@ -285,9 +291,14 @@ public class SpecimenIndexCreationService
                 .Where(data => data.SpecimenId == specimenId)
                 .Any();
 
-            index.XenograftsInterventions = dbContext.Set<Data.Entities.Specimens.Xenografts.Intervention>()
+            index.XenograftsInterventions = dbContext.Set<Intervention>()
                 .AsNoTracking()
                 .Where(intervention => intervention.SpecimenId == specimenId)
+                .Any();
+
+            index.XenograftsDrugs = dbContext.Set<DrugScreening>()
+                .AsNoTracking()
+                .Where(data => data.SpecimenId == specimenId)
                 .Any();
         }
 

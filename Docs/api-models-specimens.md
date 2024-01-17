@@ -34,33 +34,38 @@ Specimen upload data model.
 - Limitations: Integer, greater or equal to 0, only either `creation_date` or `creation_day` can be set at once, not both
 - Example: `36`
 
-**`tissue`** - Tissue data (if specimen is a tissue).
-- Type: _Object([Tissue](api-models-base-tissue.md))_
-- Limitations - Only either `tissue`, `cell_line`, `organoid` or `xenograft` can be set at once.
+**`material`** - Material data (if specimen is a donor material).
+- Type: _Object([Tissue](api-models-base-material.md))_
+- Limitations - Only either `material`, `line`, `organoid` or `xenograft` can be set at once.
 - Example: `{...}`
 
-**`cell_line`** - Cell line data (if specimen is a cell line).
-- Type: _Object([CellLine](api-models-base-cellline.md))_
-- Limitations - Only either `tissue`, `cell_line`, `organoid` or `xenograft` can be set at once.
+**`line`** - Cell line data (if specimen is a cell line).
+- Type: _Object([CellLine](api-models-base-line.md))_
+- Limitations - Only either `material`, `line`, `organoid` or `xenograft` can be set at once.
 - Example: `{...}`
 
 **`organoid`** - Organoid data (if specimen is an organoid).
 - Type: _Object([Organoid](api-models-base-organoid.md))_
-- Limitations - Only either `tissue`, `cell_line`, `organoid` or `xenograft` can be set at once.
+- Limitations - Only either `material`, `line`, `organoid` or `xenograft` can be set at once.
 - Example: `{...}`
 
 **`xenograft`** - Xenograft data (if specimen is a xenograft).
 - Type: _Object([Xenograft](api-models-base-xenograft.md))_
-- Limitations - Only either `tissue`, `cell_line`, `organoid` or `xenograft` can be set at once.
+- Limitations - Only either `material`, `line`, `organoid` or `xenograft` can be set at once.
 - Example: `{...}`
 
 **`molecular_data`** - Specimen molecular data.
 - Type: _Object([MolecularData](api-models-base-molecular.md))_
 - Example: `{...}`
 
-**`drugs_screening_data`** - Specimen drugs screening data.
+**`interventions`** - Specimen interventions data.
 - Type: _Array_
-- Element type: _Object([DrugScreeningData](api-models-base-drugs.md))_
+- Element type: _Object([Intervention](api-models-base-intervention.md))_
+- Example: `[{...}, {...}]`
+
+**`drug_screenings`** - Specimen drug screening data.
+- Type: _Array_
+- Element type: _Object([DrugScreeningData](api-models-base-drug.md))_
 - Example: `[{...}, {...}]`
 
 ##

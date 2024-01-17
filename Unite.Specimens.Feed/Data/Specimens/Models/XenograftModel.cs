@@ -13,6 +13,4 @@ public class XenograftModel : SpecimenModel
     public TumorGrowthForm? TumorGrowthForm { get; set; }
     public int? SurvivalDaysFrom { get; set; }
     public int? SurvivalDaysTo { get; set; }
-
-    public XenograftInterventionModel[] Interventions { get; set; }
 }

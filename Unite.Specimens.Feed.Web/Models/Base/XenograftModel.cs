@@ -38,8 +38,4 @@ public record XenograftModel
 
     [JsonPropertyName("survival_days")]
     public string SurvivalDays { get => _survivalDays?.Trim(); init => _survivalDays = value; }
-
-
-    [JsonPropertyName("interventions")]
-    public XenograftInterventionModel[] Interventions { get; init; }
 }
