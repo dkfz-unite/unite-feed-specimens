@@ -15,6 +15,7 @@ public class InterventionDataFlatModelValidator : AbstractValidator<Intervention
             .MaximumLength(255)
             .WithMessage("Maximum length is 255");
         
+
         RuleFor(model => model.SpecimenId)
             .NotEmpty()
             .WithMessage("Should not be empty");
@@ -23,9 +24,11 @@ public class InterventionDataFlatModelValidator : AbstractValidator<Intervention
             .MaximumLength(255)
             .WithMessage("Maximum length is 255");
 
+
         RuleFor(model => model.SpecimenType)
             .NotEmpty()
             .WithMessage("Should not be empty");
+
 
         RuleFor(model => model)
             .SetValidator(new InterventionModelValidator());
@@ -34,31 +37,15 @@ public class InterventionDataFlatModelValidator : AbstractValidator<Intervention
 
 public class InterventionDataFlatModelsValidator : AbstractValidator<IEnumerable<InterventionDataFlatModel>>
 {
+    private readonly IValidator<InterventionDataFlatModel> _validator = new InterventionDataFlatModelValidator();
+
     public InterventionDataFlatModelsValidator()
     {
+        RuleFor(model => model)
+            .Must(model => model.Any())
+            .WithMessage("Should not be empty");
+
         RuleForEach(model => model)
-            .SetValidator(new InterventionDataFlatModelValidator());
-
-        RuleFor(model => model)
-            .Must(HaveAtLeastOneIntervention);
-
-        RuleFor(model => model)
-            .Must(HaveUniqueSpecimenGroups);
-    }
-
-
-    private static bool HaveAtLeastOneIntervention(IEnumerable<InterventionDataFlatModel> models)
-    {
-        return models.Any();
-    }
-
-    private static bool HaveUniqueSpecimenGroups(IEnumerable<InterventionDataFlatModel> models)
-    {
-        var groups = models.GroupBy(model => new { model.DonorId, model.SpecimenId });
-
-        var hasDonors = groups.All(group => group.Key.DonorId != null);
-        var hasSpecimens = groups.All(group => group.Key.SpecimenId != null);
-
-        return hasDonors && hasSpecimens;
+            .SetValidator(_validator);
     }
 }

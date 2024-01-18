@@ -6,26 +6,16 @@ namespace Unite.Specimens.Feed.Web.Models.Validators;
 
 public class SpecimenDataModelValidator : AbstractValidator<SpecimenDataModel>
 {
-    private readonly IValidator<MaterialModel> _materialModelValidator;
-    private readonly IValidator<LineModel> _lineModelValidator;
-    private readonly IValidator<OrganoidModel> _organoidModelValidator;
-    private readonly IValidator<XenograftModel> _xenograftModelValidator;
-    private readonly IValidator<MolecularDataModel> _molecularDataModelValidator;
-    private readonly IValidator<InterventionModel> _interventionModelValidator;
-    private readonly IValidator<DrugScreeningModel> _drugScreeningModelValidator;
-
+    private readonly IValidator<MaterialModel> _materialModelValidator = new MaterialModelValidator();
+    private readonly IValidator<LineModel> _lineModelValidator = new LineModelValidator();
+    private readonly IValidator<OrganoidModel> _organoidModelValidator = new OrganoidModelValidator();
+    private readonly IValidator<XenograftModel> _xenograftModelValidator = new XenograftModelValidator();
+    private readonly IValidator<MolecularDataModel> _molecularDataModelValidator = new MolecularDataModelValidator();
+    private readonly IValidator<InterventionModel> _interventionModelValidator = new InterventionModelValidator();
+    private readonly IValidator<DrugScreeningModel> _drugScreeningModelValidator = new DrugScreeningModelValidator();
 
     public SpecimenDataModelValidator()
     {
-        _materialModelValidator = new MaterialModelValidator();
-        _lineModelValidator = new LineModelValidator();
-        _organoidModelValidator = new OrganoidModelValidator();
-        _xenograftModelValidator = new XenograftModelValidator();
-        _molecularDataModelValidator = new MolecularDataModelValidator();
-        _interventionModelValidator = new InterventionModelValidator();
-        _drugScreeningModelValidator = new DrugScreeningModelValidator();
-
-
         RuleFor(model => model.Id)
             .NotEmpty()
             .WithMessage("Should not be empty");
@@ -111,13 +101,13 @@ public class SpecimenDataModelValidator : AbstractValidator<SpecimenDataModel>
 
 public class SpecimenModelsValidator : AbstractValidator<SpecimenDataModel[]>
 {
-    private readonly IValidator<SpecimenDataModel> _specimenModelValidator;
-
+    private readonly IValidator<SpecimenDataModel> _specimenModelValidator = new SpecimenDataModelValidator();
 
     public SpecimenModelsValidator()
     {
-        _specimenModelValidator = new SpecimenDataModelValidator();
-
+        RuleFor(model => model)
+            .Must(model => model.Any())
+            .WithMessage("Should not be empty");
 
         RuleForEach(model => model)
             .SetValidator(_specimenModelValidator);

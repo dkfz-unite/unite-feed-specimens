@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Unite.Specimens.Feed.Data.Specimens;
 using Unite.Specimens.Feed.Data.Specimens.Exceptions;
-using Unite.Specimens.Feed.Web.Models;
 using Unite.Specimens.Feed.Web.Models.Converters;
 using Unite.Specimens.Feed.Web.Services;
 
@@ -29,13 +28,11 @@ public abstract class SpecimensControllerBase : Controller
     }
 
 
-    public virtual IActionResult PostData(SpecimenDataModel[] models)
+    protected virtual IActionResult PostData(Data.Specimens.Models.SpecimenModel[] models)
     {
         try
         {
-            var dataModels = models.Select(model => _converter.Convert(model));
-
-            _dataWriter.SaveData(dataModels, out var audit);
+            _dataWriter.SaveData(models, out var audit);
 
             _logger.LogInformation("{audit}", audit.ToString());
 

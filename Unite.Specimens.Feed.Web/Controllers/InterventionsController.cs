@@ -18,7 +18,7 @@ public class InterventionsController : Controller
     private readonly SpecimenIndexingTasksService _indexingTaskService;
     private readonly ILogger _logger;
 
-    private readonly InterventionsDataModelConverter _defaultModelsConverter;
+    private readonly InterventionsDataModelConverter _defaultModelConverter;
     private readonly InterventionDataFlatModelsConverter _flatModelsConverter;
     
     
@@ -31,7 +31,7 @@ public class InterventionsController : Controller
         _indexingTaskService = indexingTaskService;
         _logger = logger;
 
-        _defaultModelsConverter = new InterventionsDataModelConverter();
+        _defaultModelConverter = new InterventionsDataModelConverter();
         _flatModelsConverter = new InterventionDataFlatModelsConverter();
     }
 
@@ -40,7 +40,7 @@ public class InterventionsController : Controller
     [Consumes("application/json")]
     public IActionResult Post([FromBody]InterventionsDataModel[] models)
     {
-        var dataModels = models.Select(model => _defaultModelsConverter.Convert(model)).ToArray();
+        var dataModels = models.Select(model => _defaultModelConverter.Convert(model)).ToArray();
 
         return PostData(dataModels);
     }

@@ -55,6 +55,8 @@ public static class ConfigurationExtensions
         services.AddTransient<IValidator<SpecimenDataModel[]>, SpecimenModelsValidator>();
         services.AddTransient<IValidator<InterventionsDataModel[]>, InterventionsDataModelsValidator>();
         services.AddTransient<IValidator<InterventionDataFlatModel[]>, InterventionDataFlatModelsValidator>();
+        services.AddTransient<IValidator<DrugScreeningsDataModel[]>, DrugScreeningsDataModelsValidator>();
+        services.AddTransient<IValidator<DrugScreeningDataFlatModel[]>, DrugScreeningDataFlatModelsValidator>();
 
         return services;
     }

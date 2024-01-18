@@ -24,6 +24,8 @@ public class OrganoidsController : SpecimensControllerBase
     [Consumes("text/tab-separated-values")]
     public IActionResult PostTsv([ModelBinder(typeof(OrganoidTsvModelsBinder))]SpecimenDataModel[] models)
     {
-        return PostData(models);
+        var dataModels = models.Select(model => _converter.Convert(model)).ToArray();
+
+        return PostData(dataModels);
     }
 }

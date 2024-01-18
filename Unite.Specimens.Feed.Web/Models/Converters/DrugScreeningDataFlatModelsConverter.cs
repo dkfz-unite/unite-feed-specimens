@@ -5,7 +5,7 @@ using DataModels = Unite.Specimens.Feed.Data.Specimens.Models;
 namespace Unite.Specimens.Feed.Web.Models.Converters;
 
 
-public class DrugScreeningDataFlatModelsConvernter : BaseConverter
+public class DrugScreeningDataFlatModelsConverter : BaseConverter
 {
     private readonly Base.Converters.DrugScreeningModelConverter _converter = new();
 

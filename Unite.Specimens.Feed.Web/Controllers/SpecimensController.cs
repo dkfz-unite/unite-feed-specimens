@@ -22,6 +22,8 @@ public class SpecimensController : SpecimensControllerBase
     [Consumes("application/json")]
     public IActionResult Post([FromBody] SpecimenDataModel[] models)
     {
-        return PostData(models);
+        var dataModels = models.Select(model => _converter.Convert(model)).ToArray();
+
+        return PostData(dataModels);
     }
 }

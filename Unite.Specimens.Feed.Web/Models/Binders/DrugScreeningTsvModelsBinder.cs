@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Unite.Essentials.Tsv;
+using Unite.Specimens.Feed.Web.Models.Binders.Converters;
 
 namespace Unite.Specimens.Feed.Web.Models.Binders;
 
-public class DrugsTsvModelBinder : IModelBinder
+public class DrugScreeningTsvModelsBinder : IModelBinder
 {
     public async Task BindModelAsync(ModelBindingContext bindingContext)
     {
@@ -14,6 +15,8 @@ public class DrugsTsvModelBinder : IModelBinder
 
         var tsv = await reader.ReadToEndAsync();
 
+        var doubleArrayConverter = new DoubleArrayConverter();
+
         var map = new ClassMap<DrugScreeningDataFlatModel>()
             .Map(entity => entity.DonorId, "donor_id")
             .Map(entity => entity.SpecimenId, "specimen_id")
@@ -22,15 +25,15 @@ public class DrugsTsvModelBinder : IModelBinder
             .Map(entity => entity.Dss, "dss")
             .Map(entity => entity.DssSelective, "dss_selective")
             .Map(entity => entity.Gof, "gof")
-            .Map(entity => entity.MinConcentration, "min_concentration")
-            .Map(entity => entity.MaxConcentration, "max_concentration")
             .Map(entity => entity.AbsIC25, "abs_ic_25")
             .Map(entity => entity.AbsIC50, "abs_ic_50")
             .Map(entity => entity.AbsIC75, "abs_ic_75")
-            .Map(entity => entity.Concentration, "concentration")
-            .Map(entity => entity.Inhibition, "inhibition")
-            .Map(entity => entity.ConcentrationLine, "concentration_line")
-            .Map(entity => entity.InhibitionLine, "inhibition_line");
+            .Map(entity => entity.MinConcentration, "min_concentration")
+            .Map(entity => entity.MaxConcentration, "max_concentration")
+            .Map(entity => entity.Concentration, "concentration", doubleArrayConverter)
+            .Map(entity => entity.Inhibition, "inhibition", doubleArrayConverter)
+            .Map(entity => entity.ConcentrationLine, "concentration_line", doubleArrayConverter)
+            .Map(entity => entity.InhibitionLine, "inhibition_line", doubleArrayConverter);
 
         var model = TsvReader.Read(tsv, map).ToArray();
 
