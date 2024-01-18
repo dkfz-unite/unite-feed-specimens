@@ -6,14 +6,10 @@ namespace Unite.Specimens.Feed.Web.Models.Validators;
 
 public class DrugScreeningsDataModelValidator : AbstractValidator<DrugScreeningsDataModel>
 {
-    private readonly IValidator<DrugScreeningModel> _drugScreeningModelValidator;
-
+    private readonly IValidator<DrugScreeningModel> _validator = new DrugScreeningModelValidator();
 
     public DrugScreeningsDataModelValidator()
     {
-        _drugScreeningModelValidator = new DrugScreeningModelValidator();
-
-
         RuleFor(model => model.DonorId)
             .NotEmpty()
             .WithMessage("Should not be empty");
@@ -41,7 +37,27 @@ public class DrugScreeningsDataModelValidator : AbstractValidator<DrugScreenings
             .NotEmpty()
             .WithMessage("Should not be empty");
 
+        RuleFor(model => model.Data)
+            .Must(data => data.Any())
+            .WithMessage("Should not be empty");
+            
+
         RuleForEach(model => model.Data)
-            .SetValidator(_drugScreeningModelValidator);
+            .SetValidator(_validator);
+    }
+}
+
+public class DrugScreeningsDataModelsValidator : AbstractValidator<IEnumerable<DrugScreeningsDataModel>>
+{
+    private readonly IValidator<DrugScreeningsDataModel> _validator = new DrugScreeningsDataModelValidator();
+
+    public DrugScreeningsDataModelsValidator()
+    {
+        RuleFor(model => model)
+            .Must(model => model.Any())
+            .WithMessage("Should not be empty");
+
+        RuleForEach(model => model)
+            .SetValidator(_validator);
     }
 }
