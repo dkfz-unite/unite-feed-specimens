@@ -6,7 +6,7 @@ namespace Unite.Specimens.Feed.Web.Models.Validators;
 
 public class DrugScreeningsDataModelValidator : AbstractValidator<DrugScreeningsDataModel>
 {
-    private readonly IValidator<DrugScreeningModel> _validator = new DrugScreeningModelValidator();
+    private readonly IValidator<DrugScreeningModel> _drugScreeningModelValidator = new DrugScreeningModelValidator();
 
     public DrugScreeningsDataModelValidator()
     {
@@ -43,7 +43,7 @@ public class DrugScreeningsDataModelValidator : AbstractValidator<DrugScreenings
             
 
         RuleForEach(model => model.Data)
-            .SetValidator(_validator);
+            .SetValidator(_drugScreeningModelValidator);
     }
 }
 

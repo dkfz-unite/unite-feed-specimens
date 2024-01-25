@@ -35,8 +35,8 @@ public class DrugScreeningTsvModelsBinder : IModelBinder
             .Map(entity => entity.ConcentrationLine, "concentration_line", doubleArrayConverter)
             .Map(entity => entity.InhibitionLine, "inhibition_line", doubleArrayConverter);
 
-        var model = TsvReader.Read(tsv, map).ToArray();
+        var models = TsvReader.Read(tsv, map).ToArray();
 
-        bindingContext.Result = ModelBindingResult.Success(model);
+        bindingContext.Result = ModelBindingResult.Success(models);
     }
 }

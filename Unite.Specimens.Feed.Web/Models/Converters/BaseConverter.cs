@@ -1,25 +1,22 @@
 using Unite.Data.Entities.Specimens.Enums;
 
-using DataModels = Unite.Specimens.Feed.Data.Specimens.Models;
-
 namespace Unite.Specimens.Feed.Web.Models.Converters;
-
 
 public abstract class BaseConverter
 {
-    protected virtual DataModels.DonorModel GetDonorModel(string id)
+    protected virtual Data.Models.DonorModel GetDonorModel(string id)
     {
-        return new DataModels.DonorModel { ReferenceId = id };
+        return new Data.Models.DonorModel { ReferenceId = id };
     }
 
-    protected virtual DataModels.SpecimenModel GetSpecimenModel(string id, SpecimenType type)
+    protected virtual Data.Models.SpecimenModel GetSpecimenModel(string id, SpecimenType type)
     {
         return type switch
         {
-            SpecimenType.Material => new DataModels.MaterialModel { ReferenceId = id },
-            SpecimenType.Line => new DataModels.LineModel { ReferenceId = id },
-            SpecimenType.Organoid => new DataModels.OrganoidModel { ReferenceId = id },
-            SpecimenType.Xenograft => new DataModels.XenograftModel { ReferenceId = id },
+            SpecimenType.Material => new Data.Models.MaterialModel { ReferenceId = id },
+            SpecimenType.Line => new Data.Models.LineModel { ReferenceId = id },
+            SpecimenType.Organoid => new Data.Models.OrganoidModel { ReferenceId = id },
+            SpecimenType.Xenograft => new Data.Models.XenograftModel { ReferenceId = id },
             _ => throw new NotImplementedException("Specimen type is not supported yet")
         };
     }

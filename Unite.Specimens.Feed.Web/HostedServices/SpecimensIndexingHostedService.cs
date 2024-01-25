@@ -1,4 +1,5 @@
-﻿using Unite.Specimens.Feed.Web.Configuration.Options;
+﻿using Unite.Essentials.Extensions;
+using Unite.Specimens.Feed.Web.Configuration.Options;
 using Unite.Specimens.Feed.Web.Handlers;
 
 namespace Unite.Specimens.Feed.Web.HostedServices;
@@ -34,7 +35,7 @@ public class SpecimensIndexingHostedService : BackgroundService
         }
         catch (Exception exception)
         {
-            LogError(exception);
+            _logger.LogError("{error}", exception.GetShortMessage());
         }
 
         while (!cancellationToken.IsCancellationRequested)
@@ -45,22 +46,12 @@ public class SpecimensIndexingHostedService : BackgroundService
             }
             catch (Exception exception)
             {
-                LogError(exception);
+                _logger.LogError("{error}", exception.GetShortMessage());
             }
             finally
             {
                 await Task.Delay(10000, cancellationToken);
             }
-        }
-    }
-
-    private void LogError(Exception exception)
-    {
-        _logger.LogError(exception.Message);
-
-        if (exception.InnerException != null)
-        {
-            _logger.LogError(exception.InnerException.Message);
         }
     }
 }

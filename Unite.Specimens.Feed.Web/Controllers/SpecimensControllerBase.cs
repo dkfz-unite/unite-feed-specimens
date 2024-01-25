@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Unite.Specimens.Feed.Data.Specimens;
-using Unite.Specimens.Feed.Data.Specimens.Exceptions;
+using Unite.Specimens.Feed.Data;
+using Unite.Specimens.Feed.Data.Exceptions;
 using Unite.Specimens.Feed.Web.Models.Converters;
 using Unite.Specimens.Feed.Web.Services;
 
@@ -12,7 +12,7 @@ public abstract class SpecimensControllerBase : Controller
     protected readonly SpecimenIndexingTasksService _indexingTaskService;
     protected readonly ILogger _logger;
 
-    protected readonly SpecimenDataModelConverter _converter;
+    protected readonly SpecimenDataModelsConverter _converter;
 
 
     public SpecimensControllerBase(
@@ -24,11 +24,11 @@ public abstract class SpecimensControllerBase : Controller
         _indexingTaskService = indexingTaskService;
         _logger = logger;
 
-        _converter = new SpecimenDataModelConverter();
+        _converter = new SpecimenDataModelsConverter();
     }
 
 
-    protected virtual IActionResult PostData(Data.Specimens.Models.SpecimenModel[] models)
+    protected virtual IActionResult PostData(Data.Models.SpecimenModel[] models)
     {
         try
         {
@@ -42,7 +42,7 @@ public abstract class SpecimensControllerBase : Controller
         }
         catch (NotFoundException exception)
         {
-            _logger.LogError("{error}", exception.Message);
+            _logger.LogWarning("{error}", exception.Message);
 
             return BadRequest(exception.Message);
         }

@@ -4,13 +4,10 @@ namespace Unite.Specimens.Feed.Web.Models.Base.Validators;
 
 public class LineModelValidator : AbstractValidator<LineModel>
 {
-    private readonly IValidator<LineInfoModel> _infoModelValidator;
-
+    private readonly IValidator<LineInfoModel> _infoModelValidator = new LineInfoModelValidator();
 
     public LineModelValidator() : base()
     {
-        _infoModelValidator = new LineInfoModelValidator();
-
         RuleFor(model => model.CellsSpecies)
             .NotEmpty()
             .WithMessage("Should not be empty");
@@ -22,7 +19,6 @@ public class LineModelValidator : AbstractValidator<LineModel>
         RuleFor(model => model.CellsCultureType)
             .NotEmpty()
             .WithMessage("Should not be empty");
-
 
         RuleFor(model => model.Info)
             .SetValidator(_infoModelValidator);

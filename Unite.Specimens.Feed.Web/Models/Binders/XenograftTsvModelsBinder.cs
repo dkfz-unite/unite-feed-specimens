@@ -26,8 +26,8 @@ public class XenograftTsvModelsBinder : IModelBinder
             .Map(entity => entity.Xenograft.SurvivalDays, "survival_days")
             .MapMolecularData(entity => entity.MolecularData);
 
-        var model = TsvReader.Read(tsv, map).ToArray();
+        var models = TsvReader.Read(tsv, map).ToArray();
 
-        bindingContext.Result = ModelBindingResult.Success(model);
+        bindingContext.Result = ModelBindingResult.Success(models);
     }
 }

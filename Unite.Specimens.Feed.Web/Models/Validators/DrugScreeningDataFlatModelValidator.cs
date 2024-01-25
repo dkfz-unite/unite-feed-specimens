@@ -1,10 +1,13 @@
 using FluentValidation;
+using Unite.Specimens.Feed.Web.Models.Base;
 using Unite.Specimens.Feed.Web.Models.Base.Validators;
 
 namespace Unite.Specimens.Feed.Web.Models.Validators;
 
 public class DrugScreeningDataFlatModelValidator : AbstractValidator<DrugScreeningDataFlatModel>
 {
+    private readonly IValidator<DrugScreeningModel> _drugScreeningModelValidator = new DrugScreeningModelValidator();
+
     public DrugScreeningDataFlatModelValidator()
     {
         RuleFor(model => model.DonorId)
@@ -14,7 +17,6 @@ public class DrugScreeningDataFlatModelValidator : AbstractValidator<DrugScreeni
         RuleFor(model => model.DonorId)
             .MaximumLength(255)
             .WithMessage("Maximum length is 255");
-
         
         RuleFor(model => model.SpecimenId)
             .NotEmpty()
@@ -24,14 +26,12 @@ public class DrugScreeningDataFlatModelValidator : AbstractValidator<DrugScreeni
             .MaximumLength(255)
             .WithMessage("Maximum length is 255");
 
-
         RuleFor(model => model.SpecimenType)
             .NotEmpty()
             .WithMessage("Should not be empty");
 
-
         RuleFor(model => model)
-            .SetValidator(new DrugScreeningModelValidator());
+            .SetValidator(_drugScreeningModelValidator);
     }
 }
 

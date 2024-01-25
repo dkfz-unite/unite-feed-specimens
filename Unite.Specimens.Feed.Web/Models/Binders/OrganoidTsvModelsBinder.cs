@@ -21,8 +21,8 @@ public class OrganoidTsvModelsBinder : IModelBinder
             .Map(entity => entity.Organoid.Tumorigenicity, "tumorigenicity")
             .MapMolecularData(entity => entity.MolecularData);
 
-        var model = TsvReader.Read(tsv, map).ToArray();
+        var models = TsvReader.Read(tsv, map).ToArray();
 
-        bindingContext.Result = ModelBindingResult.Success(model);
+        bindingContext.Result = ModelBindingResult.Success(models);
     }
 }

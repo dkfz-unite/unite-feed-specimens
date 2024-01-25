@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Unite.Specimens.Feed.Data.Specimens;
-using Unite.Specimens.Feed.Data.Specimens.Exceptions;
+using Unite.Specimens.Feed.Data;
+using Unite.Specimens.Feed.Data.Exceptions;
 using Unite.Specimens.Feed.Web.Configuration.Constants;
 using Unite.Specimens.Feed.Web.Models;
 using Unite.Specimens.Feed.Web.Models.Binders;
@@ -18,7 +18,7 @@ public class InterventionsController : Controller
     private readonly SpecimenIndexingTasksService _indexingTaskService;
     private readonly ILogger _logger;
 
-    private readonly InterventionsDataModelConverter _defaultModelConverter;
+    private readonly InterventionsDataModelsConverter _defaultModelConverter;
     private readonly InterventionDataFlatModelsConverter _flatModelsConverter;
     
     
@@ -31,7 +31,7 @@ public class InterventionsController : Controller
         _indexingTaskService = indexingTaskService;
         _logger = logger;
 
-        _defaultModelConverter = new InterventionsDataModelConverter();
+        _defaultModelConverter = new InterventionsDataModelsConverter();
         _flatModelsConverter = new InterventionDataFlatModelsConverter();
     }
 
@@ -40,7 +40,7 @@ public class InterventionsController : Controller
     [Consumes("application/json")]
     public IActionResult Post([FromBody]InterventionsDataModel[] models)
     {
-        var dataModels = models.Select(model => _defaultModelConverter.Convert(model)).ToArray();
+        var dataModels = _defaultModelConverter.Convert(models);
 
         return PostData(dataModels);
     }
@@ -55,7 +55,7 @@ public class InterventionsController : Controller
     }
 
 
-    private IActionResult PostData(Data.Specimens.Models.SpecimenModel[] models)
+    private IActionResult PostData(Data.Models.SpecimenModel[] models)
     {
         try
         {
@@ -69,7 +69,7 @@ public class InterventionsController : Controller
         }
         catch (NotFoundException exception)
         {
-            _logger.LogError("{error}", exception.Message);
+            _logger.LogWarning("{error}", exception.Message);
 
             return BadRequest(exception.Message);
         }

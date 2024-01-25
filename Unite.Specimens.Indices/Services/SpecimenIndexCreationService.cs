@@ -217,6 +217,8 @@ public class SpecimenIndexCreationService
 
         var index = new DataIndex();
 
+        index.Donors = true;
+
         index.Clinical = dbContext.Set<ClinicalData>()
             .AsNoTracking()
             .Where(data => data.DonorId == donorId)

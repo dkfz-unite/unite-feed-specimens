@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Unite.Specimens.Feed.Data.Specimens;
+using Unite.Specimens.Feed.Data;
 using Unite.Specimens.Feed.Web.Configuration.Constants;
 using Unite.Specimens.Feed.Web.Models;
 using Unite.Specimens.Feed.Web.Models.Binders;
@@ -24,7 +24,7 @@ public class LinesController : SpecimensControllerBase
     [Consumes("text/tab-separated-values")]
     public IActionResult PostTsv([ModelBinder(typeof(LineTsvModelsBinder))] SpecimenDataModel[] models)
     {
-        var dataModels = models.Select(model => _converter.Convert(model)).ToArray();
+        var dataModels = _converter.Convert(models);
 
         return PostData(dataModels);
     }

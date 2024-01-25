@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Unite.Specimens.Feed.Data.Specimens;
+using Unite.Specimens.Feed.Data;
 using Unite.Specimens.Feed.Web.Configuration.Constants;
 using Unite.Specimens.Feed.Web.Models;
 using Unite.Specimens.Feed.Web.Services;
@@ -22,7 +22,7 @@ public class SpecimensController : SpecimensControllerBase
     [Consumes("application/json")]
     public IActionResult Post([FromBody] SpecimenDataModel[] models)
     {
-        var dataModels = models.Select(model => _converter.Convert(model)).ToArray();
+        var dataModels = _converter.Convert(models);
 
         return PostData(dataModels);
     }
