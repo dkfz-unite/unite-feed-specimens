@@ -52,18 +52,23 @@ public class SpecimenDataModelValidator : AbstractValidator<SpecimenDataModel>
         RuleFor(model => model.CreationDate)
             .Empty()
             .When(model => model.CreationDay.HasValue)
-            .WithMessage("Either 'CreationDate' or 'CreationDay' can be set, not both");
+            .WithMessage("Either exact 'date' or relative 'day' can be set, not both");
 
 
         RuleFor(model => model.CreationDay)
             .Empty()
             .When(model => model.CreationDate.HasValue)
-            .WithMessage("Either 'CreationDate' or 'CreationDay' can be set, not both");
+            .WithMessage("Either exact 'date' or relative 'day' can be set, not both");
+
+        RuleFor(model => model.CreationDay)
+            .GreaterThanOrEqualTo(1)
+            .When(model => model.CreationDay.HasValue)
+            .WithMessage("Should be greater than or equal to 1");
 
 
         RuleFor(model => model)
             .Must(HaveModelSet)
-            .WithMessage("Specific specimen data (Tissue, CellLine or Xenograft) has to be set");
+            .WithMessage("Specific specimen data (Material, Line, Organoid or Xenograft) has to be set");
 
 
         RuleFor(model => model.Material)

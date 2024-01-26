@@ -1,6 +1,9 @@
 # Specimen Upload Data Model
 Specimen upload data model.
 
+>[!NOTE]
+> All exact dates are hiddent and protected. Relative dates are shown instead, if calculation was possible.
+
 **`id`*** - Specimen identifier.
 - Note: Specimen identifiers are namespaced and should be unique for it's donor across all specimens of the same type.
 - Type: _String_
@@ -23,7 +26,6 @@ Specimen upload data model.
 - Example: `"Tissue"`
 
 **`creation_date`** - Date when specimen was created.
-- Note: It's hidden and protected. Relative date is shown instead, if calculation was possible.
 - Type: _String_
 - Format: "YYYY-MM-DD"
 - Limitations: Only either `creation_date` or `creation_day` can be set at once, not both
@@ -31,7 +33,7 @@ Specimen upload data model.
 
 **`creation_day`** - Relative number of days since diagnosis statement when specimen was created.
 - Type: _Number_
-- Limitations: Integer, greater or equal to 0, only either `creation_date` or `creation_day` can be set at once, not both
+- Limitations: Integer, greater or equal to 1, only either `creation_date` or `creation_day` can be set at once, not both
 - Example: `36`
 
 **`material`** - Material data (if specimen is a donor material).
