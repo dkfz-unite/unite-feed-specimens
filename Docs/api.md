@@ -310,6 +310,12 @@ Supported formats are:
 ]
 ```
 
+#### tsv - text/tab-separated-values
+```tsv
+donor_id	specimen_id	specimen_type	drug	dss	dss_selective	gof	abs_ic_25	abs_ic_50	abs_ic_75	min_concentration	max_concentration	concentration	inhibition	concentration_line	inhibition_line
+Donor2	Line1	Line	Drug1	33.56	28.03	0.99	2.82	9.86	48.74	1	10000	1, 10, 100, 1000, 10000	6.76, 50.25, 82.32, 94.10, 97.42	6.76, 50.25, 82.32, 94.10, 97.42	6.76, 50.25, 82.32, 94.10, 97.42
+```
+
 Fields description can be found [here](api-models-drugs.md).
 
 ### Responses
