@@ -31,9 +31,7 @@ public class DrugScreeningTsvModelsBinder : IModelBinder
             .Map(entity => entity.MinConcentration, "min_concentration")
             .Map(entity => entity.MaxConcentration, "max_concentration")
             .Map(entity => entity.Concentration, "concentration", doubleArrayConverter)
-            .Map(entity => entity.Inhibition, "inhibition", doubleArrayConverter)
-            .Map(entity => entity.ConcentrationLine, "concentration_line", doubleArrayConverter)
-            .Map(entity => entity.InhibitionLine, "inhibition_line", doubleArrayConverter);
+            .Map(entity => entity.Inhibition, "inhibition", doubleArrayConverter);
 
         var models = TsvReader.Read(tsv, map).ToArray();
 

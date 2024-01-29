@@ -46,7 +46,7 @@ public class DrugsController : Controller
 
     [HttpPost("tsv")]
     [Consumes("text/tab-separated-values")]
-    public IActionResult PostTsv([ModelBinder(typeof(DrugScreeningTsvModelsBinder))] DrugScreeningDataFlatModel[] models)
+    public IActionResult PostTsv([ModelBinder(typeof(DrugScreeningTsvModelsBinder))]DrugScreeningDataFlatModel[] models)
     {
         var dataModels = _flatModelsConverter.Convert(models);
 
@@ -70,7 +70,7 @@ public class DrugsController : Controller
         {
             _logger.LogWarning("{error}", exception.Message);
 
-            return BadRequest(exception.Message);
+            return NotFound(exception.Message);
         }
     }
 }

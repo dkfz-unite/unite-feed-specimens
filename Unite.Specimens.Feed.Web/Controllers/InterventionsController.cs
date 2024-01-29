@@ -71,7 +71,7 @@ public class InterventionsController : Controller
         {
             _logger.LogWarning("{error}", exception.Message);
 
-            return BadRequest(exception.Message);
+            return NotFound(exception.Message);
         }
     }
 }
