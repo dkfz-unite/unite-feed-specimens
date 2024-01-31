@@ -4,13 +4,8 @@ namespace Unite.Specimens.Feed.Web.Models.Base.Validators;
 
 public class OrganoidModelValidator : AbstractValidator<OrganoidModel>
 {
-    private readonly IValidator<OrganoidInterventionModel> _interventionModelValidator;
-
-
     public OrganoidModelValidator()
     {
-        _interventionModelValidator = new OrganoidInterventionModelValidator();
-
         RuleFor(model => model)
             .Must(HaveAnythingSet)
             .WithMessage("At least one field has to be set");
@@ -18,10 +13,6 @@ public class OrganoidModelValidator : AbstractValidator<OrganoidModel>
         RuleFor(model => model.ImplantedCellsNumber)
             .GreaterThanOrEqualTo(0)
             .WithMessage("Should be greater than or equal to 0");
-
-
-        RuleForEach(model => model.Interventions)
-            .SetValidator(_interventionModelValidator);
     }
 
 

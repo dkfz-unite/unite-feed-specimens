@@ -8,7 +8,7 @@ public record XenograftModel
     private string _mouseStrain;
     private int? _groupSize;
     private ImplantType? _implantType;
-    private TissueLocation? _tissueLocation;
+    private ImplantLocation? _implantLocation;
     private int? _implantedCellsNumber;
     private bool? _tumorigenicity;
     private TumorGrowthForm? _tumorGrowthForm;
@@ -24,8 +24,8 @@ public record XenograftModel
     [JsonPropertyName("implant_type")]
     public ImplantType? ImplantType { get => _implantType; init => _implantType = value; }
 
-    [JsonPropertyName("tissue_location")]
-    public TissueLocation? TissueLocation { get => _tissueLocation; init => _tissueLocation = value; }
+    [JsonPropertyName("implant_location")]
+    public ImplantLocation? ImplantLocation { get => _implantLocation; init => _implantLocation = value; }
 
     [JsonPropertyName("implanted_cells_number")]
     public int? ImplantedCellsNumber { get => _implantedCellsNumber; init => _implantedCellsNumber = value; }
@@ -38,8 +38,4 @@ public record XenograftModel
 
     [JsonPropertyName("survival_days")]
     public string SurvivalDays { get => _survivalDays?.Trim(); init => _survivalDays = value; }
-
-
-    [JsonPropertyName("interventions")]
-    public XenograftInterventionModel[] Interventions { get; init; }
 }

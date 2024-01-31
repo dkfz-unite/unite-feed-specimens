@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using Unite.Specimens.Feed.Web.Models.Base.Enums;
+using Unite.Data.Entities.Specimens.Enums;
 
 namespace Unite.Specimens.Feed.Web.Models;
 
@@ -9,7 +9,7 @@ public record SpecimenDataModel
     private string _parentId;
     private SpecimenType? _parentType;
     private string _donorId;
-    private DateTime? _creationDate;
+    private DateOnly? _creationDate;
     private int? _creationDay;
 
 
@@ -26,27 +26,31 @@ public record SpecimenDataModel
     public string DonorId { get => _donorId?.Trim(); init => _donorId = value; }
 
     [JsonPropertyName("creation_date")]
-    public DateTime? CreationDate { get => _creationDate; init => _creationDate = value; }
+    public DateOnly? CreationDate { get => _creationDate; init => _creationDate = value; }
 
     [JsonPropertyName("creation_day")]
     public int? CreationDay { get => _creationDay; init => _creationDay = value; }
 
 
-    [JsonPropertyName("tissue")]
-    public Base.TissueModel Tissue { get; init; }
+    [JsonPropertyName("material")]
+    public Base.MaterialModel Material { get; init; }
 
-    [JsonPropertyName("cell_line")]
-    public Base.CellLineModel CellLine { get; init; }
+    [JsonPropertyName("line")]
+    public Base.LineModel Line { get; init; }
 
     [JsonPropertyName("organoid")]
     public Base.OrganoidModel Organoid { get; init; }
 
     [JsonPropertyName("xenograft")]
     public Base.XenograftModel Xenograft { get; init; }
+    
 
     [JsonPropertyName("molecular_data")]
     public Base.MolecularDataModel MolecularData { get; init; }
 
-    [JsonPropertyName("drugs_screening_data")]
-    public Base.DrugScreeningModel[] DrugsScreeningData { get; init; }
+    [JsonPropertyName("interventions")]
+    public Base.InterventionModel[] Interventions { get; init; }
+
+    [JsonPropertyName("drug_screenings")]
+    public Base.DrugScreeningModel[] DrugScreenings { get; init; }
 }

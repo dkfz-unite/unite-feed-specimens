@@ -4,13 +4,8 @@ namespace Unite.Specimens.Feed.Web.Models.Base.Validators;
 
 public class XenograftModelValidator : AbstractValidator<XenograftModel>
 {
-    private readonly IValidator<XenograftInterventionModel> _interventionModelValidator;
-
-
     public XenograftModelValidator()
     {
-        _interventionModelValidator = new XenograftInterventionModelValidator();
-
         RuleFor(model => model)
             .Must(HaveAnythingSet)
             .WithMessage("At least one field has to be set");
@@ -26,10 +21,6 @@ public class XenograftModelValidator : AbstractValidator<XenograftModel>
         RuleFor(model => model.SurvivalDays)
             .Must(BeNumberOrRange)
             .WithMessage("Should be positive integer number '1234567890' or range '1234567890-1234567890'");
-
-
-        RuleForEach(model => model.Interventions)
-            .SetValidator(_interventionModelValidator);
     }
 
 

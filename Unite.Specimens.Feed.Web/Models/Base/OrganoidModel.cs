@@ -17,8 +17,4 @@ public class OrganoidModel
 
     [JsonPropertyName("medium")]
     public string Medium { get => _medium?.Trim(); set => _medium = value; }
-
-
-    [JsonPropertyName("interventions")]
-    public OrganoidInterventionModel[] Interventions { get; set; }
 }
