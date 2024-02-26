@@ -64,24 +64,24 @@ Supported formats are:
         }
     },
     {
-        "id": "CL1TI1",
-        "donor_id": "DO1",
-        "parent_id": "TI1",
-        "parent_type": "Tissue",
-        "creation_date": "2020-02-05",
+        "id": "Line1",
+        "donor_id": "Donor1",
+        "parent_id": "Material2",
+        "parent_type": "Material",
+        "creation_date": "2020-02-01",
         "creation_day": null,
         "line": {
             "cells_species": "Human",
             "cells_type": "Stem Cell",
-            "cells_culture_type": "Both",
+            "cells_culture_type": "Suspension",
             "info": {
-                "name": "CLP_CL1TI1",
-                "depositor_name": "Erica Polden",
-                "depositor_establishment": "Colonord Research Centre",
-                "establishment_date": "2020-02-05",
+                "name": "D1M2L1",
+                "depositor_name": "Depositor Golden",
+                "depositor_establishment": "Line Deposition Centre",
+                "establishment_date": "2020-02-01",
                 "pubmed_link": "https://pubmed.ncbi.nlm.nih.gov",
-                "atcc_link": "https://www.atcc.org/",
-                "expasy_link": "https://www.expasy.org/"
+                "atcc_link": "https://www.atcc.org",
+                "expasy_link": "https://www.expasy.org"
             }
         },
         "molecular_data": {
@@ -91,8 +91,37 @@ Supported formats are:
             "gene_expression_subtype": "Classical",
             "methylation_subtype": "H3-K27",
             "gcimp_methylation": true
+        }
+    },
+    {
+        "id": "Line1",
+        "donor_id": "Donor2",
+        "parent_id": "Material2",
+        "parent_type": "Material",
+        "creation_date": "2020-02-01",
+        "creation_day": null,
+        "line": {
+            "cells_species": "Human",
+            "cells_type": "Differentiated",
+            "cells_culture_type": "Adherent",
+            "info": {
+                "name": "D2M2L1",
+                "depositor_name": "Depositor Golden",
+                "depositor_establishment": "Line Deposition Centre",
+                "establishment_date": "2020-02-01",
+                "pubmed_link": "https://pubmed.ncbi.nlm.nih.gov",
+                "atcc_link": "https://www.atcc.org",
+                "expasy_link": "https://www.expasy.org"
+            }
         },
-        "drug_screenings": null
+        "molecular_data": {
+            "mgmt_status": "Unmethylated",
+            "idh_status": "Mutant",
+            "idh_mutation": "IDH1 R132H",
+            "gene_expression_subtype": null,
+            "methylation_subtype": null,
+            "gcimp_methylation": false
+        }
     },
     {
         "id": "OR1CL1TI1",
