@@ -40,19 +40,19 @@ public class DrugScreeningModelValidator : AbstractValidator<DrugScreeningModel>
 
         RuleFor(model => model.AbsIC25)
             .Must(value => value >= 0)
-            .WithMessage("Should be greater than 0");
+            .WithMessage("Should be greater or equal than 0");
 
         RuleFor(model => model.AbsIC50)
             .Must(value => value >= 0)
-            .WithMessage("Should be greater than 0");
+            .WithMessage("Should be greater or equal than 0");
 
         RuleFor(model => model.AbsIC75)
             .Must(value => value >= 0)
-            .WithMessage("Should be greater than 0");
+            .WithMessage("Should be greater or equal than 0");
 
         RuleForEach(model => model.Concentration)
             .Must(value => value >= 0)
-            .WithMessage("Should be greater than 0");
+            .WithMessage("Should be greater or equal than 0");
 
         RuleForEach(model => model.Inhibition)
             .Must(value => value >= -150 && value <= 150)
@@ -60,7 +60,7 @@ public class DrugScreeningModelValidator : AbstractValidator<DrugScreeningModel>
 
         RuleForEach(model => model.ConcentrationLine)
             .Must(value => value >= 0)
-            .WithMessage("Should be greater than 0");
+            .WithMessage("Should be greater or equal than 0");
 
         RuleForEach(model => model.InhibitionLine)
             .Must(value => value >= -150 && value <= 150)
