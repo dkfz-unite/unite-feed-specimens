@@ -38,12 +38,12 @@ Includes pre-processed drug screening data.
 
 **`min_concentration`** - Minimum tested concentration (in nM).
 - Type: _Number_
-- Limitations: Double, greater or equal to 0
+- Limitations: Double, greater to 0
 - Example: `1`
 
 **`max_concentration`** - Maximum tested concentration (in nM).
 - Type: _Number_
-- Limitations: Double, greater or equal to 0
+- Limitations: Double, greater to 0
 - Example: `10000`
 
 **`concentration`** - Concentration (dose) at corresponding inhibition (response) percent from **`inhibition`** array.
