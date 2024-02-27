@@ -6,17 +6,17 @@ Inlcudes cell line data.
 
 _At least one field has to be set_
 
-**`cells_species`** - Species of the cells in the line.
+**`cells_species`*** - Species of the cells in the line.
 - Type: _String_
 - Possible values: `"Human"`, `"Mouse"`
 - Example: `"Human"`
 
-**`cells_type`** - Type of the cells in the line.
+**`cells_type`*** - Type of the cells in the line.
 - Type: _String_
 - Possible values: `"Stem Cell"`, `"Differentiated"`
 - Example: `"Stem Cell"`
 
-**`cells_culture_type`** - Way of cells harvesting.
+**`cells_culture_type`*** - Way of cells harvesting.
 - Type: _String_
 - Possible values: `"Suspension"`, `"Adherent"`, `"Both"`
 - Example: `"Both"`
