@@ -210,6 +210,31 @@ Fields description can be found [here](api-models-base-material.md).
 - `403` - missing required permissions
 
 
+## POST: [api/lines/{type?}](http://localhost:5104/api/lines)
+Submit donor lines data.
+
+### Body
+Supported formats are:
+- `tsv` - text/tab-separated-values
+
+For `json` upload see [POST: api/specimens](#post-apispecimens).
+
+##### tsv - text/tab-separated-values
+```tsv
+id	donor_id	parent_id	parent_type	creation_date	creation_day	cells_species	cells_type	cells_culture_type	name	depositor_name	depositor_establishment	establishment_date	pubmed_link	atcc_link	expasy_link	mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation
+Line1	Donor1	Material2	Material	2020-02-01		Human	Stem Cell	Suspension	D1M2L1	Depositor Golden	Line Depositor Centre	2020-02-01	https://pubmed.ncbi.nlm.nih.gov	https://www.atcc.org	https://www.expasy.org	Methylated	Wild Type		Classical	H3-K27	true
+Line1	Donor2	Material2	Material	2020-02-01		Human	Differentiated	Adherent	D2M2L1	Depositor Golden	Line Depositor Centre	2020-02-01	https://pubmed.ncbi.nlm.nih.gov	https://www.atcc.org	https://www.expasy.org	Unmethylated	Mutant	IDH1 R132H			false
+```
+
+Fields description can be found [here](api-models-base-material.md).
+
+### Responses
+- `200` - request was processed successfully
+- `400` - request data didn't pass validation
+- `401` - missing JWT token
+- `403` - missing required permissions
+
+
 ## POST: [api/organoids/{type?}](http://localhost:5104/api/organoids)
 Submit organoids data.
 
