@@ -43,16 +43,29 @@ Supported formats are:
 ```json
 [
     {
-        "id": "TI1",
-        "donor_id": "DO1",
+        "id": "Material1",
+        "donor_id": "Donor1",
         "parent_id": null,
         "parent_type": null,
-        "creation_date": "2020-02-01",
+        "creation_date": "2020-01-15",
+        "creation_day": null,
+        "material": {
+            "type": "Normal",
+            "tumor_type": null,
+            "source": "Blood"
+        }
+    },
+    {
+        "id": "Material2",
+        "donor_id": "Donor1",
+        "parent_id": null,
+        "parent_type": null,
+        "creation_date": "2020-01-15",
         "creation_day": null,
         "material": {
             "type": "Tumor",
             "tumor_type": "Primary",
-            "source": "Solid tissue"
+            "source": "Tissue"
         },
         "molecular_data": {
             "mgmt_status": "Methylated",
@@ -61,6 +74,61 @@ Supported formats are:
             "gene_expression_subtype": "Classical",
             "methylation_subtype": "H3-K27",
             "gcimp_methylation": true
+        }
+    },
+    {
+        "id": "Material1",
+        "donor_id": "Donor2",
+        "parent_id": null,
+        "parent_type": null,
+        "creation_date": "2020-01-15",
+        "creation_day": null,
+        "material": {
+            "type": "Normal",
+            "tumor_type": null,
+            "source": "Blood"
+        }
+    },
+    {
+        "id": "Material2",
+        "donor_id": "Donor2",
+        "parent_id": null,
+        "parent_type": null,
+        "creation_date": "2020-01-15",
+        "creation_day": null,
+        "material": {
+            "type": "Tumor",
+            "tumor_type": "Primary",
+            "source": "Tissue"
+        },
+        "molecular_data": {
+            "mgmt_status": "Unmethylated",
+            "idh_status": "Mutant",
+            "idh_mutation": "IDH1 R132H",
+            "gene_expression_subtype": null,
+            "methylation_subtype": null,
+            "gcimp_methylation": false
+        }
+    },
+    {
+        "id": "Material3",
+        "donor_id": "Donor2",
+        "parent_id": null,
+        "parent_type": null,
+        "creation_date": "2020-03-01",
+        "creation_day": null,
+        "material": {
+            "type": "Tumor",
+            "tumor_type": "Recurrent",
+            "source": "CSF"
+        },
+        "molecular_data": {
+            "mgmt_status": "Unmethylated",
+            "idh_status": "Mutant",
+            "idh_mutation": "IDH1 R132H",
+            "gene_expression_subtype": null,
+            "methylation_subtype": null,
+            "gcimp_methylation": false
         }
     },
     {
