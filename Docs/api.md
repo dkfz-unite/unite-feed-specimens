@@ -412,18 +412,102 @@ Supported formats are:
 ```json
 [
     {
-        "donor_id": "DO1",
-        "specimen_id": "XE1CL1TI1",
+        "donor_id": "Donor1",
+        "specimen_id": "Organoid1",
         "specimen_type": "Organoid",
         "data": [
             {
-                "type": "Intervention type",
-                "details": "Intervention details",
-                "start_date": "2020-03-05",
+                "type": "Drug1",
+                "details": "Specimen specific intervention details",
+                "start_date": "2020-02-05",
                 "start_day": null,
-                "end_date": "2020-03-10",
+                "end_date": "2020-02-10",
                 "duration_days": null,
-                "results": "Intervention results"
+                "results": "Specimen specific intervention results"
+            },
+            {
+                "type": "Drug2",
+                "details": "Specimen specific intervention details",
+                "start_date": "2020-02-10",
+                "start_day": null,
+                "end_date": "2020-02-15",
+                "duration_days": null,
+                "results": "Specimen specific intervention results"
+            }
+        ]
+    },
+    {
+        "donor_id": "Donor2",
+        "specimen_id": "Organoid1",
+        "specimen_type": "Organoid",
+        "data": [
+            {
+                "type": "Drug1",
+                "details": "Specimen specific intervention details",
+                "start_date": "2020-02-05",
+                "start_day": null,
+                "end_date": "2020-02-10",
+                "duration_days": null,
+                "results": "Specimen specific intervention results"
+            },
+            {
+                "type": "Drug2",
+                "details": "Specimen specific intervention details",
+                "start_date": "2020-02-10",
+                "start_day": null,
+                "end_date": "2020-02-15",
+                "duration_days": null,
+                "results": "Specimen specific intervention results"
+            }
+        ]
+    },
+    {
+        "donor_id": "Donor1",
+        "specimen_id": "Xenograft1",
+        "specimen_type": "Xenograft",
+        "data": [
+            {
+                "type": "Drug1",
+                "details": "Specimen specific intervention details",
+                "start_date": "2020-02-05",
+                "start_day": null,
+                "end_date": "2020-02-10",
+                "duration_days": null,
+                "results": "Specimen specific intervention results"
+            },
+            {
+                "type": "Drug2",
+                "details": "Specimen specific intervention details",
+                "start_date": "2020-02-10",
+                "start_day": null,
+                "end_date": "2020-02-15",
+                "duration_days": null,
+                "results": "Specimen specific intervention results"
+            }
+        ]
+    },
+    {
+        "donor_id": "Donor2",
+        "specimen_id": "Xenograft1",
+        "specimen_type": "Xenograft",
+        "data": [
+            {
+                "type": "Drug1",
+                "details": "Specimen specific intervention details",
+                "start_date": "2020-02-05",
+                "start_day": null,
+                "end_date": "2020-02-10",
+                "duration_days": null,
+                "results": "Specimen specific intervention results"
+            },
+            {
+                "type": "Drug2",
+                "details": "Specimen specific intervention details",
+                "start_date": "2020-02-10",
+                "start_day": null,
+                "end_date": "2020-02-15",
+                "duration_days": null,
+                "results": "Specimen specific intervention results"
             }
         ]
     }
@@ -432,8 +516,15 @@ Supported formats are:
 
 #### tsv - text/tab-separated-values
 ```tsv
-donor_id    specimen_id specimen_type type    details start_date  start_day   end_date    duration_days   results
-DO1	XE1CL1TI1   Organoid	Intervention_Type   Intervention_details    2020-03-05	2020-03-10	Intervention_results
+donor_id	specimen_id	specimen_type	type	details	start_date	start_day	end_date	duration_days	results
+Donor1	Organoid1	Organoid	Drug1	Specimen specific intervention details	2020-02-05		2020-02-05		Specimen specific intervention results
+Donor1	Organoid1	Organoid	Drug2	Specimen specific intervention details	2020-02-10		2020-02-15		Specimen specific intervention results
+Donor2	Organoid1	Organoid	Drug1	Specimen specific intervention details	2020-02-05		2020-02-05		Specimen specific intervention results
+Donor2	Organoid1	Organoid	Drug2	Specimen specific intervention details	2020-02-10		2020-02-15		Specimen specific intervention results
+Donor1	Xenograft1	Xenograft	Drug1	Specimen specific intervention details	2020-02-05		2020-02-05		Specimen specific intervention results
+Donor1	Xenograft1	Xenograft	Drug2	Specimen specific intervention details	2020-02-10		2020-02-15		Specimen specific intervention results
+Donor2	Xenograft1	Xenograft	Drug1	Specimen specific intervention details	2020-02-05		2020-02-05		Specimen specific intervention results
+Donor2	Xenograft1	Xenograft	Drug2	Specimen specific intervention details	2020-02-10		2020-02-15		Specimen specific intervention results
 ```
 
 Fields description can be found [here](./api-models-interventions.md).
