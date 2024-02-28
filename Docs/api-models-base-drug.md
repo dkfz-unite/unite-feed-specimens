@@ -4,7 +4,7 @@ Includes pre-processed drug screening data.
 **`drug`*** - Tested drug name.
 - Type: _String_
 - Limitations: Maximum length 255
-- Example: `"A-1155463"`
+- Example: `"Drug1"`
 
 **`dss`*** - Asymmetric Drug Sensitivity Score (DSS).
 - Type: _Number_
