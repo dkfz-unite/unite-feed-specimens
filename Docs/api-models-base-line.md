@@ -32,15 +32,15 @@ _At least one field has to be set_
 
 **`name`** - Name given to the cell line at publication.
 - Type: _String_
-- Example: `"CLP_CL1TI1"`
+- Example: `"D1M2L1"`
 
 **`depositor_name`** - Author of the study.
 - Type: _String_
-- Example: `"Erica Polden"`
+- Example: `"Depositor Golden"`
 
 **`depositor_establishment`** - Establishment where the study was held.
 - Type: _String_
-- Example: `"Colonord Research Centre"`
+- Example: `"Line Deposition Centre"`
 
 **`establishment_date`** - Date of the cell line establishment.
 - Type: _String_
