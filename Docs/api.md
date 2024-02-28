@@ -192,27 +192,46 @@ Supported formats are:
         }
     },
     {
-        "id": "OR1CL1TI1",
-        "donor_id": "DO1",
-        "parent_id": "CL1TI1",
-        "parent_type": "CellLine",
-        "creation_date": "2020-04-01",
+        "id": "Organoid1",
+        "donor_id": "Donor1",
+        "parent_id": "Line1",
+        "parent_type": "Line",
+        "creation_date": "2020-02-05",
         "creation_day": null,
         "organoid": {
-            "medium": "Medium 1",
-            "implanted_cells_number": 1500000,
-            "tumorigenicity": false
+            "medium": "Medium1",
+            "implanted_cells_number": 10500,
+            "tumorigenicity": true
         },
         "molecular_data": {
             "mgmt_status": "Methylated",
+            "idh_status": "Wild Type",
+            "idh_mutation": null,
+            "gene_expression_subtype": "Classical",
+            "methylation_subtype": "H3-K27",
+            "gcimp_methylation": true
+        }
+    },
+    {
+        "id": "Organoid1",
+        "donor_id": "Donor2",
+        "parent_id": "Line1",
+        "parent_type": "Line",
+        "creation_date": "2020-02-05",
+        "creation_day": null,
+        "organoid": {
+            "medium": "Medium2",
+            "implanted_cells_number": 45000,
+            "tumorigenicity": true
+        },
+        "molecular_data": {
+            "mgmt_status": "Unmethylated",
             "idh_status": "Mutant",
-            "idh_mutation": "IDH1 R132C",
+            "idh_mutation": "IDH1 R132H",
             "gene_expression_subtype": null,
             "methylation_subtype": null,
-            "gcimp_methylation": true
-        },
-        "interventions": null,
-        "drug_screenings": null
+            "gcimp_methylation": false
+        }
     },
     {
         "id": "XE1CL1TI1",
@@ -266,7 +285,11 @@ For `json` upload see [POST: api/specimens](#post-apispecimens).
 ##### tsv - text/tab-separated-values
 ```tsv
 id	donor_id	parent_id	parent_type	creation_date	creation_day	type	tumor_type	source	mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation
-TI1	DO1			2020-02-01		Tumor	Primary	Solid tissue	Methylated	Wild Type		Classical	H3-K27	true
+Material1	Donor1			2020-01-15		Normal		Blood						
+Material2	Donor1			2020-01-15		Tumor	Primary	Tissue	Methylated	Wild Type		Classical	H3-K27	true
+Material1	Donor2			2020-01-15		Normal		Blood						
+Material2	Donor2			2020-01-15		Tumor	Primary	Tissue	Unmethylated	Mutant	IDH1 R132H			false
+Material3	Donor2			2020-03-01		Tumor	Recurrent	Tissue	Unmethylated	Mutant	IDH1 R132H			false
 ```
 
 Fields description can be found [here](api-models-base-material.md).
@@ -314,8 +337,9 @@ For `json` upload see [POST: api/specimens](#post-apispecimens).
 
 #### tsv - text/tab-separated-values
 ```tsv
-donor_id    specimen_id medium  implanted_cells_number  tumorigenicity  mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation
-DO1	OR1CL1TI1	Medium 1	1500000	false	Methylated	Wild Type		Classical	H3-K27	true
+id	donor_id	parent_id	parent_type	creation_date	creation_day	medium	implanted_cells_number	tumorigenicity	mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation
+Organoid1	Donor1	Line1	Line	2020-02-05		Medium1	10500	true	Methylated	Wild Type		Classical	H3-K27	true
+Organoid1	Donor2	Line1	Line	2020-02-05		Medium2	45000	true	Unmethylated	Mutant	IDH1 R132H			false
 ```
 
 Fields description can be found [here](api-models-base-organoid.md).
