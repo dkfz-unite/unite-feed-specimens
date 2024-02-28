@@ -8,17 +8,17 @@ Specimen upload data model.
 - Note: Specimen identifiers are namespaced and should be unique for it's donor across all specimens of the same type.
 - Type: _String_
 - Limitations: Maximum length 255
-- Example: `"CL1TI1"`
+- Example: `"Specimen1"`
 
 **`donor_id`*** - Specimen donor identifier.
 - Type: _String_
 - Limitations: Maximum length 255
-- Example: `"DO1"`
+- Example: `"Donor1"`
 
 **`parent_id`** - Parent specimen identifier.
 - Type: _String_
 - Limitations: Maximum length 255
-- Example: `"TI1"`
+- Example: `"Material1"`
 
 **`parent_type`** - Parent specimen type.
 - Type: _String_
