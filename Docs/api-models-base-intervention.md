@@ -7,11 +7,11 @@ Includes model intervention data.
 **`type`*** - Intervention type.
 - Type: _String_
 - Limitations: Maximum length 100
-- Example: `"Intervention type"`
+- Example: `"Drug1"`
 
 **`details`** - Intervention details.
 - Type: _String_
-- Example: `"Intervention details."`
+- Example: `"Specimen specific intervention details"`
 
 **`start_date`** - Date, when intervention has started.
 - Type: _String_
@@ -37,7 +37,7 @@ Includes model intervention data.
 
 **`results`** - Intervention results.
 - Type: _String_
-- Example: `"Intervention results."`
+- Example: `"Specimen specific intervention results"`
 
 ##
 **`*`** - Required fields
