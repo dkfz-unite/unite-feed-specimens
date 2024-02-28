@@ -11,12 +11,12 @@ public class XenograftModelValidator : AbstractValidator<XenograftModel>
             .WithMessage("At least one field has to be set");
 
         RuleFor(model => model.GroupSize)
-            .GreaterThanOrEqualTo(0)
-            .WithMessage("Should be greater than or equal to 0");
+            .GreaterThan(0)
+            .WithMessage("Should be greater than 0");
 
         RuleFor(model => model.ImplantedCellsNumber)
-            .GreaterThanOrEqualTo(0)
-            .WithMessage("Should be greater than or equal to 0");
+            .GreaterThan(0)
+            .WithMessage("Should be greater than 0");
 
         RuleFor(model => model.SurvivalDays)
             .Must(BeNumberOrRange)
