@@ -234,21 +234,21 @@ Supported formats are:
         }
     },
     {
-        "id": "XE1CL1TI1",
-        "donor_id": "DO1",
-        "parent_id": "CL1TI1",
-        "parent_type": "CellLine",
-        "creation_date": "2020-03-01",
+        "id": "Xenograft1",
+        "donor_id": "Donor1",
+        "parent_id": "Line1",
+        "parent_type": "Line",
+        "creation_date": "2020-02-05",
         "creation_day": null,
         "xenograft": {
             "mouse_strain": "Nude",
-            "group_size": 9,
-            "implant_type": "Other",
-            "implant_location": "Cortical",
+            "group_size": 20,
+            "implant_type": "Orhtotopical",
+            "implant_location": "Striatal",
             "implanted_cells_number": 750000,
             "tumorigenicity": true,
             "tumor_growth_form": "Invasive",
-            "survival_days": "20-30",
+            "survival_days": "20-30"
         },
         "molecular_data": {
             "mgmt_status": "Methylated",
@@ -257,9 +257,33 @@ Supported formats are:
             "gene_expression_subtype": "Classical",
             "methylation_subtype": "H3-K27",
             "gcimp_methylation": true
+        }
+    },
+    {
+        "id": "Xenograft1",
+        "donor_id": "Donor2",
+        "parent_id": "Line1",
+        "parent_type": "Line",
+        "creation_date": "2020-02-05",
+        "creation_day": null,
+        "xenograft": {
+            "mouse_strain": "Nude",
+            "group_size": 30,
+            "implant_type": "Orhtotopical",
+            "implant_location": "Cortical",
+            "implanted_cells_number": 550000,
+            "tumorigenicity": true,
+            "tumor_growth_form": "Invasive",
+            "survival_days": "15-20"
         },
-        "interventions": null,
-        "drug_screenings": null
+        "molecular_data": {
+            "mgmt_status": "Unmethylated",
+            "idh_status": "Mutant",
+            "idh_mutation": "IDH1 R132H",
+            "gene_expression_subtype": null,
+            "methylation_subtype": null,
+            "gcimp_methylation": false
+        }
     }
 ]
 ```
@@ -362,8 +386,9 @@ For `json` upload see [POST: api/specimens](#post-apispecimens).
 
 ### tsv - text/tab-separated-values
 ```tsv
-donor_id    specimen_id mouse_strain    group_size  implant_type    implant_location implanted_cells_number  tumorigenicity  tumor_growth_form   survival_days   mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation
-DO1	XE1CL1TI1	Nude	9	Other	Cortical	750000	true	Invasive	20-30	Methylated	Wild Type		Classical	H3-K27	true
+id	donor_id	parent_id	parent_type	creation_date	creation_day	mouse_strain	group_size	implant_type	implant_location	implanted_cells_number	tumorigenicity	tumor_growth_form	survival_days	mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation
+Xenograft1	Donor1	Line1	Line	2020-02-05		Nude	20	Orhtotopical	Striatal	750000	true	Invasive	20-30	Methylated	Wild Type		Classical	H3-K27	true
+Xenograft1	Donor2	Line1	Line	2020-02-05		Nude	30	Orhtotopical	Cortical	550000	true	Invasive	15-20	Unmethylated	Mutant	IDH1 R132H			false
 ```
 
 Fields description can be found [here](./api-models-base-xenograft.md).
