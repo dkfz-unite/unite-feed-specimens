@@ -5,7 +5,7 @@ _At least one field has to be set_
 
 **`medium`** - Organoid medium.
 - Type: _String_
-- Example: `"Some medium"`
+- Example: `"Medium1"`
 
 **`implanted_cells_number`** - Number of implanted cells.
 - Type: _Number_
