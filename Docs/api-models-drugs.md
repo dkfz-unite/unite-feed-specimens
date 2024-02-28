@@ -5,13 +5,13 @@ Drug screening upload data model.
 - Note: Donor should be present in the system.
 - Type: _String_
 - Limitations: Maximum length 255
-- Example: `"DO1"`
+- Example: `"Donor1"`
 
 **`specimen_id`*** - Specimen identifier.
 - Note: Specimen should be present in the system.
 - Type: _String_
 - Limitations: Maximum length 255
-- Example: `"CL1TI1"`
+- Example: `"Line1"`
 
 **`specimen_type`*** - Specimen type.
 - Note: Drugs screening data can not be uploaded for donor materials.
