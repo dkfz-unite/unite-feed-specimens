@@ -16,4 +16,4 @@ _At least one field has to be set_
 **`source`** - Material source (e.g. solid tissue, plasma, brain liquid etc.).
 - Type: _String_
 - Limitations: Maximum length 100
-- Example: `"Solid tissue"`
+- Example: `"Tissue"`
