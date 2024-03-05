@@ -2,7 +2,7 @@
 Specimen upload data model.
 
 >[!NOTE]
-> All exact dates are hiddent and protected. Relative dates are shown instead, if calculation was possible.
+> All exact dates are hidden and protected. Relative dates are shown instead, if calculation was possible.
 
 **`id`*** - Specimen identifier.
 - Note: Specimen identifiers are namespaced and should be unique for it's donor across all specimens of the same type.
@@ -22,8 +22,8 @@ Specimen upload data model.
 
 **`parent_type`** - Parent specimen type.
 - Type: _String_
-- Possible values: `"Tissue"`, `"CellLine"`, `"Organoid"`, `"Xenograft"`
-- Example: `"Tissue"`
+- Possible values: `"Material"`, `"Line"`, `"Organoid"`, `"Xenograft"`
+- Example: `"Material"`
 
 **`creation_date`** - Date when specimen was created.
 - Type: _String_
@@ -37,7 +37,7 @@ Specimen upload data model.
 - Example: `36`
 
 **`material`** - Material data (if specimen is a donor material).
-- Type: _Object([Tissue](api-models-base-material.md))_
+- Type: _Object([Material](api-models-base-material.md))_
 - Limitations - Only either `material`, `line`, `organoid` or `xenograft` can be set at once.
 - Example: `{...}`
 

@@ -326,7 +326,7 @@ Fields description can be found [here](api-models-base-material.md).
 
 
 ## POST: [api/lines/{type?}](http://localhost:5104/api/lines)
-Submit donor lines data.
+Submit cell lines data.
 
 ### Body
 Supported formats are:
@@ -402,6 +402,9 @@ Fields description can be found [here](./api-models-base-xenograft.md).
 
 ## POST: [api/interventions/{type?}](http://localhost:5104/api/interventions)
 Submit interventions data. Donors and specimens should be present in the system.
+
+> [!Note]
+> Donor materials can't have interventions.
 
 ### Body
 Supported formats are:
@@ -538,6 +541,9 @@ Fields description can be found [here](./api-models-interventions.md).
 
 ## POST: [api/drugs](http://localhost:5104/api/drugs)
 Submit drugs screening data. Donors and specimens should be present in the system.
+
+> [!Note]
+> Donor materials can't have drug screenings.
 
 ### Body
 Supported formats are:

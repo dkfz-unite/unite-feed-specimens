@@ -260,6 +260,11 @@ public class SpecimenIndexCreationService
                 .Where(data => data.SpecimenId == specimenId)
                 .Any();
 
+            index.LinesInterventions = dbContext.Set<Intervention>()
+                .AsNoTracking()
+                .Where(intervention => intervention.SpecimenId == specimenId)
+                .Any();
+
             index.LinesDrugs = dbContext.Set<DrugScreening>()
                 .AsNoTracking()
                 .Where(data => data.SpecimenId == specimenId)

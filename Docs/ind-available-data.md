@@ -7,8 +7,8 @@ All fields are booleand and indicate whether the data is available or not.
 - **`Clinical`** - Specimen donor clinical data
 - **`Treatments`** - Specimen donor treatments data
 - **`Molecular`** - Molecular data
+- **`Interventions`** - Interventions data (not available for donor Materials)
 - **`Drugs`** - Drugs screening data (not available for donor Materials)
-- **`Interventions`** - Interventions data (available for Orgaoids and Xenografts)
 - **`Mris`** - MRI images data (available for donor tumor materials)
 - **`Ssms`** - Simple somatic mutations data (SSM)
 - **`Cnvs`** - Copy number variants data (CNV)

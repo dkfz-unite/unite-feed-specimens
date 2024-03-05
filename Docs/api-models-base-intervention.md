@@ -2,7 +2,7 @@
 Includes model intervention data.
 
 >[!NOTE]
-> All exact dates are hiddent and protected. Relative dates are shown instead, if calculation was possible.
+> All exact dates are hidden and protected. Relative dates are shown instead, if calculation was possible.
 
 **`type`*** - Intervention type.
 - Type: _String_

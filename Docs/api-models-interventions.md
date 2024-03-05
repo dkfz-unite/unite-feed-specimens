@@ -16,7 +16,7 @@ Intervention upload data model.
 **`specimen_type`*** - Specimen type.
 - Note: Intervention data can not be uploaded for donor materials and cell lines.
 - Type: _String_
-- Possible values: `"Organoid"`, `"Xenograft"`
+- Possible values: `"Line"`, `"Organoid"`, `"Xenograft"`
 - Example: `"Organoid"`
 
 **`data`*** - Interventions data.
