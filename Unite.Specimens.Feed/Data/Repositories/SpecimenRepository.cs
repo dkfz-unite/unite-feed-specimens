@@ -1,11 +1,15 @@
-﻿using Unite.Data.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using Unite.Data.Context;
+using Unite.Data.Entities.Genome.Analysis;
 using Unite.Data.Entities.Specimens;
+using Unite.Specimens.Feed.Data.Exceptions;
 using Unite.Specimens.Feed.Data.Models;
 
 namespace Unite.Specimens.Feed.Data.Repositories;
 
 internal class SpecimenRepository
 {
+    private readonly DomainDbContext _dbContext;
     private readonly SpecimenRepositoryBase<MaterialModel> _materialRepository;
     private readonly SpecimenRepositoryBase<LineModel> _lineRepository;
     private readonly SpecimenRepositoryBase<OrganoidModel> _organoidRepository;
@@ -14,6 +18,7 @@ internal class SpecimenRepository
 
     public SpecimenRepository(DomainDbContext dbContext)
     {
+        _dbContext = dbContext;
         _materialRepository = new MaterialRepository(dbContext);
         _lineRepository = new LineRepository(dbContext);
         _organoidRepository = new OrganoidRepository(dbContext);
@@ -91,5 +96,35 @@ internal class SpecimenRepository
         {
             throw new NotSupportedException("Specimen type is not yet supported");
         }
+    }
+
+    public void Delete(int id)
+    {
+        var specimen = _dbContext.Set<Specimen>()
+            .AsNoTracking()
+            .Include(entity => entity.Children)
+            .FirstOrDefault(entity => entity.Id == id);
+
+        if (specimen == null)
+        {
+            throw new NotFoundException($"Specimen with id {id} was not found");
+        }
+
+        if (specimen.Children.Any())
+        {
+            foreach (var childSpecimen in specimen.Children)
+            {
+                Delete(childSpecimen.Id);
+            }
+        }
+
+        var analyses = _dbContext.Set<AnalysedSample>()
+            .AsNoTracking()
+            .Where(entity => entity.TargetSampleId == id)
+            .ToArray();
+
+        _dbContext.Remove(specimen);
+        _dbContext.RemoveRange(analyses);
+        _dbContext.SaveChanges();
     }
 }

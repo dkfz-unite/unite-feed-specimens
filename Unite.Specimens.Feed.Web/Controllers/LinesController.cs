@@ -14,8 +14,9 @@ public class LinesController : SpecimensControllerBase
 {
     public LinesController(
         SpecimensDataWriter dataWriter,
+        SpecimensDataRemover dataRemover,
         SpecimenIndexingTasksService indexingTaskService,
-        ILogger<SpecimensControllerBase> logger) : base(dataWriter, indexingTaskService, logger)
+        ILogger<SpecimensControllerBase> logger) : base(dataWriter, dataRemover, indexingTaskService, logger)
     {
     }
 

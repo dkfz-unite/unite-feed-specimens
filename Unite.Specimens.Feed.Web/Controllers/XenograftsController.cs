@@ -14,8 +14,9 @@ public class XenograftsController : SpecimensControllerBase
 {
     public XenograftsController(
         SpecimensDataWriter dataWriter,
+        SpecimensDataRemover dataRemover,
         SpecimenIndexingTasksService indexingTaskService,
-        ILogger<SpecimensControllerBase> logger) : base(dataWriter, indexingTaskService, logger)
+        ILogger<SpecimensControllerBase> logger) : base(dataWriter, dataRemover, indexingTaskService, logger)
     {
     }
 

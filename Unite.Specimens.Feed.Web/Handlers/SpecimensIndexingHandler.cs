@@ -44,7 +44,7 @@ public class SpecimensIndexingHandler
 
         _taskProcessingService.Process(IndexingTaskType.Specimen, bucketSize, (tasks) =>
         {
-            if (_taskProcessingService.HasSubmissionTasks() || _taskProcessingService.HasAnnotationTasks())
+            if (_taskProcessingService.HasTasks(WorkerType.Submission) || _taskProcessingService.HasTasks(WorkerType.Annotation))
             {
                 return false;
             }
@@ -53,9 +53,7 @@ public class SpecimensIndexingHandler
 
             stopwatch.Restart();
 
-            var grouped = tasks.DistinctBy(task => task.Target);
-
-            var indices = grouped.Select(task =>
+            var indices = tasks.Select(task =>
             {
                 var id = int.Parse(task.Target);
 
@@ -75,4 +73,3 @@ public class SpecimensIndexingHandler
         });
     }
 }
-

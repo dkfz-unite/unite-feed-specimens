@@ -14,8 +14,9 @@ public class OrganoidsController : SpecimensControllerBase
 {
     public OrganoidsController(
         SpecimensDataWriter dataWriter,
+        SpecimensDataRemover dataRemover,
         SpecimenIndexingTasksService indexingTaskService,
-        ILogger<OrganoidsController> logger) : base(dataWriter, indexingTaskService, logger)
+        ILogger<OrganoidsController> logger) : base(dataWriter, dataRemover, indexingTaskService, logger)
     {
     }
 

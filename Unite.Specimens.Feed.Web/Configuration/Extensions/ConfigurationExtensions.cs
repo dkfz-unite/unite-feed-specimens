@@ -29,6 +29,7 @@ public static class ConfigurationExtensions
         services.AddValidators();
 
         services.AddTransient<SpecimensDataWriter>();
+        services.AddTransient<SpecimensDataRemover>();
         services.AddTransient<InterventionsDataWriter>();
         services.AddTransient<DrugScreeningsDataWriter>();
 

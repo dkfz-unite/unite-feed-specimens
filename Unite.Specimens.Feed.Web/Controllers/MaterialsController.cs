@@ -14,8 +14,9 @@ public class MaterialsController : SpecimensControllerBase
 {
     public MaterialsController(
         SpecimensDataWriter dataWriter,
+        SpecimensDataRemover dataRemover,
         SpecimenIndexingTasksService indexingTaskService,
-        ILogger<MaterialsController> logger) : base(dataWriter, indexingTaskService, logger)
+        ILogger<MaterialsController> logger) : base(dataWriter, dataRemover, indexingTaskService, logger)
     {
     }
 

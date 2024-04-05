@@ -9,6 +9,7 @@ namespace Unite.Specimens.Feed.Web.Controllers;
 public abstract class SpecimensControllerBase : Controller
 {
     protected readonly SpecimensDataWriter _dataWriter;
+    protected readonly SpecimensDataRemover _dataRemover;
     protected readonly SpecimenIndexingTasksService _indexingTaskService;
     protected readonly ILogger _logger;
 
@@ -17,10 +18,12 @@ public abstract class SpecimensControllerBase : Controller
 
     public SpecimensControllerBase(
         SpecimensDataWriter dataWriter,
+        SpecimensDataRemover dataRemover,
         SpecimenIndexingTasksService indexingTaskService,
         ILogger<SpecimensControllerBase> logger)
     {
         _dataWriter = dataWriter;
+        _dataRemover = dataRemover;
         _indexingTaskService = indexingTaskService;
         _logger = logger;
 
@@ -45,6 +48,32 @@ public abstract class SpecimensControllerBase : Controller
             _logger.LogWarning("{error}", exception.Message);
 
             return BadRequest(exception.Message);
+        }
+    }
+
+    protected virtual IActionResult DeleteData(int id)
+    {
+        try
+        {
+            _indexingTaskService.ChangeStatus(false);
+
+            _indexingTaskService.PopulateTasks([id]);
+
+            _dataRemover.SaveData(id);
+
+            _logger.LogInformation("Deleted specimen `{id}`", id);
+
+            return Ok();
+        }
+        catch (NotFoundException exception)
+        {
+            _logger.LogWarning("{error}", exception.Message);
+
+            return BadRequest(exception.Message);
+        }
+        finally
+        {
+            _indexingTaskService.ChangeStatus(true);
         }
     }
 }

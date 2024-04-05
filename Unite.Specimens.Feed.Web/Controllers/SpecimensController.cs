@@ -13,17 +13,24 @@ public class SpecimensController : SpecimensControllerBase
 {
     public SpecimensController(
         SpecimensDataWriter dataWriter,
+        SpecimensDataRemover dataRemover,
         SpecimenIndexingTasksService indexingTaskService,
-        ILogger<SpecimensController> logger) : base(dataWriter, indexingTaskService, logger)
+        ILogger<SpecimensController> logger) : base(dataWriter, dataRemover, indexingTaskService, logger)
     {
     }
 
     [HttpPost("")]
     [Consumes("application/json")]
-    public IActionResult Post([FromBody] SpecimenDataModel[] models)
+    public IActionResult Post([FromBody]SpecimenDataModel[] models)
     {
         var dataModels = _converter.Convert(models);
 
         return PostData(dataModels);
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        return DeleteData(id);
     }
 }
