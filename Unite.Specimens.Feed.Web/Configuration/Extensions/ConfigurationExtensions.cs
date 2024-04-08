@@ -25,6 +25,7 @@ public static class ConfigurationExtensions
         services.AddOptions();
         services.AddDatabase();
         services.AddDatabaseFactory(sqlOptions);
+        services.AddRepositories();
         services.AddIndexServices();
         services.AddValidators();
 
@@ -40,6 +41,7 @@ public static class ConfigurationExtensions
         services.AddTransient<SpecimensIndexingOptions>();
         services.AddTransient<SpecimensIndexingHandler>();
         services.AddTransient<SpecimenIndexCreationService>();
+        services.AddTransient<SpecimenIndexRemovalService>();
     }
 
 

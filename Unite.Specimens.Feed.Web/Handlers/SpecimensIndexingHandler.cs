@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Unite.Data.Context.Services.Tasks;
 using Unite.Data.Entities.Tasks.Enums;
+using Unite.Essentials.Extensions;
 using Unite.Indices.Context;
 using Unite.Indices.Entities.Specimens;
 using Unite.Specimens.Indices.Services;
@@ -53,17 +54,24 @@ public class SpecimensIndexingHandler
 
             stopwatch.Restart();
 
-            var indices = tasks.Select(task =>
+            var indicesToRemove = new List<string>();
+            var indicesToCreate = new List<SpecimenIndex>();
+
+            tasks.ForEach(task =>
             {
                 var id = int.Parse(task.Target);
 
                 var index = _indexCreationService.CreateIndex(id);
 
-                return index;
+                if (index == null)
+                    indicesToRemove.Add(id.ToString());
+                else
+                    indicesToCreate.Add(index);
 
-            }).ToArray();
+            });
 
-            _indexingService.AddRange(indices);
+            _indexingService.DeleteRange(indicesToRemove);
+            _indexingService.AddRange(indicesToCreate);
 
             stopwatch.Stop();
 

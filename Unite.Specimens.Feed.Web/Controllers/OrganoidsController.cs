@@ -5,6 +5,7 @@ using Unite.Specimens.Feed.Web.Configuration.Constants;
 using Unite.Specimens.Feed.Web.Models;
 using Unite.Specimens.Feed.Web.Models.Binders;
 using Unite.Specimens.Feed.Web.Services;
+using Unite.Specimens.Indices.Services;
 
 namespace Unite.Specimens.Feed.Web.Controllers;
 
@@ -15,8 +16,9 @@ public class OrganoidsController : SpecimensControllerBase
     public OrganoidsController(
         SpecimensDataWriter dataWriter,
         SpecimensDataRemover dataRemover,
+        SpecimenIndexRemovalService indexRemover,
         SpecimenIndexingTasksService indexingTaskService,
-        ILogger<OrganoidsController> logger) : base(dataWriter, dataRemover, indexingTaskService, logger)
+        ILogger<OrganoidsController> logger) : base(dataWriter, dataRemover, indexRemover, indexingTaskService, logger)
     {
     }
 

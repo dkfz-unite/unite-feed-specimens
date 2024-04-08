@@ -2,7 +2,7 @@
 using Unite.Data.Context;
 using Unite.Data.Entities.Genome.Analysis;
 using Unite.Data.Entities.Specimens;
-using Unite.Specimens.Feed.Data.Exceptions;
+using Unite.Essentials.Extensions;
 using Unite.Specimens.Feed.Data.Models;
 
 namespace Unite.Specimens.Feed.Data.Repositories;
@@ -25,6 +25,14 @@ internal class SpecimenRepository
         _xenograftRepository = new XenograftRepository(dbContext);
     }
 
+
+    public Specimen Find(int id)
+    {
+        return _dbContext.Set<Specimen>()
+            .AsNoTracking()
+            .Include(entity => entity.Children)
+            .FirstOrDefault(entity => entity.Id == id);
+    }
 
     public Specimen Find(int donorId, int? parentId, SpecimenModel model)
     {
@@ -98,29 +106,16 @@ internal class SpecimenRepository
         }
     }
 
-    public void Delete(int id)
+    public void Delete(Specimen specimen)
     {
-        var specimen = _dbContext.Set<Specimen>()
-            .AsNoTracking()
-            .Include(entity => entity.Children)
-            .FirstOrDefault(entity => entity.Id == id);
-
-        if (specimen == null)
-        {
-            throw new NotFoundException($"Specimen with id {id} was not found");
-        }
-
-        if (specimen.Children.Any())
-        {
-            foreach (var childSpecimen in specimen.Children)
-            {
-                Delete(childSpecimen.Id);
-            }
-        }
+        specimen.Children.ForEach(Delete);
 
         var analyses = _dbContext.Set<AnalysedSample>()
             .AsNoTracking()
-            .Where(entity => entity.TargetSampleId == id)
+            .Include(entity => entity.Analysis)
+            .Where(entity => entity.TargetSampleId == specimen.Id)
+            .Select(entity => entity.Analysis)
+            .DistinctBy(entity => entity.Id)
             .ToArray();
 
         _dbContext.Remove(specimen);
