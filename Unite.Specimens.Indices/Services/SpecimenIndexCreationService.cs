@@ -52,12 +52,12 @@ public class SpecimenIndexCreationService
     {
         var specimen = LoadSpecimen(specimenId);
 
-        var diagnosisDate = specimen.Donor.ClinicalData?.DiagnosisDate;
-
         if (specimen == null)
         {
             return null;
         }
+
+        var diagnosisDate = specimen.Donor.ClinicalData?.DiagnosisDate;
 
         return CreateSpecimenIndex(specimen, diagnosisDate);
     }
