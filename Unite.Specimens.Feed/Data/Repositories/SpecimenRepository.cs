@@ -30,7 +30,6 @@ internal class SpecimenRepository
     {
         return _dbContext.Set<Specimen>()
             .AsNoTracking()
-            .Include(entity => entity.Children)
             .FirstOrDefault(entity => entity.Id == id);
     }
 
@@ -108,18 +107,31 @@ internal class SpecimenRepository
 
     public void Delete(Specimen specimen)
     {
-        specimen.Children.ForEach(Delete);
+        var children = LoadChildren(specimen);
+
+        if (children.IsNotEmpty())
+        {
+            children.ForEach(Delete);
+        }
 
         var analyses = _dbContext.Set<AnalysedSample>()
             .AsNoTracking()
             .Include(entity => entity.Analysis)
             .Where(entity => entity.TargetSampleId == specimen.Id)
             .Select(entity => entity.Analysis)
-            .DistinctBy(entity => entity.Id)
+            .Distinct()
             .ToArray();
 
         _dbContext.Remove(specimen);
         _dbContext.RemoveRange(analyses);
         _dbContext.SaveChanges();
+    }
+
+    private Specimen[] LoadChildren(Specimen specimen)
+    {
+        return _dbContext.Set<Specimen>()
+            .AsNoTracking()
+            .Where(entity => entity.ParentId == specimen.Id)
+            .ToArray();
     }
 }

@@ -12,6 +12,9 @@ public class SpecimensDataRemover : DataWriter<Specimen>
 
     public SpecimensDataRemover(IDbContextFactory<DomainDbContext> dbContextFactory) : base(dbContextFactory)
     {
+        var dbContext = dbContextFactory.CreateDbContext();
+
+        Initialize(dbContext);
     }
     
 
