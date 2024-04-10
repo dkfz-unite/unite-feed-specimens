@@ -75,7 +75,7 @@ public abstract class SpecimensControllerBase : Controller
         {
             _logger.LogWarning("Wrong attempt to delete donor '{id}'", id);
 
-            return BadRequest("Specimen not found");
+            return NotFound();
         }
     }
 }

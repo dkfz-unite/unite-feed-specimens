@@ -64,7 +64,7 @@ public class SpecimensIndexingHandler
                 var index = _indexCreationService.CreateIndex(id);
 
                 if (index == null)
-                    indicesToRemove.Add(id.ToString());
+                    indicesToRemove.Add($"{id}");
                 else
                     indicesToCreate.Add(index);
 
