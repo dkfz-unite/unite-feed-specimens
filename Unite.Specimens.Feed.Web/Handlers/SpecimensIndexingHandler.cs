@@ -28,22 +28,22 @@ public class SpecimensIndexingHandler
         _logger = logger;
     }
 
-    public void Prepare()
+    public async Task Prepare()
     {
-        _indexingService.UpdateIndex().GetAwaiter().GetResult();
+        await _indexingService.UpdateIndex();
     }
 
-    public void Handle(int bucketSize)
+    public async Task Handle(int bucketSize)
     {
-        ProcessSpecimenIndexingTasks(bucketSize);
+        await ProcessSpecimenIndexingTasks(bucketSize);
     }
 
 
-    private void ProcessSpecimenIndexingTasks(int bucketSize)
+    private async Task ProcessSpecimenIndexingTasks(int bucketSize)
     {
         var stopwatch = new Stopwatch();
 
-        _taskProcessingService.Process(IndexingTaskType.Specimen, bucketSize, (tasks) =>
+        await _taskProcessingService.Process(IndexingTaskType.Specimen, bucketSize, async (tasks) =>
         {
             if (_taskProcessingService.HasTasks(WorkerType.Submission) || _taskProcessingService.HasTasks(WorkerType.Annotation))
             {
@@ -54,7 +54,7 @@ public class SpecimensIndexingHandler
 
             stopwatch.Restart();
 
-            var indicesToRemove = new List<string>();
+            var indicesToDelete = new List<string>();
             var indicesToCreate = new List<SpecimenIndex>();
 
             tasks.ForEach(task =>
@@ -64,14 +64,17 @@ public class SpecimensIndexingHandler
                 var index = _indexCreationService.CreateIndex(id);
 
                 if (index == null)
-                    indicesToRemove.Add($"{id}");
+                    indicesToDelete.Add($"{id}");
                 else
                     indicesToCreate.Add(index);
 
             });
 
-            _indexingService.DeleteRange(indicesToRemove);
-            _indexingService.AddRange(indicesToCreate);
+            if (indicesToDelete.Any())
+                await _indexingService.DeleteRange(indicesToDelete);
+
+            if (indicesToCreate.Any())
+                await _indexingService.AddRange(indicesToCreate);
 
             stopwatch.Stop();
 
