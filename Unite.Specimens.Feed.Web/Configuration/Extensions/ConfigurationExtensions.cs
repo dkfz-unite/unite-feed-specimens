@@ -25,10 +25,12 @@ public static class ConfigurationExtensions
         services.AddOptions();
         services.AddDatabase();
         services.AddDatabaseFactory(sqlOptions);
+        services.AddRepositories();
         services.AddIndexServices();
         services.AddValidators();
 
         services.AddTransient<SpecimensDataWriter>();
+        services.AddTransient<SpecimensDataRemover>();
         services.AddTransient<InterventionsDataWriter>();
         services.AddTransient<DrugScreeningsDataWriter>();
 
@@ -39,6 +41,7 @@ public static class ConfigurationExtensions
         services.AddTransient<SpecimensIndexingOptions>();
         services.AddTransient<SpecimensIndexingHandler>();
         services.AddTransient<SpecimenIndexCreationService>();
+        services.AddTransient<SpecimenIndexRemovalService>();
     }
 
 

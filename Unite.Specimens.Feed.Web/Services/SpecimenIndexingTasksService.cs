@@ -45,6 +45,7 @@ public class SpecimenIndexingTasksService : IndexingTaskService<Donor, int>
     {
         IterateEntities<Specimen, int>(specimen => specimenIds.Contains(specimen.Id), specimen => specimen.Id, specimens =>
         {
+            CreateProjectIndexingTasks(specimens);
             CreateDonorIndexingTasks(specimens);
             CreateImageIndexingTasks(specimens);
             CreateSpecimenIndexingTasks(specimens);
@@ -53,6 +54,11 @@ public class SpecimenIndexingTasksService : IndexingTaskService<Donor, int>
         });
     }
 
+
+    protected override IEnumerable<int> LoadRelatedProjects(IEnumerable<int> keys)
+    {
+        return [];
+    }
 
     protected override IEnumerable<int> LoadRelatedDonors(IEnumerable<int> keys)
     {

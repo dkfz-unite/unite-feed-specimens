@@ -9,20 +9,22 @@ namespace Unite.Specimens.Feed.Data;
 
 public class InterventionsDataWriter : DataWriter<SpecimenModel, InterventionsDataUploadAudit>
 {
-    private readonly DonorRepository _donorRepository;
-    private readonly SpecimenRepository _specimenRepository;
-    private readonly InterventionRepository _interventionRepository;
+    private DonorRepository _donorRepository;
+    private SpecimenRepository _specimenRepository;
+    private InterventionRepository _interventionRepository;
 
 
     public InterventionsDataWriter(IDbContextFactory<DomainDbContext> dbContextFactory) : base(dbContextFactory)
     {
-        var dbContext = dbContextFactory.CreateDbContext();
+    }
 
+
+    protected override void Initialize(DomainDbContext dbContext)
+    {
         _donorRepository = new DonorRepository(dbContext);
         _specimenRepository = new SpecimenRepository(dbContext);
         _interventionRepository = new InterventionRepository(dbContext);
     }
-
 
     protected override void ProcessModel(SpecimenModel model, ref InterventionsDataUploadAudit audit)
     {

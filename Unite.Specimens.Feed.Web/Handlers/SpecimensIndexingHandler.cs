@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Unite.Data.Context.Services.Tasks;
 using Unite.Data.Entities.Tasks.Enums;
+using Unite.Essentials.Extensions;
 using Unite.Indices.Context;
 using Unite.Indices.Entities.Specimens;
 using Unite.Specimens.Indices.Services;
@@ -27,52 +28,55 @@ public class SpecimensIndexingHandler
         _logger = logger;
     }
 
-    public void Prepare()
+    public async Task Prepare()
     {
-        _indexingService.UpdateIndex().GetAwaiter().GetResult();
+        await _indexingService.UpdateIndex();
     }
 
-    public void Handle(int bucketSize)
+    public async Task Handle(int bucketSize)
     {
-        ProcessSpecimenIndexingTasks(bucketSize);
+        await ProcessSpecimenIndexingTasks(bucketSize);
     }
 
 
-    private void ProcessSpecimenIndexingTasks(int bucketSize)
+    private async Task ProcessSpecimenIndexingTasks(int bucketSize)
     {
         var stopwatch = new Stopwatch();
 
-        _taskProcessingService.Process(IndexingTaskType.Specimen, bucketSize, (tasks) =>
+        await _taskProcessingService.Process(IndexingTaskType.Specimen, bucketSize, async (tasks) =>
         {
-            if (_taskProcessingService.HasSubmissionTasks() || _taskProcessingService.HasAnnotationTasks())
-            {
+            if (_taskProcessingService.HasTasks(WorkerType.Submission) || _taskProcessingService.HasTasks(WorkerType.Annotation))
                 return false;
-            }
-
-            _logger.LogInformation("Indexing {number} specimens", tasks.Length);
 
             stopwatch.Restart();
 
-            var grouped = tasks.DistinctBy(task => task.Target);
+            var indicesToDelete = new List<string>();
+            var indicesToCreate = new List<SpecimenIndex>();
 
-            var indices = grouped.Select(task =>
+            tasks.ForEach(task =>
             {
                 var id = int.Parse(task.Target);
 
                 var index = _indexCreationService.CreateIndex(id);
 
-                return index;
+                if (index == null)
+                    indicesToDelete.Add($"{id}");
+                else
+                    indicesToCreate.Add(index);
 
-            }).ToArray();
+            });
 
-            _indexingService.AddRange(indices);
+            if (indicesToDelete.Any())
+                await _indexingService.DeleteRange(indicesToDelete);
+
+            if (indicesToCreate.Any())
+                await _indexingService.AddRange(indicesToCreate);
 
             stopwatch.Stop();
 
-            _logger.LogInformation("Indexing of {number} specimens completed in {time}s", tasks.Length, Math.Round(stopwatch.Elapsed.TotalSeconds, 2));
+            _logger.LogInformation("Indexed {number} specimens in {time}s", tasks.Length, Math.Round(stopwatch.Elapsed.TotalSeconds, 2));
 
             return true;
         });
     }
 }
-
