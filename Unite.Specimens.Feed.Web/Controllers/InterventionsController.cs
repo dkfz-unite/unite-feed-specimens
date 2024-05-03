@@ -37,7 +37,6 @@ public class InterventionsController : Controller
 
 
     [HttpPost("")]
-    [Consumes("application/json")]
     public IActionResult Post([FromBody]InterventionsDataModel[] models)
     {
         var dataModels = _defaultModelConverter.Convert(models);
@@ -46,7 +45,6 @@ public class InterventionsController : Controller
     }
 
     [HttpPost("tsv")]
-    [Consumes("text/tab-separated-values")]
     public IActionResult PosTsv([ModelBinder(typeof(InterventionTsvModelsBinder))]InterventionDataFlatModel[] models)
     {
         var dataModels = _flatModelsConverter.Convert(models);

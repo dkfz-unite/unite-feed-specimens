@@ -24,7 +24,6 @@ public class XenograftsController : SpecimensControllerBase
 
 
     [HttpPost("tsv")]
-    [Consumes("text/tab-separated-values")]
     public IActionResult PostTsv([ModelBinder(typeof(XenograftTsvModelsBinder))]SpecimenDataModel[] models)
     {
         var dataModels = _converter.Convert(models);

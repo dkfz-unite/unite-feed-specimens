@@ -24,7 +24,6 @@ public class LinesController : SpecimensControllerBase
 
 
     [HttpPost("tsv")]
-    [Consumes("text/tab-separated-values")]
     public IActionResult PostTsv([ModelBinder(typeof(LineTsvModelsBinder))] SpecimenDataModel[] models)
     {
         var dataModels = _converter.Convert(models);

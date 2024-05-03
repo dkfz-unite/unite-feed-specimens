@@ -24,7 +24,6 @@ public class OrganoidsController : SpecimensControllerBase
 
 
     [HttpPost("tsv")]
-    [Consumes("text/tab-separated-values")]
     public IActionResult PostTsv([ModelBinder(typeof(OrganoidTsvModelsBinder))]SpecimenDataModel[] models)
     {
         var dataModels = _converter.Convert(models);
