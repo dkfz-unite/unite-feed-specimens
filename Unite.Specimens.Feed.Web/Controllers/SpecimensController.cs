@@ -22,7 +22,6 @@ public class SpecimensController : SpecimensControllerBase
     }
 
     [HttpPost("")]
-    [Consumes("application/json")]
     public IActionResult Post([FromBody]SpecimenDataModel[] models)
     {
         var dataModels = _converter.Convert(models);
