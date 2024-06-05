@@ -56,13 +56,9 @@ public class SpecimenIndexCreationService
         var specimen = LoadSpecimen(specimenId);
 
         if (specimen == null)
-        {
             return null;
-        }
 
-        var diagnosisDate = specimen.Donor.ClinicalData?.DiagnosisDate;
-
-        return CreateSpecimenIndex(specimen, diagnosisDate);
+        return CreateSpecimenIndex(specimen, specimen.Donor.ClinicalData?.DiagnosisDate);
     }
 
     private SpecimenIndex CreateSpecimenIndex(Specimen specimen, DateOnly? diagnosisDate)
@@ -117,19 +113,17 @@ public class SpecimenIndexCreationService
     {
         var samples = LoadSamples(specimenId);
 
-        var indices = samples.Select(sample => CreateSampleIndex(sample, diagnosisDate));
+        if (samples.IsEmpty())
+            return null;
 
-        return indices.Any() ? indices.ToArray() : null;
+        return samples.Select(sample => CreateSampleIndex(sample, diagnosisDate)).ToArray();
     }
 
     private static SampleIndex CreateSampleIndex(Sample sample, DateOnly? diagnosisDate)
     {
         var index = SampleIndexMapper.CreateFrom<SampleIndex>(sample, diagnosisDate);
 
-        if (index != null && sample.Resources.IsNotEmpty())
-        {
-            index.Resources = sample.Resources.Select(resource => ResourceIndexMapper.CreateFrom<ResourceIndex>(resource)).ToArray();
-        }
+        index.Resources = sample.Resources?.Select(resource => ResourceIndexMapper.CreateFrom<ResourceIndex>(resource)).ToArray();
 
         return index;
     }
@@ -163,9 +157,7 @@ public class SpecimenIndexCreationService
         var donor = LoadDonor(donorId);
 
         if (donor == null)
-        {
             return null;
-        }
 
         return CreateDonorIndex(donor);
     }
@@ -196,9 +188,10 @@ public class SpecimenIndexCreationService
 
         var images = LoadImages(donorId);
 
-        var indices = images.Select(image => CreateImageIndex(image, diagnosisDate));
+        if (images.IsEmpty())
+            return null;
 
-        return indices.Any() ? indices.ToArray() : null;
+        return images.Select(image => CreateImageIndex(image, diagnosisDate)).ToArray();
     }
 
     private static ImageIndex CreateImageIndex(Image image, DateOnly? diagnosisDate)
