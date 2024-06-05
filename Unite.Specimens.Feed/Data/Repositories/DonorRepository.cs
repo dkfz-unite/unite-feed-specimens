@@ -1,4 +1,5 @@
-﻿using Unite.Data.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using Unite.Data.Context;
 using Unite.Data.Entities.Donors;
 using Unite.Specimens.Feed.Data.Models;
 
@@ -15,14 +16,11 @@ internal class DonorRepository
     }
 
 
-    public Donor Find(string referenceId)
+    public Donor Find(DonorModel model)
     {
-        var entity = _dbContext.Set<Donor>()
-            .FirstOrDefault(entity =>
-                entity.ReferenceId == referenceId
-            );
-
-        return entity;
+        return _dbContext.Set<Donor>().AsNoTracking().FirstOrDefault(entity =>
+            entity.ReferenceId == model.ReferenceId
+        );
     }
 
     public Donor Create(DonorModel model)
@@ -33,5 +31,10 @@ internal class DonorRepository
         _dbContext.SaveChanges();
 
         return entity;
+    }
+
+    public Donor FindOrCreate(DonorModel model)
+    {
+        return Find(model) ?? Create(model);
     }
 }

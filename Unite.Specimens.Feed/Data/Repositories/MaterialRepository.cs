@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Unite.Data.Context;
 using Unite.Data.Entities.Specimens;
-using Unite.Data.Entities.Specimens.Enums;
 using Unite.Data.Entities.Specimens.Materials;
 using Unite.Specimens.Feed.Data.Models;
 
@@ -14,50 +13,31 @@ internal class MaterialRepository : SpecimenRepositoryBase<MaterialModel>
     }
 
 
-    public override Specimen Find(int donorId, int? parentId, in MaterialModel model)
+    protected override IQueryable<Specimen> GetQuery()
     {
-        var referenceId = model.ReferenceId;
-
-        var entity = _dbContext.Set<Specimen>()
-            .Include(entity => entity.Material)
-                .ThenInclude(tissue => tissue.Source)
-            .Include(entity => entity.MolecularData)
-            .FirstOrDefault(entity =>
-                entity.DonorId == donorId &&
-                entity.Material != null &&
-                entity.Material.ReferenceId == referenceId
-            );
-
-        return entity;
+        return base.GetQuery()
+            .Include(entity => entity.Material);
     }
 
-
-    protected override void Map(in MaterialModel model, ref Specimen entity)
+    protected override void Map(MaterialModel model, Specimen entity)
     {
-        base.Map(model, ref entity);
-
-        entity.TypeId = SpecimenType.Material;
+        base.Map(model, entity);
 
         if (entity.Material == null)
-        {
             entity.Material = new Material();
-        }
 
-        entity.Material.ReferenceId = model.ReferenceId;
         entity.Material.TypeId = model.Type;
         entity.Material.TumorTypeId = model.TumorType;
-        entity.Material.Source = GetTissueSource(model.Source);
+        entity.Material.Source = GetMaterialSource(model.Source);
     }
 
-    private MaterialSource GetTissueSource(string value)
+    private MaterialSource GetMaterialSource(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
-        {
             return null;
-        }
 
         var entity = _dbContext.Set<MaterialSource>()
-                .FirstOrDefault(entity =>
+            .FirstOrDefault(entity =>
                 entity.Value == value
             );
 

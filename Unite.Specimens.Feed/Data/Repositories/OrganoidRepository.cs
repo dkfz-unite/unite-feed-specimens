@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Unite.Data.Context;
 using Unite.Data.Entities.Specimens;
-using Unite.Data.Entities.Specimens.Enums;
 using Unite.Data.Entities.Specimens.Organoids;
 using Unite.Specimens.Feed.Data.Models;
 
@@ -14,35 +13,19 @@ internal class OrganoidRepository : SpecimenRepositoryBase<OrganoidModel>
     }
 
 
-    public override Specimen Find(int donorId, int? parentId, in OrganoidModel model)
+    protected override IQueryable<Specimen> GetQuery()
     {
-        var referenceId = model.ReferenceId;
-
-        var entity = _dbContext.Specimens
-            .Include(entity => entity.Organoid)
-            .Include(entity => entity.MolecularData)
-            .FirstOrDefault(entity =>
-                entity.DonorId == donorId &&
-                entity.Organoid != null &&
-                entity.Organoid.ReferenceId == referenceId
-            );
-
-        return entity;
+        return base.GetQuery()
+            .Include(entity => entity.Organoid);
     }
 
-
-    protected override void Map(in OrganoidModel model, ref Specimen entity)
+    protected override void Map(OrganoidModel model, Specimen entity)
     {
-        base.Map(model, ref entity);
-
-        entity.TypeId = SpecimenType.Organoid;
+        base.Map(model, entity);
 
         if (entity.Organoid == null)
-        {
             entity.Organoid = new Organoid();
-        }
 
-        entity.Organoid.ReferenceId = model.ReferenceId;
         entity.Organoid.ImplantedCellsNumber = model.ImplantedCellsNumber;
         entity.Organoid.Tumorigenicity = model.Tumorigenicity;
         entity.Organoid.Medium = model.Medium;

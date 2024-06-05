@@ -4,23 +4,25 @@ using Unite.Data.Context.Extensions.Queryable;
 using Unite.Data.Context.Repositories;
 using Unite.Data.Context.Repositories.Constants;
 using Unite.Data.Entities.Donors;
-using Unite.Data.Entities.Donors.Clinical;
 using Unite.Data.Entities.Genome.Analysis;
+using Unite.Data.Entities.Genome.Analysis.Dna;
 using Unite.Data.Entities.Genome.Analysis.Enums;
-using Unite.Data.Entities.Genome.Transcriptomics;
-using Unite.Data.Entities.Genome.Variants;
+using Unite.Data.Entities.Genome.Analysis.Rna;
+using Unite.Data.Entities.Donors.Clinical;
 using Unite.Data.Entities.Images;
 using Unite.Data.Entities.Images.Enums;
 using Unite.Data.Entities.Specimens;
+using Unite.Data.Entities.Specimens.Analysis.Drugs;
 using Unite.Data.Entities.Specimens.Enums;
 using Unite.Essentials.Extensions;
 using Unite.Indices.Entities;
 using Unite.Indices.Entities.Specimens;
 using Unite.Mapping;
 
-using CNV = Unite.Data.Entities.Genome.Variants.CNV;
-using SSM = Unite.Data.Entities.Genome.Variants.SSM;
-using SV = Unite.Data.Entities.Genome.Variants.SV;
+using SSM = Unite.Data.Entities.Genome.Analysis.Dna.Ssm;
+using CNV = Unite.Data.Entities.Genome.Analysis.Dna.Cnv;
+using SV = Unite.Data.Entities.Genome.Analysis.Dna.Sv;
+
 
 namespace Unite.Specimens.Indices.Services;
 
@@ -82,7 +84,7 @@ public class SpecimenIndexCreationService
         
         index.Donor = CreateDonorIndex(specimen.DonorId);
         index.Images = CreateImageIndices(index.Donor.Id, diagnosisDate, canHaveMris);
-        index.Analyses = CreateAnalysisIndices(specimen.Id, diagnosisDate);
+        index.Samples = CreateSampleIndices(specimen.Id, diagnosisDate);
         index.Data = CreateDataIndex(specimen.Id, specimen.Donor.Id, type, canHaveMris, canHaveCts);
 
         index.NumberOfGenes = stats.NumberOfGenes;
@@ -111,36 +113,36 @@ public class SpecimenIndexCreationService
     }
 
 
-    private AnalysisIndex[] CreateAnalysisIndices(int specimenId, DateOnly? diagnosisDate)
+    private SampleIndex[] CreateSampleIndices(int specimenId, DateOnly? diagnosisDate)
     {
-        var analyses = LoadAnalyses(specimenId);
+        var samples = LoadSamples(specimenId);
 
-        var indices = analyses.Select(analysis => CreateAnalysisIndex(analysis, diagnosisDate));
+        var indices = samples.Select(sample => CreateSampleIndex(sample, diagnosisDate));
 
         return indices.Any() ? indices.ToArray() : null;
     }
 
-    private static AnalysisIndex CreateAnalysisIndex(AnalysedSample analysis, DateOnly? diagnosisDate)
+    private static SampleIndex CreateSampleIndex(Sample sample, DateOnly? diagnosisDate)
     {
-        var index = AnalysisIndexMapper.CreateFrom<AnalysisIndex>(analysis, diagnosisDate);
+        var index = SampleIndexMapper.CreateFrom<SampleIndex>(sample, diagnosisDate);
 
-        if (index != null && analysis.Resources.IsNotEmpty())
+        if (index != null && sample.Resources.IsNotEmpty())
         {
-            index.Resources = analysis.Resources.Select(resource => ResourceIndexMapper.CreateFrom<ResourceIndex>(resource)).ToArray();
+            index.Resources = sample.Resources.Select(resource => ResourceIndexMapper.CreateFrom<ResourceIndex>(resource)).ToArray();
         }
 
         return index;
     }
 
-    private AnalysedSample[] LoadAnalyses(int specimenId)
+    private Sample[] LoadSamples(int specimenId)
     {
         using var dbContext = _dbContextFactory.CreateDbContext();
 
-        return dbContext.Set<AnalysedSample>()
+        return dbContext.Set<Sample>()
             .AsNoTracking()
             .Include(analysis => analysis.Analysis)
             .Include(analysis => analysis.Resources)
-            .Where(analysis => analysis.TargetSampleId == specimenId)
+            .Where(analysis => analysis.SpecimenId == specimenId)
             .ToArray();
     }
 
@@ -190,9 +192,7 @@ public class SpecimenIndexCreationService
     private ImageIndex[] CreateImageIndices(int donorId, DateOnly? diagnosisDate, bool canHaveMris)
     {
         if (!canHaveMris)
-        {
             return null;
-        }
 
         var images = LoadImages(donorId);
 
@@ -227,105 +227,46 @@ public class SpecimenIndexCreationService
         var index = new DataIndex();
 
         index.Donors = true;
-
-        index.Clinical = dbContext.Set<ClinicalData>()
-            .AsNoTracking()
-            .Where(data => data.DonorId == donorId)
-            .Any();
-
-        index.Treatments = dbContext.Set<Treatment>()
-            .Where(data => data.DonorId == donorId)
-            .Any();
+        index.Clinical = CheckClinicalData(donorId);
+        index.Treatments = CheckTreatments(donorId);
 
         if (canHaveMris)
-        {
-            index.Mris = dbContext.Set<Image>()
-                .AsNoTracking()
-                .Where(image => image.DonorId == donorId)
-                .Where(image => image.TypeId == ImageType.MRI)
-                .Any();
-        }
+            index.Mris = CheckImages(donorId, ImageType.MRI);
 
         if (canHaveCts)
-        {
-            index.Cts = false;
-        }
+            index.Cts = CheckImages(donorId, ImageType.CT);
 
         if (typeId == SpecimenType.Material)
         {
             index.Materials = true;
-
-            index.MaterialsMolecular = dbContext.Set<MolecularData>()
-                .AsNoTracking()
-                .Where(data => data.SpecimenId == specimenId)
-                .Any();
+            index.MaterialsMolecular = CheckMolecularData(specimenId, typeId);
         }
         else if (typeId == SpecimenType.Line)
         {
             index.Lines = true;
-
-            index.LinesMolecular = dbContext.Set<MolecularData>()
-                .AsNoTracking()
-                .Where(data => data.SpecimenId == specimenId)
-                .Any();
-
-            index.LinesInterventions = dbContext.Set<Intervention>()
-                .AsNoTracking()
-                .Where(intervention => intervention.SpecimenId == specimenId)
-                .Any();
-
-            index.LinesDrugs = dbContext.Set<DrugScreening>()
-                .AsNoTracking()
-                .Where(data => data.SpecimenId == specimenId)
-                .Any();
+            index.LinesMolecular = CheckMolecularData(specimenId, typeId);
+            index.LinesInterventions = CheckInterventions(specimenId, typeId);
+            index.LinesDrugs = CheckDrugScreenings(specimenId, typeId);
         }
         else if (typeId == SpecimenType.Organoid)
         {
             index.Organoids = true;
-
-            index.OrganoidsMolecular = dbContext.Set<MolecularData>()
-                .AsNoTracking()
-                .Where(data => data.SpecimenId == specimenId)
-                .Any();
-
-            index.OrganoidsInterventions = dbContext.Set<Intervention>()
-                .AsNoTracking()
-                .Where(intervention => intervention.SpecimenId == specimenId)
-                .Any();
-
-            index.OrganoidsDrugs = dbContext.Set<DrugScreening>()
-                .AsNoTracking()
-                .Where(data => data.SpecimenId == specimenId)
-                .Any();
+            index.OrganoidsMolecular = CheckMolecularData(specimenId, typeId);
+            index.OrganoidsInterventions = CheckInterventions(specimenId, typeId);
+            index.OrganoidsDrugs = CheckDrugScreenings(specimenId, typeId);
         }
         else if (typeId == SpecimenType.Xenograft)
         {
             index.Xenografts = true;
-
-            index.XenograftsMolecular = dbContext.Set<MolecularData>()
-                .AsNoTracking()
-                .Where(data => data.SpecimenId == specimenId)
-                .Any();
-
-            index.XenograftsInterventions = dbContext.Set<Intervention>()
-                .AsNoTracking()
-                .Where(intervention => intervention.SpecimenId == specimenId)
-                .Any();
-
-            index.XenograftsDrugs = dbContext.Set<DrugScreening>()
-                .AsNoTracking()
-                .Where(data => data.SpecimenId == specimenId)
-                .Any();
+            index.XenograftsMolecular = CheckMolecularData(specimenId, typeId);
+            index.XenograftsInterventions = CheckInterventions(specimenId, typeId);
+            index.XenograftsDrugs = CheckDrugScreenings(specimenId, typeId);
         }
 
         index.Ssms = CheckVariants<SSM.Variant, SSM.VariantEntry>(specimenId);
-
         index.Cnvs = CheckVariants<CNV.Variant, CNV.VariantEntry>(specimenId);
-
         index.Svs = CheckVariants<SV.Variant, SV.VariantEntry>(specimenId);
-
         index.GeneExp = CheckGeneExp(specimenId);
-
         index.GeneExpSc = CheckGeneExpSc(specimenId);
 
         return index;
@@ -340,6 +281,72 @@ public class SpecimenIndexCreationService
         var geneIds = _specimensRepository.GetVariantRelatedGenes([specimenId]).Result;
 
         return new GenomicStats(geneIds.Length, ssmIds.Length, cnvIds.Length, svIds.Length);
+    }
+
+    private bool CheckClinicalData(int donorId)
+    {
+        using var dbContext = _dbContextFactory.CreateDbContext();
+
+        return dbContext.Set<ClinicalData>()
+            .AsNoTracking()
+            .Where(clinical => clinical.DonorId == donorId)
+            .Any();
+    }
+
+    private bool CheckTreatments(int donorId)
+    {
+        using var dbContext = _dbContextFactory.CreateDbContext();
+
+        return dbContext.Set<Treatment>()
+            .AsNoTracking()
+            .Where(treatment => treatment.DonorId == donorId)
+            .Any();
+    }
+
+    private bool CheckImages(int donorId, ImageType type)
+    {
+        using var dbContext = _dbContextFactory.CreateDbContext();
+
+        return dbContext.Set<Image>()
+            .AsNoTracking()
+            .Where(image => image.DonorId == donorId)
+            .Where(image => image.TypeId == type)
+            .Any();
+    }
+
+    private bool CheckMolecularData(int specimenId, SpecimenType type)
+    {
+        using var dbContext = _dbContextFactory.CreateDbContext();
+
+        return dbContext.Set<Specimen>()
+            .AsNoTracking()
+            .IncludeMolecularData()
+            .Where(specimen => specimen.Id == specimenId)
+            .Where(specimen => specimen.TypeId == type)
+            .Where(specimen => specimen.MolecularData != null)
+            .Any();
+    }
+
+    private bool CheckInterventions(int specimenId, SpecimenType type)
+    {
+        using var dbContext = _dbContextFactory.CreateDbContext();
+
+        return dbContext.Set<Intervention>()
+            .AsNoTracking()
+            .Where(intervention => intervention.SpecimenId == specimenId)
+            .Where(intervention => intervention.Specimen.TypeId == type)
+            .Any();
+    }
+
+    private bool CheckDrugScreenings(int specimenId, SpecimenType type)
+    {
+        using var dbContext = _dbContextFactory.CreateDbContext();
+
+        return dbContext.Set<DrugScreening>()
+            .AsNoTracking()
+            .Where(entry => entry.Sample.SpecimenId == specimenId)
+            .Where(entry => entry.Sample.Specimen.TypeId == type)
+            .Any();
     }
 
     /// <summary>
@@ -357,7 +364,7 @@ public class SpecimenIndexCreationService
 
         return dbContext.Set<TVariantEntry>()
             .AsNoTracking()
-            .Where(entry => entry.AnalysedSample.TargetSampleId == specimenId)
+            .Where(entry => entry.Sample.SpecimenId == specimenId)
             .Select(entry => entry.EntityId)
             .Distinct()
             .Any();
@@ -372,9 +379,9 @@ public class SpecimenIndexCreationService
     {
         using var dbContext = _dbContextFactory.CreateDbContext();
 
-        return dbContext.Set<BulkExpression>()
+        return dbContext.Set<GeneExpression>()
             .AsNoTracking()
-            .Any(expression => expression.AnalysedSample.TargetSampleId == specimenId);
+            .Any(expression => expression.Sample.SpecimenId == specimenId);
     }
 
     /// <summary>
@@ -386,8 +393,8 @@ public class SpecimenIndexCreationService
     {
         using var dbContext = _dbContextFactory.CreateDbContext();
 
-        return dbContext.Set<AnalysedSample>()
+        return dbContext.Set<Sample>()
             .AsNoTracking()
-            .Any(analysedSample => analysedSample.TargetSampleId == specimenId && analysedSample.Analysis.TypeId == AnalysisType.ScRNASeq);
+            .Any(analysedSample => analysedSample.SpecimenId == specimenId && analysedSample.Analysis.TypeId == AnalysisType.RNASeqSc);
     }
 }
