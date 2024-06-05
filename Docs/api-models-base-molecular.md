@@ -33,4 +33,4 @@ _At least one field has to be set_
 
 **`gcimp_methylation`** - Indicates whether specimen has G-CIMP methylation.
 - Type: _Boolean_
-- Example: `"True"`
+- Example: `"true"`

@@ -113,10 +113,7 @@ public class SpecimenIndexCreationService
     {
         var samples = LoadSamples(specimenId);
 
-        if (samples.IsEmpty())
-            return null;
-
-        return samples.Select(sample => CreateSampleIndex(sample, diagnosisDate)).ToArray();
+        return samples.Select(sample => CreateSampleIndex(sample, diagnosisDate)).ToArrayOrNull();
     }
 
     private static SampleIndex CreateSampleIndex(Sample sample, DateOnly? diagnosisDate)
@@ -188,10 +185,7 @@ public class SpecimenIndexCreationService
 
         var images = LoadImages(donorId);
 
-        if (images.IsEmpty())
-            return null;
-
-        return images.Select(image => CreateImageIndex(image, diagnosisDate)).ToArray();
+        return images.Select(image => CreateImageIndex(image, diagnosisDate)).ToArrayOrNull();
     }
 
     private static ImageIndex CreateImageIndex(Image image, DateOnly? diagnosisDate)

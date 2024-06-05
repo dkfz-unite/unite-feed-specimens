@@ -1,7 +1,7 @@
-# Intervention Upload Data Model
-Intervention upload data model.
+# Interventions Data Model
+Includes information about specimen and it's interventions.
 
-**`donor_id`*** - Donor pseudonymised identifier.
+**`donor_id`*** - Donor identifier.
 - Note: Donor should be present in the system.
 - Type: _String_
 - Limitations: Maximum length 255
@@ -14,14 +14,15 @@ Intervention upload data model.
 - Example: `"Organoid1"`
 
 **`specimen_type`*** - Specimen type.
-- Note: Intervention data can not be uploaded for donor materials and cell lines.
+- Note: Intervention data **can't** be uploaded for donor materials.
 - Type: _String_
 - Possible values: `"Line"`, `"Organoid"`, `"Xenograft"`
 - Example: `"Organoid"`
 
-**`data`*** - Interventions data.
+**`entries`*** - Intervention entries.
 - Type: _Array_
 - Element type: _Object([Intervention](api-models-base-intervention.md))_
+- Limitations: Should contain at least one element
 - Example: `[{...}, {...}]`
 
 ##

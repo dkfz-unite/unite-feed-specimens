@@ -1,7 +1,5 @@
 # Organoid Data Model
-Includes organoid and organoid interventions data.
-
-_At least one field has to be set_
+Includes organoid and all basic [specimen](./api-models-specimen.md) information.
 
 **`medium`** - Organoid medium.
 - Type: _String_

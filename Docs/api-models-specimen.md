@@ -1,5 +1,5 @@
-# Specimen Upload Data Model
-Specimen upload data model.
+# Specimen Data Model
+Includes basic specimen information.
 
 >[!NOTE]
 > All exact dates are hidden and protected. Relative dates are shown instead, if calculation was possible.
@@ -8,7 +8,7 @@ Specimen upload data model.
 - Note: Specimen identifiers are namespaced and should be unique for it's donor across all specimens of the same type.
 - Type: _String_
 - Limitations: Maximum length 255
-- Example: `"Specimen1"`
+- Example: `"Line1"`
 
 **`donor_id`*** - Specimen donor identifier.
 - Type: _String_
@@ -36,26 +36,6 @@ Specimen upload data model.
 - Limitations: Integer, greater or equal to 1, only either `creation_date` or `creation_day` can be set at once, not both
 - Example: `36`
 
-**`material`** - Material data (if specimen is a donor material).
-- Type: _Object([Material](api-models-base-material.md))_
-- Limitations - Only either `material`, `line`, `organoid` or `xenograft` can be set at once.
-- Example: `{...}`
-
-**`line`** - Cell line data (if specimen is a cell line).
-- Type: _Object([CellLine](api-models-base-line.md))_
-- Limitations - Only either `material`, `line`, `organoid` or `xenograft` can be set at once.
-- Example: `{...}`
-
-**`organoid`** - Organoid data (if specimen is an organoid).
-- Type: _Object([Organoid](api-models-base-organoid.md))_
-- Limitations - Only either `material`, `line`, `organoid` or `xenograft` can be set at once.
-- Example: `{...}`
-
-**`xenograft`** - Xenograft data (if specimen is a xenograft).
-- Type: _Object([Xenograft](api-models-base-xenograft.md))_
-- Limitations - Only either `material`, `line`, `organoid` or `xenograft` can be set at once.
-- Example: `{...}`
-
 **`molecular_data`** - Specimen molecular data.
 - Type: _Object([MolecularData](api-models-base-molecular.md))_
 - Example: `{...}`
@@ -63,12 +43,17 @@ Specimen upload data model.
 **`interventions`** - Specimen interventions data.
 - Type: _Array_
 - Element type: _Object([Intervention](api-models-base-intervention.md))_
+- Limitations: Should contain at least one element
 - Example: `[{...}, {...}]`
 
-**`drug_screenings`** - Specimen drug screening data.
-- Type: _Array_
-- Element type: _Object([DrugScreeningData](api-models-base-drug.md))_
-- Example: `[{...}, {...}]`
+
+#### Specimen Type
+Specimen can be of the following types:
+- `"Material"` - all donor derived materials
+- `"Line"` - cell lines
+- `"Organoid"` - organoids
+- `"Xenograft"` - xenografts
+
 
 ##
 **`*`** - Required fields

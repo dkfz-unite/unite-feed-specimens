@@ -1,7 +1,5 @@
 # Xenograft Data Model
-Includes xenograft and xenograft interventions data.
-
-_At least one field has to be set_
+Includes xenograft and all basic [specimen](./api-models-specimen.md) information.
 
 **`mouse_strain`** - Strain of the mice used in xenograft model.
 - Type: _String_
