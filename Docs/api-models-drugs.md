@@ -7,7 +7,7 @@ Includes information about analysed sample and drugs screening data.
 
 **`entries`*** - Drug screening entries.
 - Type: _Array_
-- Element type: _Object([DrugScreening](#drug-screening-model))_
+- Element type: _Object([DrugScreening](#drug-screening))_
 - Limitations: Should contain at least one element
 - Example: `[{...}, {...}]`
 
@@ -25,7 +25,7 @@ Includes drug screening data.
 - Limitations: Double, should be in range [0, 100]
 - Example: `99`
 
-**`dss`*** - Asymmetric Drug Sensitivity Score (DSS).
+**`dss`** - Asymmetric Drug Sensitivity Score (DSS).
 - Type: _Number_
 - Limitations: Double, should be in range [0, 100]
 - Example: `33.56`
