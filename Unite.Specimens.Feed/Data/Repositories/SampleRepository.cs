@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Unite.Data.Context;
 using Unite.Data.Entities.Specimens.Analysis;
 using Unite.Specimens.Feed.Data.Models;
@@ -8,12 +9,14 @@ namespace Unite.Specimens.Feed.Data.Repositories;
 internal class SampleRepository
 {
     private readonly DomainDbContext _dbContext;
+    private readonly DonorRepository _donorRepository;
     private readonly SpecimenRepository _specimenRepository;
 
 
     public SampleRepository(DomainDbContext dbContext)
     {
         _dbContext = dbContext;
+        _donorRepository = new DonorRepository(dbContext);
         _specimenRepository = new SpecimenRepository(dbContext);
     }
 
@@ -25,13 +28,9 @@ internal class SampleRepository
 
     public Sample Find(SampleModel model)
     {
-        var specimen = _specimenRepository.Find(model.Specimen);
-
-        if (specimen == null)
-            return null;
-
-        return _dbContext.Set<Sample>().AsNoTracking().FirstOrDefault(entity => 
-            entity.SpecimenId == specimen.Id &&
+        return _dbContext.Set<Sample>().AsNoTracking().FirstOrDefault(entity =>
+            entity.Specimen.ReferenceId == model.Specimen.Donor.ReferenceId &&
+            entity.Specimen.ReferenceId == model.Specimen.ReferenceId &&
             entity.Analysis.TypeId == model.Analysis.Type
         );
     }
