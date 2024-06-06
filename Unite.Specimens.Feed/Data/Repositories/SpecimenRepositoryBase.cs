@@ -46,12 +46,14 @@ internal abstract class SpecimenRepositoryBase<TModel> where TModel : SpecimenMo
 
     public virtual Specimen Create(TModel model)
     {
+        var type = GetSpecimenType(model);
         var donor = _donorRepository.FindOrCreate(model.Donor);
 
         var entity = new Specimen
         {
             DonorId = donor.Id,
-            ReferenceId = model.ReferenceId
+            ReferenceId = model.ReferenceId,
+            TypeId = type
         };
 
         if (model.Parent != null)
