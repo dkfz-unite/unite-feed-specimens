@@ -11,19 +11,19 @@ namespace Unite.Specimens.Feed.Web.Handlers;
 public class SpecimensIndexingHandler
 {
     private readonly TasksProcessingService _taskProcessingService;
-    private readonly SpecimenIndexCreationService _indexCreationService;
+    private readonly SpecimenIndexCreator _indexCreator;
     private readonly IIndexService<SpecimenIndex> _indexingService;
     private readonly ILogger _logger;
 
 
     public SpecimensIndexingHandler(
         TasksProcessingService taskProcessingService,
-        SpecimenIndexCreationService indexCreationService,
+        SpecimenIndexCreator indexCreator,
         IIndexService<SpecimenIndex> indexingService,
         ILogger<SpecimensIndexingHandler> logger)
     {
         _taskProcessingService = taskProcessingService;
-        _indexCreationService = indexCreationService;
+        _indexCreator = indexCreator;
         _indexingService = indexingService;
         _logger = logger;
     }
@@ -57,7 +57,7 @@ public class SpecimensIndexingHandler
             {
                 var id = int.Parse(task.Target);
 
-                var index = _indexCreationService.CreateIndex(id);
+                var index = _indexCreator.CreateIndex(id);
 
                 if (index == null)
                     indicesToDelete.Add($"{id}");

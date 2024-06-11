@@ -26,7 +26,7 @@ using SV = Unite.Data.Entities.Genome.Analysis.Dna.Sv;
 
 namespace Unite.Specimens.Indices.Services;
 
-public class SpecimenIndexCreationService
+public class SpecimenIndexCreator
 {
     private record GenomicStats(int NumberOfGenes, int NumberOfSsms, int NumberOfCnvs, int NumberOfSvs);
 
@@ -35,7 +35,7 @@ public class SpecimenIndexCreationService
     private readonly SpecimensRepository _specimensRepository;
 
 
-    public SpecimenIndexCreationService(IDbContextFactory<DomainDbContext> dbContextFactory)
+    public SpecimenIndexCreator(IDbContextFactory<DomainDbContext> dbContextFactory)
     {
         _dbContextFactory = dbContextFactory;
         _donorsRepository = new DonorsRepository(dbContextFactory);

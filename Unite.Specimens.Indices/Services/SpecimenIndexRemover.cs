@@ -3,12 +3,12 @@ using Unite.Indices.Entities.Specimens;
 
 namespace Unite.Specimens.Indices.Services;
 
-public class SpecimenIndexRemovalService
+public class SpecimenIndexRemover
 {
     private readonly IIndexService<SpecimenIndex> _indexService;
 
 
-    public SpecimenIndexRemovalService(IIndexService<SpecimenIndex> indexService)
+    public SpecimenIndexRemover(IIndexService<SpecimenIndex> indexService)
     {
         _indexService = indexService;
     }

@@ -45,8 +45,8 @@ public static class ConfigurationExtensions
         services.AddHostedService<SpecimensIndexingWorker>();
         services.AddTransient<SpecimensIndexingOptions>();
         services.AddTransient<SpecimensIndexingHandler>();
-        services.AddTransient<SpecimenIndexCreationService>();
-        services.AddTransient<SpecimenIndexRemovalService>();
+        services.AddTransient<SpecimenIndexCreator>();
+        services.AddTransient<SpecimenIndexRemover>();
     }
 
 

@@ -12,14 +12,14 @@ namespace Unite.Specimens.Feed.Web.Controllers;
 public class SpecimenController : Controller
 {
     protected readonly SpecimensRemover _dataRemover;
-    protected readonly SpecimenIndexRemovalService _indexRemover;
+    protected readonly SpecimenIndexRemover _indexRemover;
     protected readonly SpecimenIndexingTasksService _tasksService;
     protected readonly ILogger _logger;
 
 
     public SpecimenController(
         SpecimensRemover dataRemover,
-        SpecimenIndexRemovalService indexRemover,
+        SpecimenIndexRemover indexRemover,
         SpecimenIndexingTasksService tasksService,
         ILogger<SpecimenController> logger)
     {
