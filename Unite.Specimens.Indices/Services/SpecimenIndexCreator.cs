@@ -129,6 +129,14 @@ public class SpecimenIndexCreator
     {
         using var dbContext = _dbContextFactory.CreateDbContext();
 
+        var hasSsms = CheckVariants<SSM.Variant, SSM.VariantEntry>(specimenId);
+        var hasCnvs = CheckVariants<CNV.Variant, CNV.VariantEntry>(specimenId);
+        var hasSvs = CheckVariants<SV.Variant, SV.VariantEntry>(specimenId);
+        var hasExp = CheckGeneExp(specimenId);
+
+        if (!hasSsms && !hasCnvs && !hasSvs && !hasExp)
+            return [];
+
         return dbContext.Set<Sample>()
             .AsNoTracking()
             .Include(analysis => analysis.Analysis)
