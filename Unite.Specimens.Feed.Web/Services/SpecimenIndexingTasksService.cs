@@ -5,9 +5,9 @@ using Unite.Data.Context.Services.Tasks;
 using Unite.Data.Entities.Donors;
 using Unite.Data.Entities.Specimens;
 
-using CNV = Unite.Data.Entities.Genome.Variants.CNV;
-using SSM = Unite.Data.Entities.Genome.Variants.SSM;
-using SV = Unite.Data.Entities.Genome.Variants.SV;
+using SSM = Unite.Data.Entities.Genome.Analysis.Dna.Ssm;
+using CNV = Unite.Data.Entities.Genome.Analysis.Dna.Cnv;
+using SV = Unite.Data.Entities.Genome.Analysis.Dna.Sv;
 
 namespace Unite.Specimens.Feed.Web.Services;
 
@@ -82,17 +82,17 @@ public class SpecimenIndexingTasksService : IndexingTaskService<Donor, int>
         return _specimensRepository.GetRelatedGenes(keys).Result;
     }
 
-    protected override IEnumerable<long> LoadRelatedSsms(IEnumerable<int> keys)
+    protected override IEnumerable<int> LoadRelatedSsms(IEnumerable<int> keys)
     {
         return _specimensRepository.GetRelatedVariants<SSM.Variant>(keys).Result;
     }
 
-    protected override IEnumerable<long> LoadRelatedCnvs(IEnumerable<int> keys)
+    protected override IEnumerable<int> LoadRelatedCnvs(IEnumerable<int> keys)
     {
         return _specimensRepository.GetRelatedVariants<CNV.Variant>(keys).Result;
     }
 
-    protected override IEnumerable<long> LoadRelatedSvs(IEnumerable<int> keys)
+    protected override IEnumerable<int> LoadRelatedSvs(IEnumerable<int> keys)
     {
         return _specimensRepository.GetRelatedVariants<SV.Variant>(keys).Result;
     }

@@ -1,27 +1,27 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Unite.Specimens.Feed.Web.Configuration.Constants;
 using Unite.Specimens.Feed.Web.Services;
 
 namespace Unite.Specimens.Feed.Web.Controllers;
 
-[Route("api/[controller]/[action]")]
-[Authorize(Roles = Roles.Admin)]
+[Route("api/[controller]")]
+[Authorize(Policy = Policies.Data.Writer)]
 public class IndexingController : Controller
 {
-    private readonly SpecimenIndexingTasksService _indexingTaskService;
+    private readonly SpecimenIndexingTasksService _tasksService;
 
-
-    public IndexingController(SpecimenIndexingTasksService indexingTaskService)
+    public IndexingController(
+        SpecimenIndexingTasksService tasksService)
     {
-        _indexingTaskService = indexingTaskService;
+        _tasksService = tasksService;
     }
 
     [HttpPost]
-    public IActionResult Specimens()
+    public IActionResult Post()
     {
-        _indexingTaskService.CreateTasks();
-
+        _tasksService.CreateTasks();
+        
         return Ok();
     }
 }

@@ -8,11 +8,16 @@ using Unite.Specimens.Indices.Services;
 using Unite.Specimens.Feed.Data;
 using Unite.Specimens.Feed.Web.Configuration.Options;
 using Unite.Specimens.Feed.Web.Handlers;
-using Unite.Specimens.Feed.Web.HostedServices;
-using Unite.Specimens.Feed.Web.Models;
-using Unite.Specimens.Feed.Web.Models.Validators;
+using Unite.Specimens.Feed.Web.Workers;
 using Unite.Specimens.Feed.Web.Services;
+using Unite.Specimens.Feed.Web.Models.Specimens.Validators;
+using Unite.Specimens.Feed.Web.Models.Specimens;
+using Unite.Specimens.Feed.Web.Models.Base;
+using Unite.Specimens.Feed.Web.Models.Base.Validators;
 
+
+using DrugScreeningModel = Unite.Specimens.Feed.Web.Models.Drugs.DrugScreeningModel;
+using DrugScreeningModelValidator = Unite.Specimens.Feed.Web.Models.Drugs.Validators.DrugScreeningModelValidator;
 
 namespace Unite.Specimens.Feed.Web.Configuration.Extensions;
 
@@ -29,19 +34,19 @@ public static class ConfigurationExtensions
         services.AddIndexServices();
         services.AddValidators();
 
-        services.AddTransient<SpecimensDataWriter>();
-        services.AddTransient<SpecimensDataRemover>();
-        services.AddTransient<InterventionsDataWriter>();
-        services.AddTransient<DrugScreeningsDataWriter>();
+        services.AddTransient<SpecimensWriter>();
+        services.AddTransient<SpecimensRemover>();
+        services.AddTransient<InterventionsWriter>();
+        services.AddTransient<AnalysisWriter>();
 
         services.AddTransient<SpecimenIndexingTasksService>();
         services.AddTransient<TasksProcessingService>();
 
-        services.AddHostedService<SpecimensIndexingHostedService>();
+        services.AddHostedService<SpecimensIndexingWorker>();
         services.AddTransient<SpecimensIndexingOptions>();
         services.AddTransient<SpecimensIndexingHandler>();
-        services.AddTransient<SpecimenIndexCreationService>();
-        services.AddTransient<SpecimenIndexRemovalService>();
+        services.AddTransient<SpecimenIndexCreator>();
+        services.AddTransient<SpecimenIndexRemover>();
     }
 
 
@@ -56,11 +61,12 @@ public static class ConfigurationExtensions
 
     private static IServiceCollection AddValidators(this IServiceCollection services)
     {
-        services.AddTransient<IValidator<SpecimenDataModel[]>, SpecimenModelsValidator>();
-        services.AddTransient<IValidator<InterventionsDataModel[]>, InterventionsDataModelsValidator>();
-        services.AddTransient<IValidator<InterventionDataFlatModel[]>, InterventionDataFlatModelsValidator>();
-        services.AddTransient<IValidator<DrugScreeningsDataModel[]>, DrugScreeningsDataModelsValidator>();
-        services.AddTransient<IValidator<DrugScreeningDataFlatModel[]>, DrugScreeningDataFlatModelsValidator>();
+        services.AddTransient<IValidator<MaterialModel[]>, MaterialModelsValidator>();
+        services.AddTransient<IValidator<LineModel[]>, LineModelsValidator>();
+        services.AddTransient<IValidator<OrganoidModel[]>, OrganoidModelsValidator>();
+        services.AddTransient<IValidator<XenograftModel[]>, XenograftModelsValidator>();
+        services.AddTransient<IValidator<InterventionsModel[]>, InterventionsModelsValidator>();
+        services.AddTransient<IValidator<AnalysisModel<DrugScreeningModel>>, AnalysisModelValidator<DrugScreeningModel, DrugScreeningModelValidator>>();
 
         return services;
     }

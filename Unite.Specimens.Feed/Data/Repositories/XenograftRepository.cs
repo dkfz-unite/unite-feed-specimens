@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Unite.Data.Context;
 using Unite.Data.Entities.Specimens;
-using Unite.Data.Entities.Specimens.Enums;
 using Unite.Data.Entities.Specimens.Xenografts;
 using Unite.Specimens.Feed.Data.Models;
 
@@ -14,35 +13,19 @@ internal class XenograftRepository : SpecimenRepositoryBase<XenograftModel>
     }
 
 
-    public override Specimen Find(int donorId, int? parentId, in XenograftModel model)
+    protected override IQueryable<Specimen> GetQuery()
     {
-        var referenceId = model.ReferenceId;
-
-        var entity = _dbContext.Set<Specimen>()
-            .Include(entity => entity.Xenograft)
-            .Include(entity => entity.MolecularData)
-            .FirstOrDefault(entity =>
-                entity.DonorId == donorId &&
-                entity.Xenograft != null &&
-                entity.Xenograft.ReferenceId == referenceId
-            );
-
-        return entity;
+        return base.GetQuery()
+            .Include(entity => entity.Xenograft);
     }
 
-
-    protected override void Map(in XenograftModel model, ref Specimen entity)
+    protected override void Map(XenograftModel model, Specimen entity)
     {
-        base.Map(model, ref entity);
-
-        entity.TypeId = SpecimenType.Xenograft;
+        base.Map(model, entity);
 
         if (entity.Xenograft == null)
-        {
             entity.Xenograft = new Xenograft();
-        }
-
-        entity.Xenograft.ReferenceId = model.ReferenceId;
+        
         entity.Xenograft.MouseStrain = model.MouseStrain;
         entity.Xenograft.GroupSize = model.GroupSize;
         entity.Xenograft.ImplantTypeId = model.ImplantType;

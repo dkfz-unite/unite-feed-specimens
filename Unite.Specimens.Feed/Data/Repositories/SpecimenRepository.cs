@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Unite.Data.Context;
-using Unite.Data.Entities.Genome.Analysis;
 using Unite.Data.Entities.Specimens;
+using Unite.Data.Entities.Specimens.Analysis;
 using Unite.Essentials.Extensions;
 using Unite.Specimens.Feed.Data.Models;
 
@@ -33,76 +33,51 @@ internal class SpecimenRepository
             .FirstOrDefault(entity => entity.Id == id);
     }
 
-    public Specimen Find(int donorId, int? parentId, SpecimenModel model)
+    public Specimen Find(SpecimenModel model)
     {
         if (model is MaterialModel materialModel)
-        {
-            return _materialRepository.Find(donorId, parentId, materialModel);
-        }
+            return _materialRepository.Find(materialModel);
         else if (model is LineModel lineModel)
-        {
-            return _lineRepository.Find(donorId, parentId, lineModel);
-        }
+            return _lineRepository.Find(lineModel);
         else if (model is OrganoidModel organoidModel)
-        {
-            return _organoidRepository.Find(donorId, parentId, organoidModel);
-        }
+            return _organoidRepository.Find(organoidModel);
         else if (model is XenograftModel xenograftModel)
-        {
-            return _xenograftRepository.Find(donorId, parentId, xenograftModel);
-        }
+            return _xenograftRepository.Find(xenograftModel);
         else
-        {
             throw new NotImplementedException("Specimen type is not yet supported");
-        }
     }
 
-    public Specimen Create(int donorId, int? parentId, SpecimenModel model)
+    public Specimen Create(SpecimenModel model)
     {
         if (model is MaterialModel materialModel)
-        {
-            return _materialRepository.Create(donorId, parentId, materialModel);
-        }
+            return _materialRepository.Create(materialModel);
         else if (model is LineModel lineModel)
-        {
-            return _lineRepository.Create(donorId, parentId, lineModel);
-        }
+            return _lineRepository.Create(lineModel);
         else if (model is OrganoidModel organoidModel)
-        {
-            return _organoidRepository.Create(donorId, parentId, organoidModel);
-        }
+            return _organoidRepository.Create(organoidModel);
         else if (model is XenograftModel xenograftModel)
-        {
-            return _xenograftRepository.Create(donorId, parentId, xenograftModel);
-        }
+            return _xenograftRepository.Create(xenograftModel);
         else
-        {
             throw new NotSupportedException("Specimen type is not yet supported");
-        }
     }
 
-    public void Update(ref Specimen entity, in SpecimenModel model)
+    public Specimen FindOrCreate(SpecimenModel model)
+    {
+        return Find(model) ?? Create(model);
+    }
+
+    public void Update(Specimen entity, SpecimenModel model)
     {
         if (model is MaterialModel materialModel)
-        {
-            _materialRepository.Update(ref entity, materialModel);
-        }
+            _materialRepository.Update(entity, materialModel);
         else if (model is LineModel lineModel)
-        {
-            _lineRepository.Update(ref entity, lineModel);
-        }
+            _lineRepository.Update(entity, lineModel);
         else if (model is OrganoidModel organoidModel)
-        {
-            _organoidRepository.Update(ref entity, organoidModel);
-        }
+            _organoidRepository.Update(entity, organoidModel);
         else if (model is XenograftModel xenograftModel)
-        {
-            _xenograftRepository.Update(ref entity, xenograftModel);
-        }
+            _xenograftRepository.Update(entity, xenograftModel);
         else
-        {
             throw new NotSupportedException("Specimen type is not yet supported");
-        }
     }
 
     public void Delete(Specimen specimen)
@@ -114,10 +89,10 @@ internal class SpecimenRepository
             children.ForEach(Delete);
         }
 
-        var analyses = _dbContext.Set<AnalysedSample>()
+        var analyses = _dbContext.Set<Sample>()
             .AsNoTracking()
             .Include(entity => entity.Analysis)
-            .Where(entity => entity.TargetSampleId == specimen.Id || entity.MatchedSampleId == specimen.Id)
+            .Where(entity => entity.SpecimenId == specimen.Id)
             .Select(entity => entity.Analysis)
             .Distinct()
             .ToArray();

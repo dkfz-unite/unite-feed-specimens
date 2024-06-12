@@ -3,65 +3,45 @@ using Microsoft.AspNetCore.Mvc;
 using Unite.Specimens.Feed.Data;
 using Unite.Specimens.Feed.Data.Exceptions;
 using Unite.Specimens.Feed.Web.Configuration.Constants;
-using Unite.Specimens.Feed.Web.Models;
-using Unite.Specimens.Feed.Web.Models.Binders;
-using Unite.Specimens.Feed.Web.Models.Converters;
+using Unite.Specimens.Feed.Web.Models.Specimens;
+using Unite.Specimens.Feed.Web.Models.Specimens.Binders;
+using Unite.Specimens.Feed.Web.Models.Specimens.Converters;
 using Unite.Specimens.Feed.Web.Services;
 
 namespace Unite.Specimens.Feed.Web.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/specimens/interventions")]
 [Authorize(Policy = Policies.Data.Writer)]
 public class InterventionsController : Controller
 {
-    private readonly InterventionsDataWriter _dataWriter;
-    private readonly SpecimenIndexingTasksService _indexingTaskService;
+    private readonly InterventionsWriter _dataWriter;
+    private readonly SpecimenIndexingTasksService _tasksService;
     private readonly ILogger _logger;
 
-    private readonly InterventionsDataModelsConverter _defaultModelConverter;
-    private readonly InterventionDataFlatModelsConverter _flatModelsConverter;
+    private readonly InterventionsModelConverter _converter = new();
     
     
     public InterventionsController(
-        InterventionsDataWriter dataWriter, 
-        SpecimenIndexingTasksService indexingTaskService, 
+        InterventionsWriter dataWriter, 
+        SpecimenIndexingTasksService tasksService, 
         ILogger<InterventionsController> logger)
     {
         _dataWriter = dataWriter;
-        _indexingTaskService = indexingTaskService;
+        _tasksService = tasksService;
         _logger = logger;
-
-        _defaultModelConverter = new InterventionsDataModelsConverter();
-        _flatModelsConverter = new InterventionDataFlatModelsConverter();
     }
 
 
-    [HttpPost("")]
-    public IActionResult Post([FromBody]InterventionsDataModel[] models)
-    {
-        var dataModels = _defaultModelConverter.Convert(models);
-
-        return PostData(dataModels);
-    }
-
-    [HttpPost("tsv")]
-    public IActionResult PosTsv([ModelBinder(typeof(InterventionTsvModelsBinder))]InterventionDataFlatModel[] models)
-    {
-        var dataModels = _flatModelsConverter.Convert(models);
-
-        return PostData(dataModels);
-    }
-
-
-    private IActionResult PostData(Data.Models.SpecimenModel[] models)
+    [HttpPost]
+    public IActionResult Post([FromBody]InterventionsModel[] models)
     {
         try
         {
-            _dataWriter.SaveData(models, out var audit);
+            var data = models.Select(_converter.Convert).ToArray();
 
+            _dataWriter.SaveData(data, out var audit);
+            _tasksService.PopulateTasks(audit.Specimens);
             _logger.LogInformation("{audit}", audit.ToString());
-
-            _indexingTaskService.PopulateTasks(audit.Specimens);
 
             return Ok();
         }
@@ -71,5 +51,11 @@ public class InterventionsController : Controller
 
             return NotFound(exception.Message);
         }
+    }
+
+    [HttpPost("tsv")]
+    public IActionResult PosTsv([ModelBinder(typeof(InterventionsTsvModelsBinder))]InterventionsModel[] models)
+    {
+        return Post(models);
     }
 }

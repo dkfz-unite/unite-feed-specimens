@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Unite.Data.Entities.Specimens.Enums;
+using Unite.Specimens.Feed.Web.Models.Base.Validators.Extensions;
 
 namespace Unite.Specimens.Feed.Web.Models.Base.Validators;
 
@@ -8,7 +9,7 @@ public class MolecularDataModelValidator : AbstractValidator<MolecularDataModel>
     public MolecularDataModelValidator()
     {
         RuleFor(model => model)
-            .Must(HaveAnythingSet)
+            .Must(model => model.IsNotEmpty())
             .WithMessage("At least one field has to be set");
 
         RuleFor(model => model.IdhMutation)
@@ -25,16 +26,5 @@ public class MolecularDataModelValidator : AbstractValidator<MolecularDataModel>
             .Empty()
             .When(model => model.IdhStatus != IdhStatus.WildType)
             .WithMessage("Methylation subtype can be set only if IDH status is 'Wild Type'");
-    }
-
-
-    private bool HaveAnythingSet(MolecularDataModel model)
-    {
-        return model.MgmtStatus != null
-            || model.IdhStatus != null
-            || model.IdhMutation != null
-            || model.GeneExpressionSubtype != null
-            || model.MethylationSubtype != null
-            || model.GcimpMethylation != null;
     }
 }
