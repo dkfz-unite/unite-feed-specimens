@@ -10,7 +10,7 @@ using Unite.Specimens.Feed.Web.Services;
 
 namespace Unite.Specimens.Feed.Web.Controllers;
 
-[Route("api/specimens/interventions")]
+[Route("api/interventions")]
 [Authorize(Policy = Policies.Data.Writer)]
 public class InterventionsController : Controller
 {

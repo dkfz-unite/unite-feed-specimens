@@ -14,13 +14,13 @@ All data submision request implement **UPSERT** logic:
 
 ## Overview
 - get:[api](#get-api) - health check.
-- post:[api/meterials/{type?}](#post-apimaterialstype) - submit donor materials data in given type.
-- post:[api/lines/{type?}](#post-apilinestype) - submit cell lines data in given type.
-- post:[api/organoids/{type?}](#post-apiorganoidstype) - submit organoids data in given type.
-- post:[api/xenografts/{type?}](#post-apixenograftstype) - submit xenografts data in given type.
-- post:[api/specimens/interventions/{type?}](#post-apispecimensinterventionstype) - submit interventions data in given type.
+- post:[api/entries/meterial/{type?}](#post-apientriesmaterialtype) - submit donor materials data in given type.
+- post:[api/entries/line/{type?}](#post-apientrieslinetype) - submit cell lines data in given type.
+- post:[api/entries/organoid/{type?}](#post-apientriesorganoidtype) - submit organoids data in given type.
+- post:[api/entries/xenograft/{type?}](#post-apientriesxenografttype) - submit xenografts data in given type.
+- post:[api/interventions/{type?}](#post-apiinterventionstype) - submit interventions data in given type.
 - post:[api/analysis/drugs/{type?}](#post-apianalysisdrugs) - submit drugs screening data.
-- delete:[api/specimen/{id}](#delete-apispecimenid) - delete specimen data.
+- delete:[api/entry/{id}](#delete-apientryid) - delete specimen data.
 
 > [!Note]
 > **Json** is default data type for all requests and will be used if no data type is specified.
@@ -33,7 +33,7 @@ Health check.
 `"2022-03-17T09:45:10.9359202Z"` - Current UTC date and time in JSON format, if service is up and running
 
 
-## POST: [api/materials/{type?}](http://localhost:5104/api/materials)
+## POST: [api/entries/material/{type?}](http://localhost:5104/api/entries/material)
 Submit donor materials data.
 
 ### Body
@@ -122,7 +122,7 @@ Fields description can be found [here](api-models-material.md).
 - `403` - missing required permissions
 
 
-## POST: [api/lines/{type?}](http://localhost:5104/api/lines)
+## POST: [api/entries/line/{type?}](http://localhost:5104/api/entries/line)
 Submit cell lines data.
 
 ### Body
@@ -203,7 +203,7 @@ Fields description can be found [here](api-models-line.md).
 - `403` - missing required permissions
 
 
-## POST: [api/organoids/{type?}](http://localhost:5104/api/organoids)
+## POST: [api/entries/organoid/{type?}](http://localhost:5104/api/entries/organoid)
 Submit organoids data.
 
 ### Body
@@ -266,7 +266,7 @@ Fields description can be found [here](api-models-organoid.md).
 - `403` - missing required permissions
 
 
-## POST: [api/xenografts/{type?}](http://localhost:5104/api/xenografts)
+## POST: [api/entries/xenograft/{type?}](http://localhost:5104/api/entries/xenograft)
 Submit xenografts data.
 
 ### Body
@@ -339,7 +339,7 @@ Fields description can be found [here](./api-models-xenograft.md).
 - `403` - missing required permissions
 
 
-## POST: [api/specimens/interventions/{type?}](http://localhost:5104/api/specimens/interventions)
+## POST: [api/interventions/{type?}](http://localhost:5104/api/specimens/interventions)
 Submit interventions data. Donors and specimens should be present in the system.
 
 > [!Note]
@@ -577,7 +577,7 @@ Fields description can be found [here](api-models-drugs.md).
 - `403` - missing required permissions
 
 
-## DELETE: [api/specimen/{id}](http://localhost:5104/api/specimen/{id})
+## DELETE: [api/entry/{id}](http://localhost:5104/api/entry/{id})
 Delete specimen data.
 
 ### Parameters
