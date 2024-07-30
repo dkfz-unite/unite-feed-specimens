@@ -14,13 +14,13 @@ All data submision request implement **UPSERT** logic:
 
 ## Overview
 - get:[api](#get-api) - health check.
-- post:[api/meterials/{type?}](#post-apimaterialstype) - submit donor materials data in given type.
-- post:[api/lines/{type?}](#post-apilinestype) - submit cell lines data in given type.
-- post:[api/organoids/{type?}](#post-apiorganoidstype) - submit organoids data in given type.
-- post:[api/xenografts/{type?}](#post-apixenograftstype) - submit xenografts data in given type.
-- post:[api/specimens/interventions/{type?}](#post-apispecimensinterventionstype) - submit interventions data in given type.
+- post:[api/entries/meterial/{type?}](#post-apientriesmaterialtype) - submit donor materials data in given type.
+- post:[api/entries/line/{type?}](#post-apientrieslinetype) - submit cell lines data in given type.
+- post:[api/entries/organoid/{type?}](#post-apientriesorganoidtype) - submit organoids data in given type.
+- post:[api/entries/xenograft/{type?}](#post-apientriesxenografttype) - submit xenografts data in given type.
+- post:[api/interventions/{type?}](#post-apiinterventionstype) - submit interventions data in given type.
 - post:[api/analysis/drugs/{type?}](#post-apianalysisdrugs) - submit drugs screening data.
-- delete:[api/specimen/{id}](#delete-apispecimenid) - delete specimen data.
+- delete:[api/entry/{id}](#delete-apientryid) - delete specimen data.
 
 > [!Note]
 > **Json** is default data type for all requests and will be used if no data type is specified.
@@ -33,7 +33,7 @@ Health check.
 `"2022-03-17T09:45:10.9359202Z"` - Current UTC date and time in JSON format, if service is up and running
 
 
-## POST: [api/materials/{type?}](http://localhost:5104/api/materials)
+## POST: [api/entries/material/{type?}](http://localhost:5104/api/entries/material)
 Submit donor materials data.
 
 ### Body
@@ -122,7 +122,7 @@ Fields description can be found [here](api-models-material.md).
 - `403` - missing required permissions
 
 
-## POST: [api/lines/{type?}](http://localhost:5104/api/lines)
+## POST: [api/entries/line/{type?}](http://localhost:5104/api/entries/line)
 Submit cell lines data.
 
 ### Body
@@ -203,7 +203,7 @@ Fields description can be found [here](api-models-line.md).
 - `403` - missing required permissions
 
 
-## POST: [api/organoids/{type?}](http://localhost:5104/api/organoids)
+## POST: [api/entries/organoid/{type?}](http://localhost:5104/api/entries/organoid)
 Submit organoids data.
 
 ### Body
@@ -266,7 +266,7 @@ Fields description can be found [here](api-models-organoid.md).
 - `403` - missing required permissions
 
 
-## POST: [api/xenografts/{type?}](http://localhost:5104/api/xenografts)
+## POST: [api/entries/xenograft/{type?}](http://localhost:5104/api/entries/xenograft)
 Submit xenografts data.
 
 ### Body
@@ -339,7 +339,7 @@ Fields description can be found [here](./api-models-xenograft.md).
 - `403` - missing required permissions
 
 
-## POST: [api/specimens/interventions/{type?}](http://localhost:5104/api/specimens/interventions)
+## POST: [api/interventions/{type?}](http://localhost:5104/api/specimens/interventions)
 Submit interventions data. Donors and specimens should be present in the system.
 
 > [!Note]
@@ -486,35 +486,35 @@ Supported formats are:
     "entries": [
         {
             "drug": "Drug1",
-            "gof": 95,
-            "dss": 35,
-            "dsss": 15,
+            "gof": 0.95,
+            "dss": 0.35,
+            "dsss": 0.15,
             "min_dose": 1,
             "max_dose": 10000,
             "dose_25": 5.25,
             "dose_50": 10.50,
             "dose_75": 50.75,
             "doses": [1, 10, 100, 1000, 10000],
-            "responses": [2.25, 25.50, 85.25, 95.25, 95.50]
+            "responses": [0.02, 0.25, 0.85, 0.952, 0.955]
         },
         {
             "drug": "Drug2",
-            "gof": 75,
-            "dss": 30,
-            "dsss": 10,
+            "gof": 0.75,
+            "dss": 0.30,
+            "dsss": 0.10,
             "min_dose": 1,
             "max_dose": 10000,
             "dose_25": 4.25,
             "dose_50": 8.50,
             "dose_75": 47.75,
             "doses": [1, 10, 100, 1000, 10000],
-            "responses": [2.05, 20.50, 75.25, 90.25, 90.50]
+            "responses": [0.02, 0.20, 0.75, 0.902, 0.905]
         },
         {
             "drug": "Drug3",
-            "gof": 55,
-            "dss": 25,
-            "dsss": 5,
+            "gof": 0.55,
+            "dss": 0.25,
+            "dsss": 0.05,
             "min_dose": 1,
             "max_dose": 10000,
             "dose_25": 2.25,
@@ -525,29 +525,29 @@ Supported formats are:
         },
         {
             "drug": "Drug4",
-            "gof": 35,
-            "dss": 15,
-            "dsss": -5,
+            "gof": 0.35,
+            "dss": 0.15,
+            "dsss": -0.05,
             "min_dose": 1,
             "max_dose": 10000,
             "dose_25": 0.25,
             "dose_50": 2.50,
             "dose_75": 15.75,
             "doses": [1, 10, 100, 1000, 10000],
-            "responses": [0.00, 5.50, 17.25, 55.25, 55.50]
+            "responses": [0.00, 0.05, 0.17, 0.552, 0.555]
         },
         {
             "drug": "Drug5",
-            "gof": 25,
-            "dss": 10,
-            "dsss": -10,
+            "gof": 0.25,
+            "dss": 0.10,
+            "dsss": -0.10,
             "min_dose": 1,
             "max_dose": 10000,
             "dose_25": 0.05,
             "dose_50": 0.50,
             "dose_75": 7.75,
             "doses": [1, 10, 100, 1000, 10000],
-            "responses": [0.00, 0.50, 5.25, 45.25, 45.50]
+            "responses": [0.00, 0.05, 0.05, 0.452, 0.455]
         }
     ]
 }
@@ -561,11 +561,11 @@ Supported formats are:
 # analysis_type: DSA
 # analysis_date: 2020-02-05
 drug    gof dss dsss min_dose   max_dose    donse_25    donse_50    donse_75    doses   responses
-Drug1	95	35	15	1	10000	5.25	10.50	50.75	1,10,100,1000,10000	2.25,25.50,85.25,95.25,95.50
-Drug2	75	30	10	1	10000	4.25	8.50	47.75	1,10,100,1000,10000	2.05,20.50,75.25,90.25,90.50
-Drug3	55	25	5	1	10000	2.25	4.50	25.75	1,10,100,1000,10000	0.05,10.5,35.25,65.25,65.5
-Drug4	35	15	-5	1	10000	0.25	2.5	15.75	1,10,100,1000,10000	0,5.5,17.25,55.25,55.5
-Drug5	25	10	-10	1	10000	0.05	0.5	7.75	1,10,100,1000,10000	0,0.5,5.25,45.25,45.5
+Drug1	0.95	0.35	0.15	1	10000	5.25	10.50	50.75	1,10,100,1000,10000	0.02,0.25,0.85,0.952,0.955
+Drug2	0.75	0.30	0.10	1	10000	4.25	8.50	47.75	1,10,100,1000,10000	0.02,0.20,0.75,0.902,0.905
+Drug3	0.55	0.25	0.05	1	10000	2.25	4.50	25.75	1,10,100,1000,10000	0.05,10.50,35.25,65.25,65.50
+Drug4	0.35	0.15	-0.05	1	10000	0.25	2.50	15.75	1,10,100,1000,10000	0.00,0.05,0.17,0.552,0.555
+Drug5	0.25	0.10	-0.10	1	10000	0.05	0.50	7.75	1,10,100,1000,10000	0.00,0.05,0.05,0.452,0.455
 ```
 
 Fields description can be found [here](api-models-drugs.md).
@@ -577,7 +577,7 @@ Fields description can be found [here](api-models-drugs.md).
 - `403` - missing required permissions
 
 
-## DELETE: [api/specimen/{id}](http://localhost:5104/api/specimen/{id})
+## DELETE: [api/entry/{id}](http://localhost:5104/api/entry/{id})
 Delete specimen data.
 
 ### Parameters

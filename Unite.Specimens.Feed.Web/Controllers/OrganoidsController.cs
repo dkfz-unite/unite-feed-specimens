@@ -9,7 +9,7 @@ using Unite.Specimens.Feed.Web.Services;
 
 namespace Unite.Specimens.Feed.Web.Controllers;
 
-[Route("api/organoids")]
+[Route("api/entries/organoid")]
 [Authorize(Policy = Policies.Data.Writer)]
 public class OrganoidsController : Controller
 {

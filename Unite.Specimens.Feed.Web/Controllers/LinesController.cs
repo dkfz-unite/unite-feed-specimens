@@ -9,7 +9,7 @@ using Unite.Specimens.Feed.Web.Services;
 
 namespace Unite.Specimens.Feed.Web.Controllers;
 
-[Route("api/lines")]
+[Route("api/entries/line")]
 [Authorize(Policy = Policies.Data.Writer)]
 public class LinesController : Controller
 {
