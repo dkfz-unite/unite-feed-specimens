@@ -6,7 +6,6 @@ using Unite.Data.Context.Repositories.Constants;
 using Unite.Data.Entities.Donors;
 using Unite.Data.Entities.Genome.Analysis;
 using Unite.Data.Entities.Genome.Analysis.Dna;
-using Unite.Data.Entities.Genome.Analysis.Enums;
 using Unite.Data.Entities.Genome.Analysis.Rna;
 using Unite.Data.Entities.Donors.Clinical;
 using Unite.Data.Entities.Images;
@@ -116,11 +115,27 @@ public class SpecimenIndexCreator
         return samples.Select(sample => CreateSampleIndex(sample, diagnosisDate)).ToArrayOrNull();
     }
 
-    private static SampleIndex CreateSampleIndex(Sample sample, DateOnly? diagnosisDate)
+    private SampleIndex CreateSampleIndex(Sample sample, DateOnly? diagnosisDate)
     {
         var index = SampleIndexMapper.CreateFrom<SampleIndex>(sample, diagnosisDate);
 
-        index.Resources = sample.Resources?.Select(resource => ResourceIndexMapper.CreateFrom<ResourceIndex>(resource)).ToArray();
+        var ssm = CheckVariants<SSM.Variant, SSM.VariantEntry>(sample.SpecimenId);
+        var cnv = CheckVariants<CNV.Variant, CNV.VariantEntry>(sample.SpecimenId);
+        var sv = CheckVariants<SV.Variant, SV.VariantEntry>(sample.SpecimenId);
+        var exp = CheckGeneExp(sample.SpecimenId);
+
+        if (ssm || cnv || sv || exp)
+        {
+            index.Data = new Unite.Indices.Entities.Basic.Analysis.SampleDataIndex
+            {
+                Ssm = ssm,
+                Cnv = cnv,
+                Sv = sv,
+                Exp = exp
+            };
+        }
+
+        index.Resources = sample.Resources?.Select(resource => ResourceIndexMapper.CreateFrom<Unite.Indices.Entities.Basic.Analysis.ResourceIndex>(resource)).ToArray();
 
         return index;
     }
@@ -389,8 +404,8 @@ public class SpecimenIndexCreator
     {
         using var dbContext = _dbContextFactory.CreateDbContext();
 
-        return dbContext.Set<Sample>()
+        return dbContext.Set<SampleResource>()
             .AsNoTracking()
-            .Any(analysedSample => analysedSample.SpecimenId == specimenId && analysedSample.Analysis.TypeId == AnalysisType.RNASeqSc);
+            .Any(resource => resource.Sample.SpecimenId == specimenId && resource.Type == "rnasc-exp");
     }
 }
