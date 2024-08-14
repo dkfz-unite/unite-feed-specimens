@@ -25,9 +25,9 @@ public abstract class SpecimenWriterBase<TModel, TAudit> : Unite.Data.Context.Se
         audit.InterventionTypesCreated += entities.Count();
 
         var entries = _interventionRepository.RecreateAll(specimenId, models);
-        audit.InterventionTypesCreated += entries.Count();
+        audit.InterventionsCreated += entries.Count();
 
-        if (audit.InterventionTypesCreated > 0)
+        if (audit.InterventionsCreated > 0)
             audit.Specimens.Add(specimenId);
     }
 }
