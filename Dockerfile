@@ -15,7 +15,7 @@ RUN dotnet restore "Unite.Specimens.Indices/Unite.Specimens.Indices.csproj"
 RUN dotnet restore "Unite.Specimens.Feed/Unite.Specimens.Feed.csproj"
 RUN dotnet restore "Unite.Specimens.Feed.Web/Unite.Specimens.Feed.Web.csproj"
 
-FROM restore as build
+FROM restore AS build
 COPY . .
 WORKDIR "/src/Unite.Specimens.Feed.Web"
 RUN dotnet build --no-restore "Unite.Specimens.Feed.Web.csproj" -c Release
