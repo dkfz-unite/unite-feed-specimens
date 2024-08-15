@@ -14,6 +14,7 @@ public class XenograftModelConverter : Base.Converters.SpecimenModelConverter<Xe
         target.Tumorigenicity = source.Tumorigenicity;
         target.TumorGrowthForm = source.TumorGrowthForm;
         target.SurvivalDaysFrom = ParseDuration(source.SurvivalDays)?.From;
+        target.SurvivalDaysTo = ParseDuration(source.SurvivalDays)?.To;
     }
 
 
