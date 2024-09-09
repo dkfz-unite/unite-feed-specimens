@@ -37,27 +37,27 @@ Includes drug screening data.
 
 **`min_dose`** - Minimum tested concentration (in nM).
 - Type: _Number_
-- Limitations: Double, greater than 0
+- Limitations: Double, greater than 0, less than **`max_dose`**
 - Example: `1`
 
 **`max_dose`** - Maximum tested concentration (in nM).
 - Type: _Number_
-- Limitations: Double, greater than 0
+- Limitations: Double, greater than 0, greater than **`min_dose`**
 - Example: `10000`
 
 **`dose_25`** - Concentration at 25% inhibition (based on the fitted dose-response curve).
 - Type: _Number_
-- Limitations: Double, greater than 0
+- Limitations: Double, greater than 0, less than **`dose_50`**, in range [**`min_dose`**, **`max_dose`**]
 - Example: `2.82`
 
 **`dose_50`** - Concentration at 50% inhibition (based on the fitted dose-response curve).
 - Type: _Number_
-- Limitations: Double, greater than 0
+- Limitations: Double, greater than 0, less than **`dose_75`**, in range [**`min_dose`**, **`max_dose`**]
 - Example: `9.86`
 
 **`dose_75`** - Concentration at 75% inhibition (based on the fitted dose-response curve).
 - Type: _Number_
-- Limitations: Double, greater than 0
+- Limitations: Double, greater than 0, in range [**`min_dose`**, **`max_dose`**]
 - Example: `48.74`
 
 **`doses`** - Concentration (dose) at corresponding inhibition (response) percent from **`responses`** array.
