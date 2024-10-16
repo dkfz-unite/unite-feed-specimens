@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Unite.Cache.Configuration.Options;
 using Unite.Data.Context.Configuration.Extensions;
 using Unite.Data.Context.Configuration.Options;
 using Unite.Data.Context.Services.Tasks;
@@ -18,6 +19,8 @@ using Unite.Specimens.Feed.Web.Models.Base.Validators;
 
 using DrugScreeningModel = Unite.Specimens.Feed.Web.Models.Drugs.DrugScreeningModel;
 using DrugScreeningModelValidator = Unite.Specimens.Feed.Web.Models.Drugs.Validators.DrugScreeningModelValidator;
+using Unite.Specimens.Feed.Web.Handlers.Submission;
+using Unite.Specimens.Feed.Web.Submissions;
 
 namespace Unite.Specimens.Feed.Web.Configuration.Extensions;
 
@@ -39,14 +42,26 @@ public static class ConfigurationExtensions
         services.AddTransient<InterventionsWriter>();
         services.AddTransient<AnalysisWriter>();
 
-        services.AddTransient<SpecimenIndexingTasksService>();
+        services.AddTransient<SpecimensSubmissionService>();
         services.AddTransient<TasksProcessingService>();
+
+        services.AddTransient<SubmissionTaskService>();
+        services.AddTransient<SpecimenIndexingTasksService>();
 
         services.AddHostedService<SpecimensIndexingWorker>();
         services.AddTransient<SpecimensIndexingOptions>();
         services.AddTransient<SpecimensIndexingHandler>();
         services.AddTransient<SpecimenIndexCreator>();
         services.AddTransient<SpecimenIndexRemover>();
+
+        // Submissions hosted services
+        services.AddHostedService<SubmissionsWorker>();
+        services.AddTransient<DrugsSubmissionHandler>();
+        services.AddTransient<IntervensionsSubmissionHandler>();
+        services.AddTransient<LinesSubmissionHandler>();
+        services.AddTransient<MaterialsSubmissionHandler>();
+        services.AddTransient<OrganoidsSubmissionHandler>();
+        services.AddTransient<XenograftsSubmissionHandler>();
     }
 
 
@@ -54,6 +69,7 @@ public static class ConfigurationExtensions
     {
         services.AddTransient<ApiOptions>();
         services.AddTransient<ISqlOptions, SqlOptions>();
+        services.AddTransient<IMongoOptions, MongoOptions>();
         services.AddTransient<IElasticOptions, ElasticOptions>();
 
         return services;
