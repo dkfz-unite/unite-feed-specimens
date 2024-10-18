@@ -5,29 +5,29 @@ namespace Unite.Specimens.Feed.Web.Workers;
 
 public class SubmissionsWorker : BackgroundService
 {
-    private readonly DrugsSubmissionHandler _drugsSubmissionHandler;
-    private readonly IntervensionsSubmissionHandler _intervensionsSubmissionHandler;
-    private readonly LinesSubmissionHandler _linesSubmissionHandler;
     private readonly MaterialsSubmissionHandler _materialsSubmissionHandler;
+    private readonly LinesSubmissionHandler _linesSubmissionHandler;
     private readonly OrganoidsSubmissionHandler _organoidsSubmissionHandler;
     private readonly XenograftsSubmissionHandler _xenograftsSubmissionHandler;
+    private readonly IntervensionsSubmissionHandler _intervensionsSubmissionHandler;
+    private readonly DrugsSubmissionHandler _drugsSubmissionHandler;
 
     private readonly ILogger _logger;
 
-    public SubmissionsWorker(DrugsSubmissionHandler drugsSubmissionHandler,
-            IntervensionsSubmissionHandler intervensionsSubmissionHandler,
+    public SubmissionsWorker(MaterialsSubmissionHandler materialsSubmissionHandler,
             LinesSubmissionHandler linesSubmissionHandler,
-            MaterialsSubmissionHandler materialsSubmissionHandler,
             OrganoidsSubmissionHandler organoidsSubmissionHandler,
             XenograftsSubmissionHandler xenograftsSubmissionHandler,
+            IntervensionsSubmissionHandler intervensionsSubmissionHandler,
+            DrugsSubmissionHandler drugsSubmissionHandler,
             ILogger<SubmissionsWorker> logger)
     {
-            _drugsSubmissionHandler = drugsSubmissionHandler;
-            _intervensionsSubmissionHandler = intervensionsSubmissionHandler;
-            _linesSubmissionHandler = linesSubmissionHandler;
             _materialsSubmissionHandler = materialsSubmissionHandler;
+            _linesSubmissionHandler = linesSubmissionHandler;
             _organoidsSubmissionHandler = organoidsSubmissionHandler;
             _xenograftsSubmissionHandler = xenograftsSubmissionHandler;
+            _intervensionsSubmissionHandler = intervensionsSubmissionHandler;
+            _drugsSubmissionHandler = drugsSubmissionHandler;
             _logger = logger;
     }
 
@@ -44,12 +44,12 @@ public class SubmissionsWorker : BackgroundService
         {
             try
             {
-              _drugsSubmissionHandler.Handle();
-              _intervensionsSubmissionHandler.Handle();
-              _linesSubmissionHandler.Handle();
               _materialsSubmissionHandler.Handle();
+              _linesSubmissionHandler.Handle();
               _organoidsSubmissionHandler.Handle();
               _xenograftsSubmissionHandler.Handle();
+              _intervensionsSubmissionHandler.Handle();
+              _drugsSubmissionHandler.Handle();
             }
             catch (Exception exception)
             {

@@ -56,12 +56,12 @@ public static class ConfigurationExtensions
 
         // Submissions hosted services
         services.AddHostedService<SubmissionsWorker>();
-        services.AddTransient<DrugsSubmissionHandler>();
-        services.AddTransient<IntervensionsSubmissionHandler>();
-        services.AddTransient<LinesSubmissionHandler>();
         services.AddTransient<MaterialsSubmissionHandler>();
+        services.AddTransient<LinesSubmissionHandler>();
         services.AddTransient<OrganoidsSubmissionHandler>();
         services.AddTransient<XenograftsSubmissionHandler>();
+        services.AddTransient<IntervensionsSubmissionHandler>();
+        services.AddTransient<DrugsSubmissionHandler>();
     }
 
 
