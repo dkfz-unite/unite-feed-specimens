@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Unite.Specimens.Feed.Data;
-using Unite.Specimens.Feed.Data.Exceptions;
+using Unite.Data.Context.Services.Tasks;
+using Unite.Data.Entities.Tasks.Enums;
 using Unite.Specimens.Feed.Web.Configuration.Constants;
 using Unite.Specimens.Feed.Web.Models.Base;
 using Unite.Specimens.Feed.Web.Models.Drugs;
 using Unite.Specimens.Feed.Web.Models.Drugs.Binders;
-using Unite.Specimens.Feed.Web.Models.Drugs.Converters;
-using Unite.Specimens.Feed.Web.Services;
+using Unite.Specimens.Feed.Web.Submissions;
 
 namespace Unite.Specimens.Feed.Web.Controllers.Drugs;
 
@@ -15,42 +14,25 @@ namespace Unite.Specimens.Feed.Web.Controllers.Drugs;
 [Authorize(Policy = Policies.Data.Writer)]
 public class DrugsController : Controller
 {
-    private readonly AnalysisWriter _dataWriter;
-    private readonly SpecimenIndexingTasksService _tasksService;
-    private readonly ILogger _logger;
-
-    private readonly AnalysisModelConverter _converter = new();
-
+    private readonly SpecimensSubmissionService _submissionService;
+    private readonly SubmissionTaskService _submissionTaskService;
 
     public DrugsController(
-        AnalysisWriter dataWriter,
-        SpecimenIndexingTasksService tasksService,
-        ILogger<DrugsController> logger)
+        SpecimensSubmissionService submissionService, 
+        SubmissionTaskService submissionTaskService)
     {
-        _dataWriter = dataWriter;
-        _tasksService = tasksService;
-        _logger = logger;
+        _submissionService = submissionService;
+        _submissionTaskService = submissionTaskService;
     }
 
     [HttpPost("")]
     public IActionResult Post([FromBody]AnalysisModel<DrugScreeningModel> model)
     {
-        try
-        {
-            var data = _converter.Convert(model);
+        var submissionId = _submissionService.AddDrugsSubmission(model);
 
-            _dataWriter.SaveData(data, out var audit);
-            _logger.LogInformation("{audit}", audit.ToString());
-            _tasksService.PopulateTasks(audit.Samples);
+        _submissionTaskService.CreateTask(SubmissionTaskType.SPE_DRG, submissionId);
 
-            return Ok();
-        }
-        catch (NotFoundException exception)
-        {
-            _logger.LogWarning("{error}", exception.Message);
-
-            return NotFound(exception.Message);
-        }
+        return Ok();
     }
 
     [HttpPost("tsv")]

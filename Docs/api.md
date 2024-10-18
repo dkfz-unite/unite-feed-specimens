@@ -357,7 +357,7 @@ Supported formats are:
         "donor_id": "Donor1",
         "specimen_id": "Organoid1",
         "specimen_type": "Organoid",
-        "data": [
+        "entries": [
             {
                 "type": "Drug1",
                 "details": "Specimen specific intervention details",
@@ -378,7 +378,7 @@ Supported formats are:
         "donor_id": "Donor2",
         "specimen_id": "Organoid1",
         "specimen_type": "Organoid",
-        "data": [
+        "entries": [
             {
                 "type": "Drug1",
                 "details": "Specimen specific intervention details",
@@ -399,7 +399,7 @@ Supported formats are:
         "donor_id": "Donor1",
         "specimen_id": "Xenograft1",
         "specimen_type": "Xenograft",
-        "data": [
+        "entries": [
             {
                 "type": "Drug1",
                 "details": "Specimen specific intervention details",
@@ -420,7 +420,7 @@ Supported formats are:
         "donor_id": "Donor2",
         "specimen_id": "Xenograft1",
         "specimen_type": "Xenograft",
-        "data": [
+        "entries": [
             {
                 "type": "Drug1",
                 "details": "Specimen specific intervention details",
