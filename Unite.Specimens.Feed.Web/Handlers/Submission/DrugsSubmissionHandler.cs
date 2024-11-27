@@ -44,7 +44,7 @@ public class DrugsSubmissionHandler
     {
         var stopwatch = new Stopwatch();
 
-        _tasksProcessingService.Process(SubmissionTaskType.SPE_DRG, 1, (tasks) =>
+        _tasksProcessingService.Process(SubmissionTaskType.SPE_DRG, TaskStatusType.Prepared, 1, (tasks) =>
         {
             stopwatch.Restart();
 

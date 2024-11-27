@@ -24,19 +24,31 @@ public class MaterialsController : Controller
         _submissionTaskService = submissionTaskService;
     }
 
-    [HttpPost]
-    public IActionResult Post([FromBody]MaterialModel[] models)
+    [HttpGet("{id}")]
+    public IActionResult Get(long id)
+    {
+        var task = _submissionTaskService.GetTask(id);
+
+        var submission = _submissionService.FindMaterialsSubmission(task.Target);
+
+        return Ok(submission);
+    }
+
+    [HttpPost("")]
+    public IActionResult Post([FromBody]MaterialModel[] models, [FromQuery] bool validate = true)
     {
         var submissionId = _submissionService.AddMaterialsSubmission(models);
 
-        _submissionTaskService.CreateTask(SubmissionTaskType.MAT, submissionId);
+        var taskStatus = validate ? TaskStatusType.Preparing : TaskStatusType.Prepared;
 
-        return Ok();
+        var taskId = _submissionTaskService.CreateTask(SubmissionTaskType.MAT, submissionId, taskStatus);
+
+        return Ok(taskId);
     }
 
     [HttpPost("tsv")]
-    public IActionResult PostTsv([ModelBinder(typeof(MaterialTsvModelsBinder))]MaterialModel[] models)
+    public IActionResult PostTsv([ModelBinder(typeof(MaterialTsvModelsBinder))]MaterialModel[] models,[FromQuery] bool validate = true)
     {
-        return Post(models);
+        return Post(models, validate);
     }
 }

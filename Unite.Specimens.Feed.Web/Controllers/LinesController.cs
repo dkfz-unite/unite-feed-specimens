@@ -24,20 +24,31 @@ public class LinesController : Controller
         _submissionTaskService = submissionTaskService;
     }
 
+    [HttpGet("{id}")]
+    public IActionResult Get(long id)
+    {
+        var task = _submissionTaskService.GetTask(id);
 
-    [HttpPost]
-    public IActionResult Post([FromBody]LineModel[] models)
+        var submission = _submissionService.FindLinesSubmission(task.Target);
+
+        return Ok(submission);
+    }
+
+    [HttpPost("")]
+    public IActionResult Post([FromBody]LineModel[] models, [FromQuery] bool validate = true)
     {
         var submissionId = _submissionService.AddLinesSubmission(models);
 
-        _submissionTaskService.CreateTask(SubmissionTaskType.LNE, submissionId);
+        var taskStatus = validate ? TaskStatusType.Preparing : TaskStatusType.Prepared;
 
-        return Ok();
+        var taskId = _submissionTaskService.CreateTask(SubmissionTaskType.LNE, submissionId, taskStatus);
+
+        return Ok(taskId);
     }
 
     [HttpPost("tsv")]
-    public IActionResult PostTsv([ModelBinder(typeof(LineTsvModelsBinder))]LineModel[] models)
+    public IActionResult PostTsv([ModelBinder(typeof(LineTsvModelsBinder))]LineModel[] models,[FromQuery] bool validate = true)
     {
-        return Post(models);
+        return Post(models, validate);
     }
 }
