@@ -14,11 +14,17 @@ All data submision request implement **UPSERT** logic:
 
 ## Overview
 - get:[api](#get-api) - health check.
+- get:[api/entries/material/{id}](#get-apientriesmaterialid) - get donor materials data submission document.
 - post:[api/entries/meterial/{type?}](#post-apientriesmaterialtype) - submit donor materials data in given type.
+- get:[api/entries/line/{id}](#get-apientrieslineid) - get cell lines data submission document.
 - post:[api/entries/line/{type?}](#post-apientrieslinetype) - submit cell lines data in given type.
+- get:[api/entries/organoid/{id}](#get-apientriesorganoidid) - get organoids data submission document.
 - post:[api/entries/organoid/{type?}](#post-apientriesorganoidtype) - submit organoids data in given type.
+- get:[api/entries/xenograft/{id}](#get-apientriesxenograftid) - get xenografts data submission document.
 - post:[api/entries/xenograft/{type?}](#post-apientriesxenografttype) - submit xenografts data in given type.
+- get:[api/interventions/{id}](#get-apiinterventionsid) - get interventions data submission document.
 - post:[api/interventions/{type?}](#post-apiinterventionstype) - submit interventions data in given type.
+- get:[api/analysis/drugs/{id}](#get-apianalysisdrugsid) - get drugs screening data submission document.
 - post:[api/analysis/drugs/{type?}](#post-apianalysisdrugs) - submit drugs screening data.
 - delete:[api/entry/{id}](#delete-apientryid) - delete specimen data.
 
@@ -31,6 +37,19 @@ Health check.
 
 ### Responses
 `"2022-03-17T09:45:10.9359202Z"` - Current UTC date and time in JSON format, if service is up and running
+
+
+## GET: [api/entries/material/{id}](http://localhost:5104/api/entries/material/1)
+Get donor materials data submission document.
+
+### Parameters
+- `id` - submission ID.
+
+### Responses
+- `200` - submission document in JSON format
+- `401` - missing JWT token
+- `403` - missing required permissions
+- `404` - submission not found
 
 
 ## POST: [api/entries/material/{type?}](http://localhost:5104/api/entries/material)
@@ -116,10 +135,23 @@ Material3	Donor2			2020-03-01		Tumor	Recurrent	Tissue	Unmethylated	Mutant	IDH1 R
 Fields description can be found [here](api-models-material.md).
 
 ### Responses
-- `200` - request was processed successfully
+- `200` - submission ID (can be used to track submission status)
 - `400` - request data didn't pass validation
 - `401` - missing JWT token
 - `403` - missing required permissions
+
+
+## GET: [api/entries/line/{id}](http://localhost:5104/api/entries/line/1)
+Get cell lines data submission document.
+
+### Parameters
+- `id` - submission ID.
+
+### Responses
+- `200` - submission document in JSON format
+- `401` - missing JWT token
+- `403` - missing required permissions
+- `404` - submission not found
 
 
 ## POST: [api/entries/line/{type?}](http://localhost:5104/api/entries/line)
@@ -197,10 +229,23 @@ Line1	Donor2	Material2	Material	2020-02-01		Human	Differentiated	Adherent	D2M2L1
 Fields description can be found [here](api-models-line.md).
 
 ### Responses
-- `200` - request was processed successfully
+- `200` - submission ID (can be used to track submission status)
 - `400` - request data didn't pass validation
 - `401` - missing JWT token
 - `403` - missing required permissions
+
+
+## GET: [api/entries/organoid/{id}](http://localhost:5104/api/entries/organoid/1)
+Get organoids data submission document.
+
+### Parameters
+- `id` - submission ID.
+
+### Responses
+- `200` - submission document in JSON format
+- `401` - missing JWT token
+- `403` - missing required permissions
+- `404` - submission not found
 
 
 ## POST: [api/entries/organoid/{type?}](http://localhost:5104/api/entries/organoid)
@@ -260,10 +305,23 @@ Organoid1	Donor2	Line1	Line	2020-02-05		Medium2	45000	true	Unmethylated	Mutant	I
 Fields description can be found [here](api-models-organoid.md).
 
 ### Responses
-- `200` - request was processed successfully
+- `200` - submission ID (can be used to track submission status)
 - `400` - request data didn't pass validation
 - `401` - missing JWT token
 - `403` - missing required permissions
+
+
+## GET: [api/entries/xenograft/{id}](http://localhost:5104/api/entries/xenograft/1)
+Get xenografts data submission document.
+
+### Parameters
+- `id` - submission ID.
+
+### Responses
+- `200` - submission document in JSON format
+- `401` - missing JWT token
+- `403` - missing required permissions
+- `404` - submission not found
 
 
 ## POST: [api/entries/xenograft/{type?}](http://localhost:5104/api/entries/xenograft)
@@ -333,10 +391,23 @@ Xenograft1	Donor2	Line1	Line	2020-02-05		Nude	30	Orhtotopical	Cortical	550000	tr
 Fields description can be found [here](./api-models-xenograft.md).
 
 ### Responses
-- `200` - request was processed successfully
+- `200` - submission ID (can be used to track submission status)
 - `400` - request data didn't pass validation
 - `401` - missing JWT token
 - `403` - missing required permissions
+
+
+## GET: [api/interventions/{id}](http://localhost:5104/api/interventions/1)
+Get interventions data submission document.
+
+### Parameters
+- `id` - submission ID.
+
+### Responses
+- `200` - submission document in JSON format
+- `401` - missing JWT token
+- `403` - missing required permissions
+- `404` - submission not found
 
 
 ## POST: [api/interventions/{type?}](http://localhost:5104/api/specimens/interventions)
@@ -456,10 +527,23 @@ Donor2	Xenograft1	Xenograft	Drug2	Specimen specific intervention details	2020-02
 Fields description can be found [here](./api-models-interventions.md).
 
 ### Responses
-- `200` - request was processed successfully
+- `200` - submission ID (can be used to track submission status)
 - `400` - request data didn't pass validation
 - `401` - missing JWT token
 - `403` - missing required permissions
+
+
+## GET: [api/analysis/drugs/{id}](http://localhost:5104/api/analysis/drugs/1)
+Get drugs screening data submission document.
+
+### Parameters
+- `id` - submission ID.
+
+### Responses
+- `200` - submission document in JSON format
+- `401` - missing JWT token
+- `403` - missing required permissions
+- `404` - submission not found
 
 
 ## POST: [api/analysis/drugs](http://localhost:5104/api/analysis/drugs)
@@ -571,7 +655,7 @@ Drug5	0.25	0.10	-0.10	1	10000	0.05	0.50	7.75	1,10,100,1000,10000	0.00,0.05,0.05,
 Fields description can be found [here](api-models-drugs.md).
 
 ### Responses
-- `200` - request was processed successfully
+- `200` - submission ID (can be used to track submission status)
 - `400` - request data didn't pass validation
 - `401` - missing JWT token
 - `403` - missing required permissions
