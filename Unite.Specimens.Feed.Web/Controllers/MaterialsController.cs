@@ -35,11 +35,11 @@ public class MaterialsController : Controller
     }
 
     [HttpPost("")]
-    public IActionResult Post([FromBody]MaterialModel[] models, [FromQuery] bool validate = true)
+    public IActionResult Post([FromBody]MaterialModel[] models, [FromQuery] bool review = true)
     {
         var submissionId = _submissionService.AddMaterialsSubmission(models);
 
-        var taskStatus = validate ? TaskStatusType.Preparing : TaskStatusType.Prepared;
+        var taskStatus = review ? TaskStatusType.Preparing : TaskStatusType.Prepared;
 
         var taskId = _submissionTaskService.CreateTask(SubmissionTaskType.MAT, submissionId, taskStatus);
 
@@ -47,8 +47,8 @@ public class MaterialsController : Controller
     }
 
     [HttpPost("tsv")]
-    public IActionResult PostTsv([ModelBinder(typeof(MaterialTsvModelsBinder))]MaterialModel[] models,[FromQuery] bool validate = true)
+    public IActionResult PostTsv([ModelBinder(typeof(MaterialTsvModelsBinder))]MaterialModel[] models,[FromQuery] bool review = true)
     {
-        return Post(models, validate);
+        return Post(models, review);
     }
 }

@@ -35,11 +35,11 @@ public class LinesController : Controller
     }
 
     [HttpPost("")]
-    public IActionResult Post([FromBody]LineModel[] models, [FromQuery] bool validate = true)
+    public IActionResult Post([FromBody]LineModel[] models, [FromQuery] bool review = true)
     {
         var submissionId = _submissionService.AddLinesSubmission(models);
 
-        var taskStatus = validate ? TaskStatusType.Preparing : TaskStatusType.Prepared;
+        var taskStatus = review ? TaskStatusType.Preparing : TaskStatusType.Prepared;
 
         var taskId = _submissionTaskService.CreateTask(SubmissionTaskType.LNE, submissionId, taskStatus);
 
@@ -47,8 +47,8 @@ public class LinesController : Controller
     }
 
     [HttpPost("tsv")]
-    public IActionResult PostTsv([ModelBinder(typeof(LineTsvModelsBinder))]LineModel[] models,[FromQuery] bool validate = true)
+    public IActionResult PostTsv([ModelBinder(typeof(LineTsvModelsBinder))]LineModel[] models,[FromQuery] bool review = true)
     {
-        return Post(models, validate);
+        return Post(models, review);
     }
 }

@@ -36,11 +36,11 @@ public class XenograftsController : Controller
     }
 
     [HttpPost("")]
-    public IActionResult Post([FromBody]XenograftModel[] models, [FromQuery] bool validate = true)
+    public IActionResult Post([FromBody]XenograftModel[] models, [FromQuery] bool review = true)
     {
         var submissionId = _submissionService.AddXenograftsSubmission(models);
 
-        var taskStatus = validate ? TaskStatusType.Preparing : TaskStatusType.Prepared;
+        var taskStatus = review ? TaskStatusType.Preparing : TaskStatusType.Prepared;
 
         var taskId = _submissionTaskService.CreateTask(SubmissionTaskType.XEN, submissionId, taskStatus);
 
@@ -48,8 +48,8 @@ public class XenograftsController : Controller
     }
 
     [HttpPost("tsv")]
-    public IActionResult PostTsv([ModelBinder(typeof(XenograftTsvModelsBinder))]XenograftModel[] models, [FromQuery] bool validate = true)
+    public IActionResult PostTsv([ModelBinder(typeof(XenograftTsvModelsBinder))]XenograftModel[] models, [FromQuery] bool review = true)
     {
-        return Post(models, validate);
+        return Post(models, review);
     }
 }

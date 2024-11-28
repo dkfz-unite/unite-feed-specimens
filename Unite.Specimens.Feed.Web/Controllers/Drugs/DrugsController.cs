@@ -36,11 +36,11 @@ public class DrugsController : Controller
     }
 
     [HttpPost("")]
-    public IActionResult Post([FromBody]AnalysisModel<DrugScreeningModel> model, [FromQuery] bool validate = true)
+    public IActionResult Post([FromBody]AnalysisModel<DrugScreeningModel> model, [FromQuery] bool review = true)
     {
         var submissionId = _submissionService.AddDrugsSubmission(model);
 
-        var taskStatus = validate ? TaskStatusType.Preparing : TaskStatusType.Prepared;
+        var taskStatus = review ? TaskStatusType.Preparing : TaskStatusType.Prepared;
 
         var taskId = _submissionTaskService.CreateTask(SubmissionTaskType.SPE_DRG, submissionId, taskStatus);
 
@@ -48,8 +48,8 @@ public class DrugsController : Controller
     }
 
     [HttpPost("tsv")]
-    public IActionResult PostTsv([ModelBinder(typeof(AnalysisTsvModelBinder))]AnalysisModel<DrugScreeningModel> model, [FromQuery] bool validate = true)
+    public IActionResult PostTsv([ModelBinder(typeof(AnalysisTsvModelBinder))]AnalysisModel<DrugScreeningModel> model, [FromQuery] bool review = true)
     {
-        return Post(model, validate);
+        return Post(model, review);
     }
 }

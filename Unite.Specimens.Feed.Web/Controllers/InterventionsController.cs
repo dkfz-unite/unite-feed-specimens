@@ -35,11 +35,11 @@ public class InterventionsController : Controller
     }
 
     [HttpPost("")]
-    public IActionResult Post([FromBody]InterventionsModel[] models, [FromQuery] bool validate = true)
+    public IActionResult Post([FromBody]InterventionsModel[] models, [FromQuery] bool review = true)
     {
         var submissionId = _submissionService.AddIntervensionsSubmission(models);
 
-        var taskStatus = validate ? TaskStatusType.Preparing : TaskStatusType.Prepared;
+        var taskStatus = review ? TaskStatusType.Preparing : TaskStatusType.Prepared;
 
         var taskId = _submissionTaskService.CreateTask(SubmissionTaskType.SPE_INT, submissionId, taskStatus);
 
@@ -47,8 +47,8 @@ public class InterventionsController : Controller
     }
 
     [HttpPost("tsv")]
-    public IActionResult PosTsv([ModelBinder(typeof(InterventionsTsvModelsBinder))]InterventionsModel[] models, [FromQuery] bool validate = true)
+    public IActionResult PosTsv([ModelBinder(typeof(InterventionsTsvModelsBinder))]InterventionsModel[] models, [FromQuery] bool review = true)
     {
-        return Post(models, validate);
+        return Post(models, review);
     }
 }

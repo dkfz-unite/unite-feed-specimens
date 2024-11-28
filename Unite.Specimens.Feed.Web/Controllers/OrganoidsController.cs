@@ -35,11 +35,11 @@ public class OrganoidsController : Controller
     }
 
     [HttpPost("")]
-    public IActionResult Post([FromBody]OrganoidModel[] models, [FromQuery] bool validate = true)
+    public IActionResult Post([FromBody]OrganoidModel[] models, [FromQuery] bool review = true)
     {
         var submissionId = _submissionService.AddOrganoidsSubmission(models);
 
-        var taskStatus = validate ? TaskStatusType.Preparing : TaskStatusType.Prepared;
+        var taskStatus = review ? TaskStatusType.Preparing : TaskStatusType.Prepared;
 
         var taskId = _submissionTaskService.CreateTask(SubmissionTaskType.ORG, submissionId, taskStatus);
 
@@ -47,8 +47,8 @@ public class OrganoidsController : Controller
     }
 
     [HttpPost("tsv")]
-    public IActionResult PostTsv([ModelBinder(typeof(OrganoidTsvModelsBinder))]OrganoidModel[] models, [FromQuery] bool validate = true)
+    public IActionResult PostTsv([ModelBinder(typeof(OrganoidTsvModelsBinder))]OrganoidModel[] models, [FromQuery] bool review = true)
     {
-        return Post(models, validate);
+        return Post(models, review);
     }
 }
