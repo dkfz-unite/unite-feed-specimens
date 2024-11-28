@@ -25,20 +25,31 @@ public class XenograftsController : Controller
         _submissionTaskService = submissionTaskService;
     }
 
+    [HttpGet("{id}")]
+    public IActionResult Get(long id)
+    {
+        var task = _submissionTaskService.GetTask(id);
 
-    [HttpPost]
-    public IActionResult Post([FromBody]XenograftModel[] models)
+        var submission = _submissionService.FindXenograftsSubmission(task.Target);
+
+        return Ok(submission);
+    }
+
+    [HttpPost("")]
+    public IActionResult Post([FromBody]XenograftModel[] models, [FromQuery] bool review = true)
     {
         var submissionId = _submissionService.AddXenograftsSubmission(models);
 
-        _submissionTaskService.CreateTask(SubmissionTaskType.XEN, submissionId);
+        var taskStatus = review ? TaskStatusType.Preparing : TaskStatusType.Prepared;
 
-        return Ok();
+        var taskId = _submissionTaskService.CreateTask(SubmissionTaskType.XEN, submissionId, taskStatus);
+
+        return Ok(taskId);
     }
 
     [HttpPost("tsv")]
-    public IActionResult PostTsv([ModelBinder(typeof(XenograftTsvModelsBinder))]XenograftModel[] models)
+    public IActionResult PostTsv([ModelBinder(typeof(XenograftTsvModelsBinder))]XenograftModel[] models, [FromQuery] bool review = true)
     {
-        return Post(models);
+        return Post(models, review);
     }
 }

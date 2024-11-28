@@ -44,7 +44,7 @@ public class LinesSubmissionHandler
     {
         var stopwatch = new Stopwatch();
 
-        _tasksProcessingService.Process(SubmissionTaskType.LNE, 1, (tasks) =>
+        _tasksProcessingService.Process(SubmissionTaskType.LNE, TaskStatusType.Prepared, 1, (tasks) =>
         {
             stopwatch.Restart();
 

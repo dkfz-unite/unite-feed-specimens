@@ -44,7 +44,7 @@ public class MaterialsSubmissionHandler
     {
         var stopwatch = new Stopwatch();
 
-        _tasksProcessingService.Process(SubmissionTaskType.MAT, 1, (tasks) =>
+        _tasksProcessingService.Process(SubmissionTaskType.MAT, TaskStatusType.Prepared, 1, (tasks) =>
         {
             stopwatch.Restart();
 
