@@ -44,7 +44,7 @@ public class OrganoidsSubmissionHandler
     {
         var stopwatch = new Stopwatch();
 
-        _tasksProcessingService.Process(SubmissionTaskType.ORG, 1, (tasks) =>
+        _tasksProcessingService.Process(SubmissionTaskType.ORG, TaskStatusType.Prepared, 1, (tasks) =>
         {
             stopwatch.Restart();
 

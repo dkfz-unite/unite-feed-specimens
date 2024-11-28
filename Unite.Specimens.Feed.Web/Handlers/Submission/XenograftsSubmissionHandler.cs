@@ -44,7 +44,7 @@ public class XenograftsSubmissionHandler
     {
         var stopwatch = new Stopwatch();
 
-        _tasksProcessingService.Process(SubmissionTaskType.XEN, 1, (tasks) =>
+        _tasksProcessingService.Process(SubmissionTaskType.XEN, TaskStatusType.Prepared, 1, (tasks) =>
         {
             stopwatch.Restart();
 

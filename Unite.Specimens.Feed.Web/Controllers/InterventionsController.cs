@@ -24,19 +24,31 @@ public class InterventionsController : Controller
         _submissionTaskService = submissionTaskService;
     }
 
-    [HttpPost]
-    public IActionResult Post([FromBody]InterventionsModel[] models)
+    [HttpGet("{id}")]
+    public IActionResult Get(long id)
+    {
+        var task = _submissionTaskService.GetTask(id);
+
+        var submission = _submissionService.FindIntervensionsSubmission(task.Target);
+
+        return Ok(submission);
+    }
+
+    [HttpPost("")]
+    public IActionResult Post([FromBody]InterventionsModel[] models, [FromQuery] bool review = true)
     {
         var submissionId = _submissionService.AddIntervensionsSubmission(models);
 
-        _submissionTaskService.CreateTask(SubmissionTaskType.SPE_INT, submissionId);
+        var taskStatus = review ? TaskStatusType.Preparing : TaskStatusType.Prepared;
 
-        return Ok();
+        var taskId = _submissionTaskService.CreateTask(SubmissionTaskType.SPE_INT, submissionId, taskStatus);
+
+        return Ok(taskId);
     }
 
     [HttpPost("tsv")]
-    public IActionResult PosTsv([ModelBinder(typeof(InterventionsTsvModelsBinder))]InterventionsModel[] models)
+    public IActionResult PosTsv([ModelBinder(typeof(InterventionsTsvModelsBinder))]InterventionsModel[] models, [FromQuery] bool review = true)
     {
-        return Post(models);
+        return Post(models, review);
     }
 }
