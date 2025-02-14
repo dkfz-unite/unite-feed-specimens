@@ -16,7 +16,7 @@ using Unite.Data.Entities.Specimens.Enums;
 using Unite.Essentials.Extensions;
 using Unite.Indices.Entities;
 using Unite.Indices.Entities.Specimens;
-using Unite.Mapping;
+using Unite.Specimens.Indices.Services.Mapping;
 
 using SSM = Unite.Data.Entities.Genome.Analysis.Dna.Ssm;
 using CNV = Unite.Data.Entities.Genome.Analysis.Dna.Cnv;
@@ -27,8 +27,6 @@ namespace Unite.Specimens.Indices.Services;
 
 public class SpecimenIndexCreator
 {
-    private record GenomicStats(int NumberOfGenes, int NumberOfSsms, int NumberOfCnvs, int NumberOfSvs);
-
     private readonly IDbContextFactory<DomainDbContext> _dbContextFactory;
     private readonly DonorsRepository _donorsRepository;
     private readonly SpecimensRepository _specimensRepository;
@@ -65,27 +63,17 @@ public class SpecimenIndexCreator
         var type = specimen.TypeId;
         var canHaveMris = Predicates.IsImageRelatedSpecimen.Compile()(specimen);
         var canHaveCts = Predicates.IsImageRelatedSpecimen.Compile()(specimen);
-        var parent = LoadParentSpecimen(specimen.Id);
-        var stats = LoadGenomicStats(specimen.Id);
 
         var index = new SpecimenIndex();
 
         SpecimenIndexMapper.Map(specimen, index, diagnosisDate);
-
-        index.DonorId = specimen.DonorId;
-        index.ParentId = parent?.Id;
-        index.ParentReferenceId = parent?.ReferenceId;
-        index.ParentType = parent?.TypeId.ToDefinitionString();
         
+        index.Parent = CreateParentIndex(specimen.Id);
         index.Donor = CreateDonorIndex(specimen.DonorId);
         index.Images = CreateImageIndices(index.Donor.Id, diagnosisDate, canHaveMris);
         index.Samples = CreateSampleIndices(specimen.Id, diagnosisDate);
+        index.Stats = CreateStatsIndex(specimen.Id);
         index.Data = CreateDataIndex(specimen.Id, specimen.Donor.Id, type, canHaveMris, canHaveCts);
-
-        index.NumberOfGenes = stats.NumberOfGenes;
-        index.NumberOfSsms = stats.NumberOfSsms;
-        index.NumberOfCnvs = stats.NumberOfCnvs;
-        index.NumberOfSvs = stats.NumberOfSvs;
         
         return index;
     }
@@ -122,16 +110,20 @@ public class SpecimenIndexCreator
         var ssm = CheckSampleVariants<SSM.Variant, SSM.VariantEntry>(sample.Id);
         var cnv = CheckSampleVariants<CNV.Variant, CNV.VariantEntry>(sample.Id);
         var sv = CheckSampleVariants<SV.Variant, SV.VariantEntry>(sample.Id);
+        var meth = CheckSampleMethylation(sample.Id);
         var exp = CheckSampleGeneExp(sample.Id);
+        var expSc = CheckSampleGeneExpSc(sample.Id);
 
-        if (ssm || cnv || sv || exp)
+        if (ssm || cnv || sv || meth || exp || expSc)
         {
             index.Data = new Unite.Indices.Entities.Basic.Analysis.SampleDataIndex
             {
                 Ssm = ssm,
                 Cnv = cnv,
                 Sv = sv,
-                Exp = exp
+                Meth = meth,
+                Exp = exp,
+                ExpSc = expSc
             };
         }
 
@@ -164,6 +156,15 @@ public class SpecimenIndexCreator
             .Any(entity => entity.SampleId == sampleId);
     }
 
+    private bool CheckSampleMethylation(int sampleId)
+    {
+        using var dbContext = _dbContextFactory.CreateDbContext();
+
+        return dbContext.Set<SampleResource>()
+            .AsNoTracking()
+            .Any(resource => resource.SampleId == sampleId && resource.Type == "dna-meth");
+    }
+
     private bool CheckSampleGeneExp(int sampleId)
     {
         using var dbContext = _dbContextFactory.CreateDbContext();
@@ -173,6 +174,38 @@ public class SpecimenIndexCreator
             .Any(expression => expression.SampleId == sampleId);
     }
 
+    private bool CheckSampleGeneExpSc(int sampleId)
+    {
+        using var dbContext = _dbContextFactory.CreateDbContext();
+
+        return dbContext.Set<SampleResource>()
+            .AsNoTracking()
+            .Any(resource => resource.SampleId == sampleId && resource.Type == "rnasc-exp");
+    }
+
+
+    private ParentIndex CreateParentIndex(int specimenId)
+    {
+        var parent = LoadParentSpecimen(specimenId);
+
+        if (parent == null)
+            return null;
+
+        return CreateParentIndex(parent);
+    }
+
+    private ParentIndex CreateParentIndex(Specimen specimen)
+    {
+        if (specimen.Parent == null)
+            return null;
+
+        return new ParentIndex
+        {
+            Id = specimen.Parent.Id,
+            ReferenceId = specimen.Parent.ReferenceId,
+            Type = specimen.Parent.TypeId.ToDefinitionString()
+        };
+    }
 
     private Specimen LoadParentSpecimen(int specimeId)
     {
@@ -206,10 +239,6 @@ public class SpecimenIndexCreator
 
         return dbContext.Set<Donor>()
             .AsNoTracking()
-            .IncludeClinicalData()
-            .IncludeTreatments()
-            .IncludeProjects()
-            .IncludeStudies()
             .FirstOrDefault(donor => donor.Id == donorId);
     }
 
@@ -237,12 +266,26 @@ public class SpecimenIndexCreator
 
         return dbContext.Set<Image>()
             .AsNoTracking()
-            .IncludeMriImage()
-            .IncludeRadiomicsFeatures()
             .Where(image => imageIds.Contains(image.Id))
             .ToArray();
     }
 
+
+    private StatsIndex CreateStatsIndex(int specimenId)
+    {
+        var ssmIds = _specimensRepository.GetRelatedVariants<SSM.Variant>([specimenId]).Result;
+        var cnvIds = _specimensRepository.GetRelatedVariants<CNV.Variant>([specimenId]).Result;
+        var svIds = _specimensRepository.GetRelatedVariants<SV.Variant>([specimenId]).Result;
+        var geneIds = _specimensRepository.GetVariantRelatedGenes([specimenId]).Result;
+
+        return new StatsIndex
+        {
+            Genes = geneIds.Length,
+            Ssms = ssmIds.Length,
+            Cnvs = cnvIds.Length,
+            Svs = svIds.Length
+        };
+    }
 
     private DataIndex CreateDataIndex(int specimenId, int donorId, SpecimenType typeId, bool canHaveMris = false, bool canHaveCts = false)
     {
@@ -290,22 +333,13 @@ public class SpecimenIndexCreator
         index.Ssms = CheckVariants<SSM.Variant, SSM.VariantEntry>(specimenId);
         index.Cnvs = CheckVariants<CNV.Variant, CNV.VariantEntry>(specimenId);
         index.Svs = CheckVariants<SV.Variant, SV.VariantEntry>(specimenId);
-        index.GeneExp = CheckGeneExp(specimenId);
-        index.GeneExpSc = CheckGeneExpSc(specimenId);
+        index.Meth = CheckMethylation(specimenId);
+        index.Exp = CheckGeneExp(specimenId);
+        index.ExpSc = CheckGeneExpSc(specimenId);
 
         return index;
     }
 
-
-    private GenomicStats LoadGenomicStats(int specimenId)
-    {
-        var ssmIds = _specimensRepository.GetRelatedVariants<SSM.Variant>([specimenId]).Result;
-        var cnvIds = _specimensRepository.GetRelatedVariants<CNV.Variant>([specimenId]).Result;
-        var svIds = _specimensRepository.GetRelatedVariants<SV.Variant>([specimenId]).Result;
-        var geneIds = _specimensRepository.GetVariantRelatedGenes([specimenId]).Result;
-
-        return new GenomicStats(geneIds.Length, ssmIds.Length, cnvIds.Length, svIds.Length);
-    }
 
     private bool CheckClinicalData(int donorId)
     {
@@ -392,6 +426,20 @@ public class SpecimenIndexCreator
             .Select(entry => entry.EntityId)
             .Distinct()
             .Any();
+    }
+
+    /// <summary>
+    /// Checks if methylation data is available for given specimen.
+    /// </summary>
+    /// <param name="specimenId">Specimen identifier.</param>
+    /// <returns>'true' if methylation data exists or 'false' otherwise.</returns>
+    private bool CheckMethylation(int specimenId)
+    {
+        using var dbContext = _dbContextFactory.CreateDbContext();
+
+        return dbContext.Set<SampleResource>()
+            .AsNoTracking()
+            .Any(resource => resource.Sample.SpecimenId == specimenId && resource.Type == "dna-meth");
     }
 
     /// <summary>
