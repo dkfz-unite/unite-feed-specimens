@@ -17,7 +17,9 @@ public class MaterialTsvModelsBinder : IModelBinder
         var map = new ClassMap<MaterialModel>()
             .MapSpecimen(entity => entity)
             .Map(entity => entity.Type, "type")
+            .Map(entity => entity.FixationType, "fixation_type")
             .Map(entity => entity.TumorType, "tumor_type")
+            .Map(entity => entity.TumorGrade, "tumor_grade")
             .Map(entity => entity.Source, "source")
             .MapMolecularData(entity => entity.MolecularData);
 

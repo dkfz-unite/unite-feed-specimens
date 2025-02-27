@@ -7,7 +7,9 @@ public class MaterialModelConverter : Base.Converters.SpecimenModelConverter<Mat
         base.Map(source, ref target);
 
         target.Type = source.Type.Value;
+        target.FixationType = source.FixationType;
         target.TumorType = source.TumorType;
+        target.TumorGrade = source.TumorGrade;
         target.Source = source.Source;
     }
 }

@@ -11,8 +11,8 @@ public class OrganoidModelValidator : Base.Validators.SpecimenModelValidator<Org
             .WithMessage("Maximum length is 100");
         
         RuleFor(model => model.ImplantedCellsNumber)
-            .GreaterThanOrEqualTo(0)
-            .WithMessage("Should be greater than or equal to 0");
+            .GreaterThan(0)
+            .WithMessage("Should be greater than 0");
     }
 }
 

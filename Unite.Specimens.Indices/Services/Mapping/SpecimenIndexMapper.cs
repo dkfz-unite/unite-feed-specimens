@@ -68,7 +68,9 @@ public class SpecimenIndexMapper
             CreationDay = entity.CreationDay ?? entity.CreationDate?.RelativeFrom(diagnosisDate),
 
             Type = entity.Material.TypeId?.ToDefinitionString(),
+            FixationType = entity.Material.FixationTypeId?.ToDefinitionString(),
             TumorType = entity.Material.TumorTypeId?.ToDefinitionString(),
+            TumorGrade = entity.Material.TumorGrade,
             Source = entity.Material.Source?.Value,
 
             MolecularData = CreateFrom(entity.MolecularData)
