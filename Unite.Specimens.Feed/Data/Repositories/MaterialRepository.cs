@@ -27,7 +27,9 @@ internal class MaterialRepository : SpecimenRepositoryBase<MaterialModel>
             entity.Material = new Material();
 
         entity.Material.TypeId = model.Type;
+        entity.Material.FixationTypeId = model.FixationType;
         entity.Material.TumorTypeId = model.TumorType;
+        entity.Material.TumorGrade = model.TumorGrade;
         entity.Material.Source = GetMaterialSource(model.Source);
     }
 
