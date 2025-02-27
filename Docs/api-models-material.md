@@ -8,7 +8,7 @@ Includes material and all basic [specimen](./api-models-specimen.md) information
 
 **`fixation_type`** - Material preservation type.
 - Type: _String_
-- Possible values: `"FFPE"`, `"Fresh_Frozen"`
+- Possible values: `"FFPE"`, `"Fresh Frozen"`
 - Example: `"FFPE"`
 
 **`tumor_type`** - Material tumor type.
