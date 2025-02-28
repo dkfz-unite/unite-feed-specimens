@@ -186,35 +186,35 @@ public class SpecimenIndexCreator
 
     private ParentIndex CreateParentIndex(int specimenId)
     {
-        var parent = LoadParentSpecimen(specimenId);
+        var specimen = LoadParentSpecimen(specimenId);
 
-        if (parent == null)
+        if (specimen == null)
             return null;
 
-        return CreateParentIndex(parent);
+        return CreateParentIndex(specimen);
     }
 
     private ParentIndex CreateParentIndex(Specimen specimen)
     {
-        if (specimen.Parent == null)
+        if (specimen == null)
             return null;
 
         return new ParentIndex
         {
-            Id = specimen.Parent.Id,
-            ReferenceId = specimen.Parent.ReferenceId,
-            Type = specimen.Parent.TypeId.ToDefinitionString()
+            Id = specimen.Id,
+            ReferenceId = specimen.ReferenceId,
+            Type = specimen.TypeId.ToDefinitionString()
         };
     }
 
-    private Specimen LoadParentSpecimen(int specimeId)
+    private Specimen LoadParentSpecimen(int specimenId)
     {
         using var dbContext = _dbContextFactory.CreateDbContext();
 
         return dbContext.Set<Specimen>()
             .AsNoTracking()
             .Include(specimen => specimen.Parent)
-            .FirstOrDefault(specimen => specimen.Id == specimeId).Parent;
+            .FirstOrDefault(specimen => specimen.Id == specimenId).Parent;
     }
 
 
