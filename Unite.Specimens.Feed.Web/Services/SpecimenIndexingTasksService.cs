@@ -57,7 +57,7 @@ public class SpecimenIndexingTasksService : IndexingTaskService<Donor, int>
 
     protected override IEnumerable<int> LoadRelatedProjects(IEnumerable<int> keys)
     {
-        return [];
+        return _specimensRepository.GetRelatedProjects(keys).Result;
     }
 
     protected override IEnumerable<int> LoadRelatedDonors(IEnumerable<int> keys)
