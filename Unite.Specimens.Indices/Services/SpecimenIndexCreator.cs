@@ -21,6 +21,7 @@ using Unite.Specimens.Indices.Services.Mapping;
 using SSM = Unite.Data.Entities.Genome.Analysis.Dna.Ssm;
 using CNV = Unite.Data.Entities.Genome.Analysis.Dna.Cnv;
 using SV = Unite.Data.Entities.Genome.Analysis.Dna.Sv;
+using Unite.Data.Constants;
 
 
 namespace Unite.Specimens.Indices.Services;
@@ -162,7 +163,9 @@ public class SpecimenIndexCreator
 
         return dbContext.Set<SampleResource>()
             .AsNoTracking()
-            .Any(resource => resource.SampleId == sampleId && resource.Type == "dna-meth");
+            .Any(resource => resource.SampleId == sampleId &&
+                ((resource.Type == DataTypes.Genome.Meth.Sample && resource.Format == FileTypes.Sequence.Idat) ||
+                (resource.Type == DataTypes.Genome.Meth.Levels)));
     }
 
     private bool CheckSampleGeneExp(int sampleId)
@@ -180,7 +183,7 @@ public class SpecimenIndexCreator
 
         return dbContext.Set<SampleResource>()
             .AsNoTracking()
-            .Any(resource => resource.SampleId == sampleId && resource.Type == "rnasc-exp");
+            .Any(resource => resource.SampleId == sampleId && resource.Type == DataTypes.Genome.Rnasc.Exp);
     }
 
 
@@ -439,7 +442,9 @@ public class SpecimenIndexCreator
 
         return dbContext.Set<SampleResource>()
             .AsNoTracking()
-            .Any(resource => resource.Sample.SpecimenId == specimenId && resource.Type == "dna-meth");
+            .Any(resource => resource.Sample.SpecimenId == specimenId &&
+                ((resource.Type == DataTypes.Genome.Meth.Sample && resource.Format == FileTypes.Sequence.Idat) ||
+                (resource.Type == DataTypes.Genome.Meth.Levels)));
     }
 
     /// <summary>
@@ -467,6 +472,6 @@ public class SpecimenIndexCreator
 
         return dbContext.Set<SampleResource>()
             .AsNoTracking()
-            .Any(resource => resource.Sample.SpecimenId == specimenId && resource.Type == "rnasc-exp");
+            .Any(resource => resource.Sample.SpecimenId == specimenId && resource.Type == DataTypes.Genome.Rnasc.Exp);
     }
 }
