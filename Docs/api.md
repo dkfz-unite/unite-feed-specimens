@@ -573,8 +573,8 @@ Supported formats are:
             "gof": 0.95,
             "dss": 0.35,
             "dsss": 0.15,
-            "min_dose": 1,
-            "max_dose": 10000,
+            "dose_min": 1,
+            "dose_max": 10000,
             "dose_25": 5.25,
             "dose_50": 10.50,
             "dose_75": 50.75,
@@ -586,8 +586,8 @@ Supported formats are:
             "gof": 0.75,
             "dss": 0.30,
             "dsss": 0.10,
-            "min_dose": 1,
-            "max_dose": 10000,
+            "dose_min": 1,
+            "dose_max": 10000,
             "dose_25": 4.25,
             "dose_50": 8.50,
             "dose_75": 47.75,
@@ -599,8 +599,8 @@ Supported formats are:
             "gof": 0.55,
             "dss": 0.25,
             "dsss": 0.05,
-            "min_dose": 1,
-            "max_dose": 10000,
+            "dose_min": 1,
+            "dose_max": 10000,
             "dose_25": 2.25,
             "dose_50": 4.50,
             "dose_75": 25.75,
@@ -612,8 +612,8 @@ Supported formats are:
             "gof": 0.35,
             "dss": 0.15,
             "dsss": -0.05,
-            "min_dose": 1,
-            "max_dose": 10000,
+            "dose_min": 1,
+            "dose_max": 10000,
             "dose_25": 0.25,
             "dose_50": 2.50,
             "dose_75": 15.75,
@@ -625,8 +625,8 @@ Supported formats are:
             "gof": 0.25,
             "dss": 0.10,
             "dsss": -0.10,
-            "min_dose": 1,
-            "max_dose": 10000,
+            "dose_min": 1,
+            "dose_max": 10000,
             "dose_25": 0.05,
             "dose_50": 0.50,
             "dose_75": 7.75,
@@ -644,7 +644,7 @@ Supported formats are:
 # specimen_type: Line
 # analysis_type: DSA
 # analysis_date: 2020-02-05
-drug    gof dss dsss min_dose   max_dose    donse_25    donse_50    donse_75    doses   responses
+drug    gof dss dsss dose_min   dose_max    donse_25    donse_50    donse_75    doses   responses
 Drug1	0.95	0.35	0.15	1	10000	5.25	10.50	50.75	1,10,100,1000,10000	0.02,0.25,0.85,0.952,0.955
 Drug2	0.75	0.30	0.10	1	10000	4.25	8.50	47.75	1,10,100,1000,10000	0.02,0.20,0.75,0.902,0.905
 Drug3	0.55	0.25	0.05	1	10000	2.25	4.50	25.75	1,10,100,1000,10000	0.05,10.50,35.25,65.25,65.50

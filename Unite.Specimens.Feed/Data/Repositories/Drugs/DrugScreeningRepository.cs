@@ -86,8 +86,8 @@ internal class DrugScreeningRepository
         entity.Gof = model.Gof;
         entity.Dss = model.Dss;
         entity.DssS = model.DssS;
-        entity.MinDose = model.MinDose;
-        entity.MaxDose = model.MaxDose;
+        entity.DoseMin = model.DoseMin;
+        entity.DoseMax = model.DoseMax;
         entity.Dose25 = model.Dose25;
         entity.Dose50 = model.Dose50;
         entity.Dose75 = model.Dose75;

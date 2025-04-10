@@ -30,7 +30,7 @@ Includes information about analysed sample.
 - Format: "YYYY-MM-DD"
 - Example: `2023-12-01`
 
-**`analysis_day`** - Relative number of days since diagnosis statement when the analysis was performed.
+**`analysis_day`** - Relative number of days since donor enrollment when the analysis was performed.
 - Type: _Integer_
 - Limitations: Integet, greater than or equal to 1, either 'date' or 'day' should be set.
 - Example: `22`
