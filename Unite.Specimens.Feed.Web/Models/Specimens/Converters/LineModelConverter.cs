@@ -24,9 +24,9 @@ public class LineModelConverter : Base.Converters.SpecimenModelConverter<LineMod
             DepositorName = source.DepositorName,
             DepositorEstablishment = source.DepositorEstablishment,
             EstablishmentDate = source.EstablishmentDate,
-            PubMedLink = source.PubMedLink,
+            PubmedLink = source.PubMedLink,
             AtccLink = source.AtccLink,
-            ExPasyLink = source.ExPasyLink
+            ExpasyLink = source.ExPasyLink
         };
     }
 }

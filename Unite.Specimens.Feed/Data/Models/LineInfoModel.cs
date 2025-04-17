@@ -7,7 +7,7 @@ public class LineInfoModel
     public string DepositorEstablishment { get; set; }
     public DateOnly? EstablishmentDate { get; set; }
 
-    public string PubMedLink { get; set; }
+    public string PubmedLink { get; set; }
     public string AtccLink { get; set; }
-    public string ExPasyLink { get; set; }
+    public string ExpasyLink { get; set; }
 }

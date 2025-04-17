@@ -9,8 +9,8 @@ All fields are booleand and indicate whether the data is available or not.
 - **`Molecular`** - Molecular data
 - **`Interventions`** - Interventions data (not available for donor Materials)
 - **`Drugs`** - Drugs screening data (not available for donor Materials)
-- **`Mris`** - MRI images data (available for donor tumor materials)
-- **`Ssms`** - Simple somatic mutations data (SSM)
+- **`Mrs`** - MR images data (available for donor tumor materials)
+- **`Sms`** - Simple mutations data (SM)
 - **`Cnvs`** - Copy number variants data (CNV)
 - **`Svs`** - Structural variants data (SV)
 - **`GeneExp`** - Bulk gene expression data (RNA-Seq)

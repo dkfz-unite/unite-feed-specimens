@@ -13,10 +13,10 @@ public class SpecimenIndexMapper
     /// Creates an index from the entity. Returns null if entity is null.
     /// </summary>
     /// <param name="entity">Entity.</param>
-    /// <param name="diagnosisDate">Diagnosis date (anchor date for calculation of relative days).</param>
+    /// <param name="enrollmentDate">Enrollment date (anchor date for calculation of relative days).</param>
     /// <typeparam name="T">Type of the index.</typeparam>
     /// <returns>Index created from the entity.</returns>
-    public static T CreateFrom<T>(in Specimen entity, DateOnly? diagnosisDate) where T : SpecimenIndex, new()
+    public static T CreateFrom<T>(in Specimen entity, DateOnly? enrollmentDate) where T : SpecimenIndex, new()
     {
         if (entity == null)
         {
@@ -25,7 +25,7 @@ public class SpecimenIndexMapper
 
         var index = new T();
 
-        Map(entity, index, diagnosisDate);
+        Map(entity, index, enrollmentDate);
 
         return index;
     }
@@ -35,8 +35,8 @@ public class SpecimenIndexMapper
     /// </summary>
     /// <param name="entity">Entity.</param>
     /// <param name="index">Index.</param>
-    /// <param name="diagnosisDate">Diagnosis date (anchor date for calculation of relative days).</param> 
-    public static void Map(in Specimen entity, SpecimenIndex index, DateOnly? diagnosisDate)
+    /// <param name="enrollmentDate">Enrollment date (anchor date for calculation of relative days).</param> 
+    public static void Map(in Specimen entity, SpecimenIndex index, DateOnly? enrollmentDate)
     {
         if (entity == null || index == null)
         {
@@ -47,14 +47,14 @@ public class SpecimenIndexMapper
         index.ReferenceId = entity.ReferenceId;
         index.Type = entity.TypeId.ToDefinitionString();
 
-        index.Material = CreateFromMaterial(entity, diagnosisDate);
-        index.Line = CreateFromLine(entity, diagnosisDate);
-        index.Organoid = CreateFromOrganoid(entity, diagnosisDate);
-        index.Xenograft = CreateFromXenograft(entity, diagnosisDate);
+        index.Material = CreateFromMaterial(entity, enrollmentDate);
+        index.Line = CreateFromLine(entity, enrollmentDate);
+        index.Organoid = CreateFromOrganoid(entity, enrollmentDate);
+        index.Xenograft = CreateFromXenograft(entity, enrollmentDate);
     }
 
 
-    private static MaterialIndex CreateFromMaterial(in Specimen entity, DateOnly? diagnosisDate)
+    private static MaterialIndex CreateFromMaterial(in Specimen entity, DateOnly? enrollmentDate)
     {
         if (entity.Material == null)
         {
@@ -65,7 +65,7 @@ public class SpecimenIndexMapper
         {
             Id = entity.Id,
             ReferenceId = entity.ReferenceId,
-            CreationDay = entity.CreationDay ?? entity.CreationDate?.RelativeFrom(diagnosisDate),
+            CreationDay = entity.CreationDay ?? entity.CreationDate?.RelativeFrom(enrollmentDate),
 
             Type = entity.Material.TypeId?.ToDefinitionString(),
             FixationType = entity.Material.FixationTypeId?.ToDefinitionString(),
@@ -77,7 +77,7 @@ public class SpecimenIndexMapper
         };
     }
 
-    private static LineIndex CreateFromLine(in Specimen entity, DateOnly? diagnosisDate)
+    private static LineIndex CreateFromLine(in Specimen entity, DateOnly? enrollmentDate)
     {
         if (entity.Line == null)
         {
@@ -88,7 +88,7 @@ public class SpecimenIndexMapper
         {
             Id = entity.Id,
             ReferenceId = entity.ReferenceId,
-            CreationDay = entity.CreationDay ?? entity.CreationDate?.RelativeFrom(diagnosisDate),
+            CreationDay = entity.CreationDay ?? entity.CreationDate?.RelativeFrom(enrollmentDate),
 
             CellsSpecies = entity.Line.CellsSpeciesId?.ToDefinitionString(),
             CellsType = entity.Line.CellsTypeId?.ToDefinitionString(),
@@ -99,9 +99,9 @@ public class SpecimenIndexMapper
             DepositorEstablishment = entity.Line.Info?.DepositorEstablishment,
             EstablishmentDate = entity.Line.Info?.EstablishmentDate,
 
-            PubMedLink = entity.Line.Info?.PubMedLink,
+            PubmedLink = entity.Line.Info?.PubmedLink,
             AtccLink = entity.Line.Info?.AtccLink,
-            ExPasyLink = entity.Line.Info?.ExPasyLink,
+            ExpasyLink = entity.Line.Info?.ExpasyLink,
 
             MolecularData = CreateFrom(entity.MolecularData),
             Interventions = CreateFrom(entity.Interventions, entity.CreationDate),
@@ -109,7 +109,7 @@ public class SpecimenIndexMapper
         };
     }
 
-    private static OrganoidIndex CreateFromOrganoid(in Specimen entity, DateOnly? diagnosisDate)
+    private static OrganoidIndex CreateFromOrganoid(in Specimen entity, DateOnly? enrollmentDate)
     {
         if (entity.Organoid == null)
         {
@@ -120,7 +120,7 @@ public class SpecimenIndexMapper
         {
             Id = entity.Id,
             ReferenceId = entity.ReferenceId,
-            CreationDay = entity.CreationDay ?? entity.CreationDate?.RelativeFrom(diagnosisDate),
+            CreationDay = entity.CreationDay ?? entity.CreationDate?.RelativeFrom(enrollmentDate),
 
             ImplantedCellsNumber = entity.Organoid.ImplantedCellsNumber,
             Tumorigenicity = entity.Organoid.Tumorigenicity,
@@ -132,7 +132,7 @@ public class SpecimenIndexMapper
         };
     }
 
-    private static XenograftIndex CreateFromXenograft(in Specimen entity, DateOnly? diagnosisDate)
+    private static XenograftIndex CreateFromXenograft(in Specimen entity, DateOnly? enrollmentDate)
     {
         if (entity.Xenograft == null)
         {
@@ -143,7 +143,7 @@ public class SpecimenIndexMapper
         {
             Id = entity.Id,
             ReferenceId = entity.ReferenceId,
-            CreationDay = entity.CreationDay ?? entity.CreationDate?.RelativeFrom(diagnosisDate),
+            CreationDay = entity.CreationDay ?? entity.CreationDate?.RelativeFrom(enrollmentDate),
 
             MouseStrain = entity.Xenograft.MouseStrain,
             GroupSize = entity.Xenograft.GroupSize,
@@ -215,8 +215,8 @@ public class SpecimenIndexMapper
                 Gof = entity.Gof,
                 Dss = entity.Dss,
                 DssS = entity.DssS,
-                MinDose = entity.MinDose,
-                MaxDose = entity.MaxDose,
+                DoseMin = entity.DoseMin,
+                DoseMax = entity.DoseMax,
                 Dose25 = entity.Dose25,
                 Dose50 = entity.Dose50,
                 Dose75 = entity.Dose75

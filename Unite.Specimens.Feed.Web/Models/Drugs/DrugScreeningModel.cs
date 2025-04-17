@@ -8,8 +8,8 @@ public record DrugScreeningModel
     private double? _gof;
     private double? _dss;
     private double? _dsss;
-    private double? _minDose;
-    private double? _maxDose;
+    private double? _doseMin;
+    private double? _doseMax;
     private double? _dose25;
     private double? _dose50;
     private double? _dose75;
@@ -44,14 +44,14 @@ public record DrugScreeningModel
     /// <summary>
     /// Minimal tested concentration in nano molar
     /// </summary>
-    [JsonPropertyName("min_dose")]
-    public double? MinDose { get => _minDose; init => _minDose = value; }
+    [JsonPropertyName("dose_min")]
+    public double? DoseMin { get => _doseMin; init => _doseMin = value; }
 
     /// <summary>
     /// Maximal concentration tested in nano molar
     /// </summary>
-    [JsonPropertyName("max_dose")]
-    public double? MaxDose { get => _maxDose; init => _maxDose = value; }
+    [JsonPropertyName("dose_max")]
+    public double? DoseMax { get => _doseMax; init => _doseMax = value; }
 
     /// <summary>
     /// Average concentration at 25% inhibition

@@ -31,7 +31,7 @@ Includes basic specimen information.
 - Limitations: Only either `creation_date` or `creation_day` can be set at once, not both
 - Example: `"2020-02-05"`
 
-**`creation_day`** - Relative number of days since diagnosis statement when specimen was created.
+**`creation_day`** - Relative number of days since donor enrollment when specimen was created.
 - Type: _Number_
 - Limitations: Integer, greater or equal to 1, only either `creation_date` or `creation_day` can be set at once, not both
 - Example: `36`
