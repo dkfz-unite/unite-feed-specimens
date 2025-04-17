@@ -42,9 +42,9 @@ internal class LineRepository : SpecimenRepositoryBase<LineModel>
             DepositorName = model.DepositorName,
             DepositorEstablishment = model.DepositorEstablishment,
             EstablishmentDate = model.EstablishmentDate,
-            PubMedLink = model.PubMedLink,
+            PubmedLink = model.PubmedLink,
             AtccLink = model.AtccLink,
-            ExPasyLink = model.ExPasyLink
+            ExpasyLink = model.ExpasyLink
         };
     }
 }
