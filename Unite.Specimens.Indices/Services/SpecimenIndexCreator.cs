@@ -163,7 +163,9 @@ public class SpecimenIndexCreator
 
         return dbContext.Set<SampleResource>()
             .AsNoTracking()
-            .Any(resource => resource.SampleId == sampleId && resource.Type == DataTypes.Genome.Meth.Level);
+            .Any(resource => resource.SampleId == sampleId
+                          && resource.Type == DataTypes.Genome.Meth.Sample
+                          && resource.Format == FileTypes.Sequence.Idat);
     }
 
     private bool CheckSampleGeneExp(int sampleId)
@@ -440,7 +442,9 @@ public class SpecimenIndexCreator
 
         return dbContext.Set<SampleResource>()
             .AsNoTracking()
-            .Any(resource => resource.Sample.SpecimenId == specimenId && resource.Type == DataTypes.Genome.Meth.Level);
+            .Any(resource => resource.Sample.SpecimenId == specimenId
+                          && resource.Type == DataTypes.Genome.Meth.Sample
+                          && resource.Format == FileTypes.Sequence.Idat);
     }
 
     /// <summary>
