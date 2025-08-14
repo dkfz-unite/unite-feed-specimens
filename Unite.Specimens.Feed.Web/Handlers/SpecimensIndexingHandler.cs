@@ -41,13 +41,13 @@ public class SpecimensIndexingHandler
 
     private async Task ProcessSpecimenIndexingTasks(int bucketSize)
     {
+        if (_taskProcessingService.HasTasks(WorkerType.Submission) || _taskProcessingService.HasTasks(WorkerType.Annotation))
+            return;
+
         var stopwatch = new Stopwatch();
 
         await _taskProcessingService.Process(IndexingTaskType.Specimen, bucketSize, async (tasks) =>
         {
-            if (_taskProcessingService.HasTasks(WorkerType.Submission) || _taskProcessingService.HasTasks(WorkerType.Annotation))
-                return false;
-
             stopwatch.Restart();
 
             var indicesToDelete = new List<string>();
