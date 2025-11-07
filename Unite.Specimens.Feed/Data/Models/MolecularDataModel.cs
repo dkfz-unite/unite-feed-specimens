@@ -10,4 +10,5 @@ public class MolecularDataModel
     public GeneExpressionSubtype? GeneExpressionSubtype { get; set; }
     public MethylationSubtype? MethylationSubtype { get; set; }
     public bool? GcimpMethylation { get; set; }
+    public string[] GeneKnockouts { get; set; }
 }

@@ -14,7 +14,8 @@ public class MolecularDataModelConverter
             IdhMutation = source.IdhMutation,
             GeneExpressionSubtype = source.GeneExpressionSubtype,
             MethylationSubtype = source.MethylationSubtype,
-            GcimpMethylation = source.GcimpMethylation
+            GcimpMethylation = source.GcimpMethylation,
+            GeneKnockouts = source.GeneKnockouts
         };
     }
 }

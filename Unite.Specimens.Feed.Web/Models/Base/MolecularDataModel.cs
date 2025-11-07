@@ -22,4 +22,7 @@ public class MolecularDataModel
 
     [JsonPropertyName("gcimp_methylation")]
     public bool? GcimpMethylation { get; set; }
+
+    [JsonPropertyName("gene_knockouts")]
+    public string[] GeneKnockouts { get; set; }
 }

@@ -81,7 +81,8 @@ Supported formats are:
             "mgmt_status": "Methylated",
             "idh_status": "Wild Type",
             "gene_expression_subtype": "Classical",
-            "methylation_subtype": "H3-K27"
+            "methylation_subtype": "H3-K27",
+            "gene_knockouts": ["EGFR", "PTEN"]
         }
     },
     {
@@ -124,12 +125,12 @@ Supported formats are:
 
 ##### tsv - text/tab-separated-values
 ```tsv
-id	donor_id	parent_id	parent_type	creation_date	creation_day	type	tumor_type	source	mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation
-Material1	Donor1			2020-01-15		Normal		Blood						
-Material2	Donor1			2020-01-15		Tumor	Primary	Tissue	Methylated	Wild Type		Classical	H3-K27	true
-Material1	Donor2			2020-01-15		Normal		Blood						
-Material2	Donor2			2020-01-15		Tumor	Primary	Tissue	Unmethylated	Mutant	IDH1 R132H			false
-Material3	Donor2			2020-03-01		Tumor	Recurrent	Tissue	Unmethylated	Mutant	IDH1 R132H			false
+id	donor_id	parent_id	parent_type	creation_date	creation_day	type	tumor_type	source	mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation	gene_knockouts
+Material1	Donor1			2020-01-15		Normal		Blood							
+Material2	Donor1			2020-01-15		Tumor	Primary	Tissue	Methylated	Wild Type		Classical	H3-K27	true	EGFR, PTEN
+Material1	Donor2			2020-01-15		Normal		Blood							
+Material2	Donor2			2020-01-15		Tumor	Primary	Tissue	Unmethylated	Mutant	IDH1 R132H			false	
+Material3	Donor2			2020-03-01		Tumor	Recurrent	Tissue	Unmethylated	Mutant	IDH1 R132H			false	
 ```
 
 Fields description can be found [here](api-models-material.md).
@@ -188,7 +189,8 @@ Supported formats are:
             "idh_status": "Wild Type",
             "gene_expression_subtype": "Classical",
             "methylation_subtype": "H3-K27",
-            "gcimp_methylation": true
+            "gcimp_methylation": true,
+            "gene_knockouts": ["EGFR", "PTEN"]
         }
     },
     {
@@ -221,9 +223,9 @@ Supported formats are:
 
 ##### tsv - text/tab-separated-values
 ```tsv
-id	donor_id	parent_id	parent_type	creation_date	creation_day	cells_species	cells_type	cells_culture_type	name	depositor_name	depositor_establishment	establishment_date	pubmed_link	atcc_link	expasy_link	mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation
-Line1	Donor1	Material2	Material	2020-02-01		Human	Stem Cell	Suspension	D1M2L1	Depositor Golden	Line Depositor Centre	2020-02-01	https://pubmed.ncbi.nlm.nih.gov	https://www.atcc.org	https://www.expasy.org	Methylated	Wild Type		Classical	H3-K27	true
-Line1	Donor2	Material2	Material	2020-02-01		Human	Differentiated	Adherent	D2M2L1	Depositor Golden	Line Depositor Centre	2020-02-01	https://pubmed.ncbi.nlm.nih.gov	https://www.atcc.org	https://www.expasy.org	Unmethylated	Mutant	IDH1 R132H			false
+id	donor_id	parent_id	parent_type	creation_date	creation_day	cells_species	cells_type	cells_culture_type	name	depositor_name	depositor_establishment	establishment_date	pubmed_link	atcc_link	expasy_link	mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation	gene_knockouts
+Line1	Donor1	Material2	Material	2020-02-01		Human	Stem Cell	Suspension	D1M2L1	Depositor Golden	Line Depositor Centre	2020-02-01	https://pubmed.ncbi.nlm.nih.gov	https://www.atcc.org	https://www.expasy.org	Methylated	Wild Type		Classical	H3-K27	true	EGFR, PTEN
+Line1	Donor2	Material2	Material	2020-02-01		Human	Differentiated	Adherent	D2M2L1	Depositor Golden	Line Depositor Centre	2020-02-01	https://pubmed.ncbi.nlm.nih.gov	https://www.atcc.org	https://www.expasy.org	Unmethylated	Mutant	IDH1 R132H			false	
 ```
 
 Fields description can be found [here](api-models-line.md).
@@ -273,7 +275,8 @@ Supported formats are:
             "idh_status": "Wild Type",
             "gene_expression_subtype": "Classical",
             "methylation_subtype": "H3-K27",
-            "gcimp_methylation": true
+            "gcimp_methylation": true,
+            "gene_knockouts": ["EGFR", "PTEN"]
         }
     },
     {
@@ -297,9 +300,9 @@ Supported formats are:
 
 #### tsv - text/tab-separated-values
 ```tsv
-id	donor_id	parent_id	parent_type	creation_date	creation_day	medium	implanted_cells_number	tumorigenicity	mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation
-Organoid1	Donor1	Line1	Line	2020-02-05		Medium1	10500	true	Methylated	Wild Type		Classical	H3-K27	true
-Organoid1	Donor2	Line1	Line	2020-02-05		Medium2	45000	true	Unmethylated	Mutant	IDH1 R132H			false
+id	donor_id	parent_id	parent_type	creation_date	creation_day	medium	implanted_cells_number	tumorigenicity	mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation	gene_knockouts
+Organoid1	Donor1	Line1	Line	2020-02-05		Medium1	10500	true	Methylated	Wild Type		Classical	H3-K27	true	EGFR, PTEN
+Organoid1	Donor2	Line1	Line	2020-02-05		Medium2	45000	true	Unmethylated	Mutant	IDH1 R132H			false	
 ```
 
 Fields description can be found [here](api-models-organoid.md).
@@ -354,7 +357,8 @@ Supported formats are:
             "idh_status": "Wild Type",
             "gene_expression_subtype": "Classical",
             "methylation_subtype": "H3-K27",
-            "gcimp_methylation": true
+            "gcimp_methylation": true,
+            "gene_knockouts": ["EGFR", "PTEN"]
         }
     },
     {
@@ -383,9 +387,9 @@ Supported formats are:
 
 #### tsv - text/tab-separated-values
 ```tsv
-id	donor_id	parent_id	parent_type	creation_date	creation_day	mouse_strain	group_size	implant_type	implant_location	implanted_cells_number	tumorigenicity	tumor_growth_form	survival_days	mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation
-Xenograft1	Donor1	Line1	Line	2020-02-05		Nude	20	Orhtotopical	Striatal	750000	true	Invasive	20-30	Methylated	Wild Type		Classical	H3-K27	true
-Xenograft1	Donor2	Line1	Line	2020-02-05		Nude	30	Orhtotopical	Cortical	550000	true	Invasive	15-20	Unmethylated	Mutant	IDH1 R132H			false
+id	donor_id	parent_id	parent_type	creation_date	creation_day	mouse_strain	group_size	implant_type	implant_location	implanted_cells_number	tumorigenicity	tumor_growth_form	survival_days	mgmt_status	idh_status	idh_mutation	gene_expression_subtype	methylation_subtype	gcimp_methylation	gene_knockouts
+Xenograft1	Donor1	Line1	Line	2020-02-05		Nude	20	Orhtotopical	Striatal	750000	true	Invasive	20-30	Methylated	Wild Type		Classical	H3-K27	true	EGFR, PTEN
+Xenograft1	Donor2	Line1	Line	2020-02-05		Nude	30	Orhtotopical	Cortical	550000	true	Invasive	15-20	Unmethylated	Mutant	IDH1 R132H			false	
 ```
 
 Fields description can be found [here](./api-models-xenograft.md).
