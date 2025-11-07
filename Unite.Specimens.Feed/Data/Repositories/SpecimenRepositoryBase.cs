@@ -101,6 +101,7 @@ internal abstract class SpecimenRepositoryBase<TModel> where TModel : SpecimenMo
             entity.MolecularData.GeneExpressionSubtypeId = model.MolecularData.GeneExpressionSubtype;
             entity.MolecularData.MethylationSubtypeId = model.MolecularData.MethylationSubtype;
             entity.MolecularData.GcimpMethylation = model.MolecularData.GcimpMethylation;
+            entity.MolecularData.GeneKnockouts = model.MolecularData.GeneKnockouts;
         }
     }
 

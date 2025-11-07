@@ -175,7 +175,8 @@ public class SpecimenIndexMapper
             IdhMutation = entity.IdhMutationId?.ToDefinitionString(),
             GeneExpressionSubtype = entity.GeneExpressionSubtypeId?.ToDefinitionString(),
             MethylationSubtype = entity.MethylationSubtypeId?.ToDefinitionString(),
-            GcimpMethylation = entity.GcimpMethylation
+            GcimpMethylation = entity.GcimpMethylation,
+            GeneKnockouts = entity.GeneKnockouts
         };
     }
 

@@ -26,5 +26,13 @@ public class MolecularDataModelValidator : AbstractValidator<MolecularDataModel>
             .Empty()
             .When(model => model.IdhStatus != IdhStatus.WildType)
             .WithMessage("Methylation subtype can be set only if IDH status is 'Wild Type'");
+
+        RuleForEach(model => model.GeneKnockouts)
+            .NotEmpty()
+            .WithMessage("Should not have empty values");
+
+        RuleForEach(model => model.GeneKnockouts)
+            .MaximumLength(100)
+            .WithMessage("Maximum length is 100");
     }
 }

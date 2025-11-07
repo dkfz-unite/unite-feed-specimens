@@ -34,3 +34,10 @@ _At least one field has to be set_
 **`gcimp_methylation`** - Indicates whether specimen has G-CIMP methylation.
 - Type: _Boolean_
 - Example: `"true"`
+
+**`gene_knockouts`** - List of genes knocked out in the specimen.
+- Type: _Array_
+- Elemet type: _String_
+- Element limitations: Maximum length 100
+- Limitations: Should contain at least one element
+- Example: `["EGFR", "PTEN"]`
