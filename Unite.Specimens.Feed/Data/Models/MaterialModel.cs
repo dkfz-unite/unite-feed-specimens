@@ -4,9 +4,10 @@ namespace Unite.Specimens.Feed.Data.Models;
 
 public class MaterialModel : SpecimenModel
 {
+<<<<<<< Updated upstream
     public MaterialType Type { get; set; }
+=======
+>>>>>>> Stashed changes
     public FixationType? FixationType { get; set; }
-    public TumorType? TumorType { get; set; }
-    public byte? TumorGrade { get; set; }
     public string Source { get; set; }
 }

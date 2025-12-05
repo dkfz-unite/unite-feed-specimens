@@ -46,7 +46,7 @@ public class SpecimenIndexMapper
         index.Id = entity.Id;
         index.ReferenceId = entity.ReferenceId;
         index.Type = entity.TypeId.ToDefinitionString();
-
+        
         index.Material = CreateFromMaterial(entity, enrollmentDate);
         index.Line = CreateFromLine(entity, enrollmentDate);
         index.Organoid = CreateFromOrganoid(entity, enrollmentDate);
@@ -66,13 +66,14 @@ public class SpecimenIndexMapper
             Id = entity.Id,
             ReferenceId = entity.ReferenceId,
             CreationDay = entity.CreationDay ?? entity.CreationDate?.RelativeFrom(enrollmentDate),
+            Condition = entity.ConditionId.ToDefinitionString(),
+            TumorType = entity.TumorTypeId?.ToDefinitionString(),
+            TumorGrade = entity.TumorGrade,
 
-            Type = entity.Material.TypeId?.ToDefinitionString(),
             FixationType = entity.Material.FixationTypeId?.ToDefinitionString(),
-            TumorType = entity.Material.TumorTypeId?.ToDefinitionString(),
-            TumorGrade = entity.Material.TumorGrade,
             Source = entity.Material.Source?.Value,
 
+            TumorClassification = CreateFrom(entity.TumorClassification),
             MolecularData = CreateFrom(entity.MolecularData)
         };
     }
@@ -89,6 +90,9 @@ public class SpecimenIndexMapper
             Id = entity.Id,
             ReferenceId = entity.ReferenceId,
             CreationDay = entity.CreationDay ?? entity.CreationDate?.RelativeFrom(enrollmentDate),
+            Condition = entity.ConditionId.ToDefinitionString(),
+            TumorType = entity.TumorTypeId?.ToDefinitionString(),
+            TumorGrade = entity.TumorGrade,
 
             CellsSpecies = entity.Line.CellsSpeciesId?.ToDefinitionString(),
             CellsType = entity.Line.CellsTypeId?.ToDefinitionString(),
@@ -103,6 +107,7 @@ public class SpecimenIndexMapper
             AtccLink = entity.Line.Info?.AtccLink,
             ExpasyLink = entity.Line.Info?.ExpasyLink,
 
+            TumorClassification = CreateFrom(entity.TumorClassification),
             MolecularData = CreateFrom(entity.MolecularData),
             Interventions = CreateFrom(entity.Interventions, entity.CreationDate),
             DrugScreenings = CreateFrom(entity.SpecimenSamples?.FirstOrDefault(sample => sample.Analysis.TypeId == AnalysisType.DSA)?.DrugScreenings)
@@ -121,11 +126,15 @@ public class SpecimenIndexMapper
             Id = entity.Id,
             ReferenceId = entity.ReferenceId,
             CreationDay = entity.CreationDay ?? entity.CreationDate?.RelativeFrom(enrollmentDate),
+            Condition = entity.ConditionId.ToDefinitionString(),
+            TumorType = entity.TumorTypeId?.ToDefinitionString(),
+            TumorGrade = entity.TumorGrade,
 
             ImplantedCellsNumber = entity.Organoid.ImplantedCellsNumber,
             Tumorigenicity = entity.Organoid.Tumorigenicity,
             Medium = entity.Organoid.Medium,
 
+            TumorClassification = CreateFrom(entity.TumorClassification),
             MolecularData = CreateFrom(entity.MolecularData),
             Interventions = CreateFrom(entity.Interventions, entity.CreationDate),
             DrugScreenings = CreateFrom(entity.SpecimenSamples?.FirstOrDefault(sample => sample.Analysis.TypeId == AnalysisType.DSA)?.DrugScreenings)
@@ -144,6 +153,9 @@ public class SpecimenIndexMapper
             Id = entity.Id,
             ReferenceId = entity.ReferenceId,
             CreationDay = entity.CreationDay ?? entity.CreationDate?.RelativeFrom(enrollmentDate),
+            Condition = entity.ConditionId.ToDefinitionString(),
+            TumorType = entity.TumorTypeId?.ToDefinitionString(),
+            TumorGrade = entity.TumorGrade,
 
             MouseStrain = entity.Xenograft.MouseStrain,
             GroupSize = entity.Xenograft.GroupSize,
@@ -155,9 +167,26 @@ public class SpecimenIndexMapper
             SurvivalDaysFrom = entity.Xenograft.SurvivalDaysFrom,
             SurvivalDaysTo = entity.Xenograft.SurvivalDaysTo,
 
+            TumorClassification = CreateFrom(entity.TumorClassification),
             MolecularData = CreateFrom(entity.MolecularData),
             Interventions = CreateFrom(entity.Interventions, entity.CreationDate),
             DrugScreenings = CreateFrom(entity.SpecimenSamples?.FirstOrDefault(sample => sample.Analysis.TypeId == AnalysisType.DSA)?.DrugScreenings)
+        };
+    }
+
+    public static TumorClassificationIndex CreateFrom(in TumorClassification entity)
+    {
+        if (entity == null)
+        {
+            return null;
+        }
+
+        return new TumorClassificationIndex
+        {
+            Superfamily = entity.Superfamily?.Name,
+            Family = entity.Family?.Name,
+            Class = entity.Class?.Name,
+            Subclass = entity.Subclass?.Name
         };
     }
 
@@ -170,10 +199,12 @@ public class SpecimenIndexMapper
 
         return new MolecularDataIndex
         {
-            MgmtStatus = entity.MgmtStatusId?.ToDefinitionString(),
-            IdhStatus = entity.IdhStatusId?.ToDefinitionString(),
+            MgmtStatus = entity.MgmtStatus,
+            IdhStatus = entity.IdhStatus,
             IdhMutation = entity.IdhMutationId?.ToDefinitionString(),
-            GeneExpressionSubtype = entity.GeneExpressionSubtypeId?.ToDefinitionString(),
+            TertStatus = entity.TertStatus,
+            TertMutation = entity.TertMutationId?.ToDefinitionString(),
+            ExpressionSubtype = entity.ExpressionSubtypeId?.ToDefinitionString(),
             MethylationSubtype = entity.MethylationSubtypeId?.ToDefinitionString(),
             GcimpMethylation = entity.GcimpMethylation,
             GeneKnockouts = entity.GeneKnockouts
