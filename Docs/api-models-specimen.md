@@ -36,53 +36,30 @@ Includes basic specimen information.
 - Limitations: Integer, greater or equal to 1, only either `creation_date` or `creation_day` can be set at once, not both
 - Example: `36`
 
-**`type`** - Material type.
+**`condition`** - Specimen condition.
 - Type: _String_
 - Possible values: `"Normal"`, `"Tumor"`
 - Example: `"Tumor"`
 
-**`tumor_type`** - Material tumor type.
+**`tumor_type`** - Specimen tumor type.
 - Type: _String_
 - Possible values: `"Primary"`, `"Metastasis"`, `"Recurrent"`
-- Limitations: Can be set only if `type` is `"Tumor"`
+- Limitations: Can be set only if `condition` is `"Tumor"`
 - Example: `"Primary"`
 
-**`tumor_grade`** - Material tumor grade.
+**`tumor_grade`** - Specimen tumor grade.
 - Type: _Number_
 - Limitations: Integer, greater than 0
 - Example: `3`
 
-**`tumor_superfamily`** - Material tumor superfamily.
-- Type: _String_
-- Limitations: Maximum length 255
-- Example: `"Carcinoma"`
-
-**`tumor_family`** - Material tumor family.
-- Type: _String_
-- Limitations: Maximum length 255
-- Example: `"Adenocarcinoma"`
-
-**`tumor_class`** - Material tumor class.
-- Type: _String_
-- Limitations: Maximum length 255
-- Example: `"Colorectal Adenocarcinoma"`
-
-**`tumor_subclass`** - Material tumor subclass.
-- Type: _String_
-- Limitations: Maximum length 255
-- Example: `"Mucinous Adenocarcinoma"`
-
-**`tumor_classifier`** - Classifier used to classify the specimen tumor.
-- Type: _String_
-- Limitations: Maximum length 255
-- Example: `"OncoClassifier"`
-
-**`tumor_classifier_version`** - Classifier version used to classify the specimen tumor.
-- Type: _String_
-- Limitations: Maximum length 100
-- Example: `"v1.2"`
+**`tumor_classification`** - Specimen tumor classification data.
+- Note: In TSV format fields of this object are flattened with `tumor_` prefix (e.g. `tumor_superfamily`, `tumor_familty`, etc.).
+- Type: _Object([TumorClassification](api-models-base-classifier.md))_
+- Limitations: Can be set only if `condition` is `"Tumor"`
+- Example: `{...}`
 
 **`molecular_data`** - Specimen molecular data.
+- Note: In TSV format fields of this object are flattened without any prefix (e.g. `idh_status`, `idh_mutation`, etc.).
 - Type: _Object([MolecularData](api-models-base-molecular.md))_
 - Example: `{...}`
 
