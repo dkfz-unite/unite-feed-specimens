@@ -82,6 +82,7 @@ internal abstract class SpecimenRepositoryBase<TModel> where TModel : SpecimenMo
     protected virtual IQueryable<Specimen> GetQuery()
     {
         return _dbContext.Set<Specimen>()
+            .Include(entity => entity.TumorClassification)
             .Include(entity => entity.MolecularData);
     }
 

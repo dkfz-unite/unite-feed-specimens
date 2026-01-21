@@ -6,10 +6,6 @@ public class MaterialModelConverter : Base.Converters.SpecimenModelConverter<Mat
     {
         base.Map(source, ref target);
 
-<<<<<<< Updated upstream
-        target.Type = source.Type.Value;
-=======
->>>>>>> Stashed changes
         target.FixationType = source.FixationType;
         target.Source = source.Source;
     }
