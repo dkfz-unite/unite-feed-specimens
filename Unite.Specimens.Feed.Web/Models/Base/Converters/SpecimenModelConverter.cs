@@ -6,6 +6,7 @@ public abstract class SpecimenModelConverter<TSource, TTarget> : ConverterBase
     where TSource : SpecimenModel
     where TTarget : Data.Models.SpecimenModel, new()
 {
+    private readonly TumorClassificationModelConverter _tumorClassificationModelConverter = new();
     private readonly MolecularDataModelConverter _molecularDataModelConverter = new();
     private readonly InterventionModelConverter _interventionModelConverter = new();
 
@@ -24,8 +25,12 @@ public abstract class SpecimenModelConverter<TSource, TTarget> : ConverterBase
         target.ReferenceId = source.Id;
         target.CreationDate = source.CreationDate;
         target.CreationDay = source.CreationDay;
+        target.Condition = source.Condition;
+        target.TumorType = source.TumorType;
+        target.TumorGrade = source.TumorGrade;
         target.Parent = GetSpecimen(source.DonorId, source.ParentId, source.ParentType);
         target.Donor = GetDonor(source.DonorId);
+        target.TumorClassification = _tumorClassificationModelConverter.Convert(source.TumorClassification);
         target.MolecularData = _molecularDataModelConverter.Convert(source.MolecularData);
         target.Interventions = source.Interventions?.Select(_interventionModelConverter.Convert).ToArrayOrNull();
     }

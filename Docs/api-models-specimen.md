@@ -36,7 +36,30 @@ Includes basic specimen information.
 - Limitations: Integer, greater or equal to 1, only either `creation_date` or `creation_day` can be set at once, not both
 - Example: `36`
 
+**`condition`** - Specimen condition.
+- Type: _String_
+- Possible values: `"Normal"`, `"Tumor"`
+- Example: `"Tumor"`
+
+**`tumor_type`** - Specimen tumor type.
+- Type: _String_
+- Possible values: `"Primary"`, `"Metastasis"`, `"Recurrent"`
+- Limitations: Can be set only if `condition` is `"Tumor"`
+- Example: `"Primary"`
+
+**`tumor_grade`** - Specimen tumor grade.
+- Type: _Number_
+- Limitations: Integer, greater than 0
+- Example: `3`
+
+**`tumor_classification`** - Specimen tumor classification data.
+- Note: In TSV format fields of this object are flattened with `tumor_` prefix (e.g. `tumor_superfamily`, `tumor_familty`, etc.).
+- Type: _Object([TumorClassification](api-models-base-classifier.md))_
+- Limitations: Can be set only if `condition` is `"Tumor"`
+- Example: `{...}`
+
 **`molecular_data`** - Specimen molecular data.
+- Note: In TSV format fields of this object are flattened without any prefix (e.g. `idh_status`, `idh_mutation`, etc.).
 - Type: _Object([MolecularData](api-models-base-molecular.md))_
 - Example: `{...}`
 

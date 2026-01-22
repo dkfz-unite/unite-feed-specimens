@@ -3,23 +3,31 @@ Includes molecular data.
 
 _At least one field has to be set_
 
-**`mgmt_status`** - MGMT status of the specimen.
-- Type: _String_
-- Possible values: `"Methylated"`, `"Unmethylated"`
-- Example: `"Methylated"`
+**`mgmt_status`** - Indicates whether specimen is MGMT methylated.
+- Type: _Boolean_
+- Example: `"true"`
 
-**`idh_status`** - IDH status of the specimen.
-- Type: _String_
-- Possible values: `"Wild Type"`, `"Mutant"`
-- Example: `"Wild Type"`
+**`idh_status`** - Indicates whether IDH is mutated in the specimen.
+- Type: _Boolean_
+- Example: `false`
 
 **`idh_mutation`** - IDH mutation of the specimen.
 - Type: _String_
 - Possible values: `"IDH2 R172S"`, `"IDH2 R172M"`, `"IDH2 R172T"`, `"IDH2 R172W"`, `"IDH2 R172G"`, `"IDH1 R132G"`, `"IDH2 R172K"`, `"IDH1 R132C"`, `"IDH1 R132H"`, `"IDH1 R132L"`, `"IDH1 R132S"`
-- Limitations: Can be set only if `idh_status` is `"Mutant"`
+- Limitations: Can be set only if `idh_status` is `true`
 - Example: `null`
 
-**`gene_expression_subtype`** - Gene expression subtype of the specimen.
+**`tert_status`** - Indicates whether TERT is mutated in the specimen.
+- Type: _Boolean_
+- Example: `false`
+
+**`tert_mutation`** - TERT mutation of the specimen.
+- Type: _String_
+- Possible values: `"C228T"`, `"C250T"`
+- Limitations: Can be set only if `tert_status` is `true`
+- Example: `null`
+
+**`expression_subtype`** - Gene expression subtype of the specimen.
 - Type: _String_
 - Possible values: `"Mesenchymal"`, `"Proneural"`, `"Classical"`
 - Limitations: Can be set only if `idh_status` is `"Wild Type"`

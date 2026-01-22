@@ -16,7 +16,9 @@ internal static class MolecularDataBindingExtensions
             .Map(path.Join(entity => entity.MgmtStatus), "mgmt_status")
             .Map(path.Join(entity => entity.IdhStatus), "idh_status")
             .Map(path.Join(entity => entity.IdhMutation), "idh_mutation")
-            .Map(path.Join(entity => entity.GeneExpressionSubtype), "gene_expression_subtype")
+            .Map(path.Join(entity => entity.TertStatus), "tert_status")
+            .Map(path.Join(entity => entity.TertMutation), "tert_mutation")
+            .Map(path.Join(entity => entity.ExpressionSubtype), "expression_subtype")
             .Map(path.Join(entity => entity.MethylationSubtype), "methylation_subtype")
             .Map(path.Join(entity => entity.GcimpMethylation), "gcimp_methylation")
             .Map(path.Join(entity => entity.GeneKnockouts), "gene_knockouts", arrayConverter);

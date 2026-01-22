@@ -15,6 +15,9 @@ internal static class SpecimenBindingExtensions
             .Map(path.Join(entity => entity.ParentId), "parent_id")
             .Map(path.Join(entity => entity.ParentType), "parent_type")
             .Map(path.Join(entity => entity.CreationDate), "creation_date")
-            .Map(path.Join(entity => entity.CreationDay), "creation_day");
+            .Map(path.Join(entity => entity.CreationDay), "creation_day")
+            .Map(path.Join(entity => entity.Condition), "condition")
+            .Map(path.Join(entity => entity.TumorType), "tumor_type")
+            .Map(path.Join(entity => entity.TumorGrade), "tumor_grade");
     }
 }

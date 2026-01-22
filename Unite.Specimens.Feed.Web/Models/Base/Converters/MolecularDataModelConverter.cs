@@ -12,7 +12,9 @@ public class MolecularDataModelConverter
             MgmtStatus = source.MgmtStatus,
             IdhStatus = source.IdhStatus,
             IdhMutation = source.IdhMutation,
-            GeneExpressionSubtype = source.GeneExpressionSubtype,
+            TertStatus = source.TertStatus,
+            TertMutation = source.TertMutation,
+            ExpressionSubtype = source.ExpressionSubtype,
             MethylationSubtype = source.MethylationSubtype,
             GcimpMethylation = source.GcimpMethylation,
             GeneKnockouts = source.GeneKnockouts

@@ -6,16 +6,22 @@ namespace Unite.Specimens.Feed.Web.Models.Base;
 public class MolecularDataModel
 {
     [JsonPropertyName("mgmt_status")]
-    public MgmtStatus? MgmtStatus { get; set; }
+    public bool? MgmtStatus { get; set; }
 
     [JsonPropertyName("idh_status")]
-    public IdhStatus? IdhStatus { get; set; }
+    public bool? IdhStatus { get; set; }
 
     [JsonPropertyName("idh_mutation")]
     public IdhMutation? IdhMutation { get; set; }
 
-    [JsonPropertyName("gene_expression_subtype")]
-    public GeneExpressionSubtype? GeneExpressionSubtype { get; set; }
+    [JsonPropertyName("tert_status")]
+    public bool? TertStatus { get; set; }
+
+    [JsonPropertyName("tert_mutation")]
+    public TertMutation? TertMutation { get; set; }
+
+    [JsonPropertyName("expression_subtype")]
+    public ExpressionSubtype? ExpressionSubtype { get; set; }
 
     [JsonPropertyName("methylation_subtype")]
     public MethylationSubtype? MethylationSubtype { get; set; }

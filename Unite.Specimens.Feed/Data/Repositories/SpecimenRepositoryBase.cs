@@ -82,6 +82,7 @@ internal abstract class SpecimenRepositoryBase<TModel> where TModel : SpecimenMo
     protected virtual IQueryable<Specimen> GetQuery()
     {
         return _dbContext.Set<Specimen>()
+            .Include(entity => entity.TumorClassification)
             .Include(entity => entity.MolecularData);
     }
 
@@ -89,20 +90,121 @@ internal abstract class SpecimenRepositoryBase<TModel> where TModel : SpecimenMo
     {
         entity.CreationDate = model.CreationDate;
         entity.CreationDay = model.CreationDay;
+        entity.ConditionId = model.Condition;
+        entity.TumorTypeId = model.TumorType;
+        entity.TumorGrade = model.TumorGrade;
+
+        if (model.TumorClassification != null)
+        {
+            if (entity.TumorClassification == null)
+                entity.TumorClassification = new TumorClassification();
+
+            entity.TumorClassification.Superfamily = GetTumorSuperfamily(model.TumorClassification.Superfamily);
+            entity.TumorClassification.Family = GetTumorFamily(model.TumorClassification.Family);
+            entity.TumorClassification.Class = GetTumorClass(model.TumorClassification.Class);
+            entity.TumorClassification.Subclass = GetTumorSubclass(model.TumorClassification.Subclass);
+        }
 
         if (model.MolecularData != null)
         {
             if (entity.MolecularData == null)
                 entity.MolecularData = new MolecularData();
 
-            entity.MolecularData.MgmtStatusId = model.MolecularData.MgmtStatus;
-            entity.MolecularData.IdhStatusId = model.MolecularData.IdhStatus;
+            entity.MolecularData.MgmtStatus = model.MolecularData.MgmtStatus;
+            entity.MolecularData.IdhStatus = model.MolecularData.IdhStatus;
             entity.MolecularData.IdhMutationId = model.MolecularData.IdhMutation;
-            entity.MolecularData.GeneExpressionSubtypeId = model.MolecularData.GeneExpressionSubtype;
+            entity.MolecularData.TertStatus = model.MolecularData.TertStatus;
+            entity.MolecularData.TertMutationId = model.MolecularData.TertMutation;
+            entity.MolecularData.ExpressionSubtypeId = model.MolecularData.ExpressionSubtype;
             entity.MolecularData.MethylationSubtypeId = model.MolecularData.MethylationSubtype;
             entity.MolecularData.GcimpMethylation = model.MolecularData.GcimpMethylation;
             entity.MolecularData.GeneKnockouts = model.MolecularData.GeneKnockouts;
         }
+    }
+
+
+    private TumorSuperfamily GetTumorSuperfamily(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return null;
+
+        var entity = _dbContext.Set<TumorSuperfamily>()
+            .FirstOrDefault(entity =>
+                entity.Name == value
+            );
+
+        if (entity == null)
+        {
+            entity = new TumorSuperfamily() { Name = value };
+
+            _dbContext.Add(entity);
+            _dbContext.SaveChanges();
+        }
+
+        return entity;
+    }
+
+    private TumorFamily GetTumorFamily(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return null;
+
+        var entity = _dbContext.Set<TumorFamily>()
+            .FirstOrDefault(entity =>
+                entity.Name == value
+            );
+
+        if (entity == null)
+        {
+            entity = new TumorFamily() { Name = value };
+
+            _dbContext.Add(entity);
+            _dbContext.SaveChanges();
+        }
+
+        return entity;
+    }
+
+    private TumorClass GetTumorClass(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return null;
+
+        var entity = _dbContext.Set<TumorClass>()
+            .FirstOrDefault(entity =>
+                entity.Name == value
+            );
+
+        if (entity == null)
+        {
+            entity = new TumorClass() { Name = value };
+
+            _dbContext.Add(entity);
+            _dbContext.SaveChanges();
+        }
+
+        return entity;
+    }
+
+    private TumorSubclass GetTumorSubclass(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return null;
+
+        var entity = _dbContext.Set<TumorSubclass>()
+            .FirstOrDefault(entity =>
+                entity.Name == value
+            );
+
+        if (entity == null)
+        {
+            entity = new TumorSubclass() { Name = value };
+
+            _dbContext.Add(entity);
+            _dbContext.SaveChanges();
+        }
+
+        return entity;
     }
 
 
