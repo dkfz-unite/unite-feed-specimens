@@ -90,6 +90,7 @@ public class SpecimenIndexCreator
             .IncludeLine()
             .IncludeOrganoid()
             .IncludeXenograft()
+            .IncludeTumorClassification()
             .IncludeMolecularData()
             .IncludeInterventions()
             .IncludeDrugScreenings()

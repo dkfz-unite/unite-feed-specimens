@@ -1,10 +1,14 @@
 using FluentValidation;
+using Unite.Data.Entities.Specimens.Enums;
 
 namespace Unite.Specimens.Feed.Web.Models.Base.Validators;
 
 public abstract class SpecimenModelValidator<TModel> : AbstractValidator<TModel>
     where TModel : SpecimenModel
 {
+    private readonly TumorClassificationModelValidator _tumorClassificationModelValidator = new();
+    private readonly MolecularDataModelValidator _molecularDataModelValidator = new();
+
     public SpecimenModelValidator()
     {
         RuleFor(model => model.Id)
@@ -51,5 +55,35 @@ public abstract class SpecimenModelValidator<TModel> : AbstractValidator<TModel>
             .GreaterThanOrEqualTo(1)
             .When(model => model.CreationDay.HasValue)
             .WithMessage("Should be greater than or equal to 1");
+
+
+        RuleFor(model => model.TumorType)
+            .Empty()
+            .When(model => model.Condition != Condition.Tumor)
+            .WithMessage("Tumor type can be set only when condition is 'Tumor'");
+
+        RuleFor(model => model.TumorGrade)
+            .GreaterThan((byte)0)
+            .WithMessage("Should be greater than 0");
+
+        RuleFor(model => model.TumorGrade)
+            .Empty()
+            .When(model => model.Condition != Condition.Tumor)
+            .WithMessage("Tumor grade can be set only when condition is 'Tumor'");
+
+
+        RuleFor(model => model.TumorClassification)
+            .SetValidator(_tumorClassificationModelValidator)
+            .When(model => model.TumorClassification != null);
+
+        RuleFor(model => model.TumorClassification)
+            .Empty()
+            .When(model => model.Condition != Condition.Tumor)
+            .WithMessage("Tumor classification can be set only when condition is 'Tumor'");
+
+
+        RuleFor(model => model.MolecularData)
+            .SetValidator(_molecularDataModelValidator)
+            .When(model => model.MolecularData != null);
     }
 }

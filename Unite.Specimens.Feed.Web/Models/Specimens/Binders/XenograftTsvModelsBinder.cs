@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Unite.Essentials.Tsv;
 using Unite.Specimens.Feed.Web.Models.Base.Binders.Extensions;
+using Unite.Specimens.Feed.Web.Models.Base.Validators.Extensions;
 
 namespace Unite.Specimens.Feed.Web.Models.Specimens.Binders;
 
@@ -24,9 +25,19 @@ public class XenograftTsvModelsBinder : IModelBinder
             .Map(entity => entity.Tumorigenicity, "tumorigenicity")
             .Map(entity => entity.TumorGrowthForm, "tumor_growth_form")
             .Map(entity => entity.SurvivalDays, "survival_days")
+            .MapTumorClassification(entity => entity.TumorClassification)
             .MapMolecularData(entity => entity.MolecularData);
 
         var models = TsvReader.Read(tsv, map).ToArray();
+
+        foreach (var model in models)
+        {
+            if (model.TumorClassification.IsEmpty())
+                model.TumorClassification = null;
+
+            if (model.MolecularData.IsEmpty())
+                model.MolecularData = null;
+        }
 
         bindingContext.Result = ModelBindingResult.Success(models);
     }
