@@ -34,7 +34,7 @@ public abstract record SpecimenModel
     [JsonPropertyName("creation_day")]
     public virtual int? CreationDay { get => _creationDay; set => _creationDay = value; }
 
-    [JsonPropertyName("condition")]
+    [JsonPropertyName("category")]
     public virtual Condition? Condition { get => _condition; set => _condition = value; }
 
     [JsonPropertyName("tumor_type")]
