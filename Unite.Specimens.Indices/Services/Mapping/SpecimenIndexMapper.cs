@@ -66,7 +66,7 @@ public class SpecimenIndexMapper
             Id = entity.Id,
             ReferenceId = entity.ReferenceId,
             CreationDay = entity.CreationDay ?? entity.CreationDate?.RelativeFrom(enrollmentDate),
-            Condition = entity.ConditionId.ToDefinitionString(),
+            Category = entity.CategoryId.ToDefinitionString(),
             TumorType = entity.TumorTypeId?.ToDefinitionString(),
             TumorGrade = entity.TumorGrade,
 
@@ -90,7 +90,7 @@ public class SpecimenIndexMapper
             Id = entity.Id,
             ReferenceId = entity.ReferenceId,
             CreationDay = entity.CreationDay ?? entity.CreationDate?.RelativeFrom(enrollmentDate),
-            Condition = entity.ConditionId?.ToDefinitionString(),
+            Category = entity.CategoryId?.ToDefinitionString(),
             TumorType = entity.TumorTypeId?.ToDefinitionString(),
             TumorGrade = entity.TumorGrade,
 
@@ -126,7 +126,7 @@ public class SpecimenIndexMapper
             Id = entity.Id,
             ReferenceId = entity.ReferenceId,
             CreationDay = entity.CreationDay ?? entity.CreationDate?.RelativeFrom(enrollmentDate),
-            Condition = entity.ConditionId?.ToDefinitionString(),
+            Category = entity.CategoryId?.ToDefinitionString(),
             TumorType = entity.TumorTypeId?.ToDefinitionString(),
             TumorGrade = entity.TumorGrade,
 
@@ -153,7 +153,7 @@ public class SpecimenIndexMapper
             Id = entity.Id,
             ReferenceId = entity.ReferenceId,
             CreationDay = entity.CreationDay ?? entity.CreationDate?.RelativeFrom(enrollmentDate),
-            Condition = entity.ConditionId?.ToDefinitionString(),
+            Category = entity.CategoryId?.ToDefinitionString(),
             TumorType = entity.TumorTypeId?.ToDefinitionString(),
             TumorGrade = entity.TumorGrade,
 

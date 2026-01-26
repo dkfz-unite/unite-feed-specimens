@@ -7,7 +7,7 @@ public abstract class SpecimenModel
     public string ReferenceId { get; set; }
     public DateOnly? CreationDate { get; set; }
     public int? CreationDay { get; set; }
-    public Condition? Condition { get; set; }
+    public Category? Category { get; set; }
     public TumorType? TumorType { get; set; }
     public byte? TumorGrade { get; set; }
 
