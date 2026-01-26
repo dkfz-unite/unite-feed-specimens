@@ -11,7 +11,7 @@ public abstract record SpecimenModel
     protected SpecimenType? _parentType;
     protected DateOnly? _creationDate;
     protected int? _creationDay;
-    protected Condition? _condition;
+    protected Category? _category;
     protected TumorType? _tumorType;
     protected byte? _tumorGrade;
 
@@ -35,7 +35,7 @@ public abstract record SpecimenModel
     public virtual int? CreationDay { get => _creationDay; set => _creationDay = value; }
 
     [JsonPropertyName("category")]
-    public virtual Condition? Condition { get => _condition; set => _condition = value; }
+    public virtual Category? Category { get => _category; set => _category = value; }
 
     [JsonPropertyName("tumor_type")]
     public virtual TumorType? TumorType { get => _tumorType; set => _tumorType = value; }

@@ -25,7 +25,7 @@ public abstract class SpecimenModelConverter<TSource, TTarget> : ConverterBase
         target.ReferenceId = source.Id;
         target.CreationDate = source.CreationDate;
         target.CreationDay = source.CreationDay;
-        target.Condition = source.Condition;
+        target.Category = source.Category;
         target.TumorType = source.TumorType;
         target.TumorGrade = source.TumorGrade;
         target.Parent = GetSpecimen(source.DonorId, source.ParentId, source.ParentType);

@@ -59,8 +59,8 @@ public abstract class SpecimenModelValidator<TModel> : AbstractValidator<TModel>
 
         RuleFor(model => model.TumorType)
             .Empty()
-            .When(model => model.Condition != Condition.Tumor)
-            .WithMessage("Tumor type can be set only when condition is 'Tumor'");
+            .When(model => model.Category != Category.Tumor)
+            .WithMessage("Tumor type can be set only when category is 'Tumor'");
 
         RuleFor(model => model.TumorGrade)
             .GreaterThan((byte)0)
@@ -68,8 +68,8 @@ public abstract class SpecimenModelValidator<TModel> : AbstractValidator<TModel>
 
         RuleFor(model => model.TumorGrade)
             .Empty()
-            .When(model => model.Condition != Condition.Tumor)
-            .WithMessage("Tumor grade can be set only when condition is 'Tumor'");
+            .When(model => model.Category != Category.Tumor)
+            .WithMessage("Tumor grade can be set only when category is 'Tumor'");
 
 
         RuleFor(model => model.TumorClassification)
@@ -78,8 +78,8 @@ public abstract class SpecimenModelValidator<TModel> : AbstractValidator<TModel>
 
         RuleFor(model => model.TumorClassification)
             .Empty()
-            .When(model => model.Condition != Condition.Tumor)
-            .WithMessage("Tumor classification can be set only when condition is 'Tumor'");
+            .When(model => model.Category != Category.Tumor)
+            .WithMessage("Tumor classification can be set only when category is 'Tumor'");
 
 
         RuleFor(model => model.MolecularData)

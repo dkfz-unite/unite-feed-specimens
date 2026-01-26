@@ -90,7 +90,7 @@ internal abstract class SpecimenRepositoryBase<TModel> where TModel : SpecimenMo
     {
         entity.CreationDate = model.CreationDate;
         entity.CreationDay = model.CreationDay;
-        entity.ConditionId = model.Condition;
+        entity.CategoryId = model.Category;
         entity.TumorTypeId = model.TumorType;
         entity.TumorGrade = model.TumorGrade;
 
