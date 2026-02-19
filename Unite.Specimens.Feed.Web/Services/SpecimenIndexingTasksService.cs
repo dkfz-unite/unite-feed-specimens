@@ -51,6 +51,7 @@ public class SpecimenIndexingTasksService : IndexingTaskService<Donor, int>
             CreateSpecimenIndexingTasks(specimens);
             CreateVariantIndexingTasks(specimens);
             CreateGeneIndexingTasks(specimens);
+            CreateProteinIndexingTasks(specimens);
         });
     }
 
@@ -83,6 +84,11 @@ public class SpecimenIndexingTasksService : IndexingTaskService<Donor, int>
     protected override IEnumerable<int> LoadRelatedGenes(IEnumerable<int> keys)
     {
         return _specimensRepository.GetRelatedGenes(keys).Result;
+    }
+
+    protected override IEnumerable<int> LoadRelatedProteins(IEnumerable<int> keys)
+    {
+        return _specimensRepository.GetRelatedProteins(keys).Result;
     }
 
     protected override IEnumerable<int> LoadRelatedSms(IEnumerable<int> keys)
