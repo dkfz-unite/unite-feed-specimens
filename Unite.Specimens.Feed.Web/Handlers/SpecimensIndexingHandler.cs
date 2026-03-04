@@ -30,7 +30,7 @@ public class SpecimensIndexingHandler
 
     public async Task Prepare()
     {
-        await _indexingService.UpdateIndex();
+        await _indexingService.CreateIndex();
     }
 
     public async Task Handle(int bucketSize)
