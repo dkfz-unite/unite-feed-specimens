@@ -12,25 +12,31 @@ public class SpecimensIndexingHandler
 {
     private readonly TasksProcessingService _taskProcessingService;
     private readonly SpecimenIndexCreator _indexCreator;
-    private readonly IIndexService<SpecimenIndex> _indexingService;
+    private readonly IIndexService<SpecimenIndex> _specimensIndexingService;
+    private readonly IIndexService<Unite.Indices.Entities.Genes.GeneExpressionIndex> _geneExpressionsIndexingService;
+    private readonly IIndexService<Unite.Indices.Entities.Proteins.ProteinExpressionIndex> _proteinExpressionsIndexingService;
     private readonly ILogger _logger;
 
 
     public SpecimensIndexingHandler(
         TasksProcessingService taskProcessingService,
         SpecimenIndexCreator indexCreator,
-        IIndexService<SpecimenIndex> indexingService,
+        IIndexService<SpecimenIndex> specimensIndexingService,
+        IIndexService<Unite.Indices.Entities.Genes.GeneExpressionIndex> geneExpressionsIndexingService,
+        IIndexService<Unite.Indices.Entities.Proteins.ProteinExpressionIndex> proteinExpressionsIndexingService,
         ILogger<SpecimensIndexingHandler> logger)
     {
         _taskProcessingService = taskProcessingService;
         _indexCreator = indexCreator;
-        _indexingService = indexingService;
+        _specimensIndexingService = specimensIndexingService;
+        _geneExpressionsIndexingService = geneExpressionsIndexingService;
+        _proteinExpressionsIndexingService = proteinExpressionsIndexingService;
         _logger = logger;
     }
 
     public async Task Prepare()
     {
-        await _indexingService.CreateIndex();
+        await _specimensIndexingService.CreateIndex();
     }
 
     public async Task Handle(int bucketSize)
@@ -67,10 +73,14 @@ public class SpecimensIndexingHandler
             });
 
             if (indicesToDelete.Any())
-                await _indexingService.DeleteRange(indicesToDelete);
+            {
+                await _specimensIndexingService.DeleteRange(indicesToDelete);
+                await _geneExpressionsIndexingService.DeleteWhereEquals(index => index.Specimen.Id, indicesToDelete.Select(int.Parse).ToArray());
+                await _proteinExpressionsIndexingService.DeleteWhereEquals(index => index.Specimen.Id, indicesToDelete.Select(int.Parse).ToArray());
+            }
 
             if (indicesToCreate.Any())
-                await _indexingService.AddRange(indicesToCreate);
+                await _specimensIndexingService.AddRange(indicesToCreate);
 
             stopwatch.Stop();
 
