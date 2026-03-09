@@ -105,4 +105,10 @@ public class SpecimenIndexingTasksService : IndexingTaskService<Donor, int>
     {
         return _specimensRepository.GetRelatedVariants<SV.Variant>(keys).Result;
     }
+
+    protected override IEnumerable<int> LoadRelatedCnvProfiles(IEnumerable<int> keys)
+    {
+        return [];
+        // return _specimensRepository.GetRelatedCnvProfiles(keys).Result;
+    }
 }
