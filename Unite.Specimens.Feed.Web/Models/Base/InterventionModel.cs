@@ -1,7 +1,9 @@
 ﻿using System.Text.Json.Serialization;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Unite.Specimens.Feed.Web.Models.Base;
 
+[BsonIgnoreExtraElements]
 public record InterventionModel
 {
     private string _type;

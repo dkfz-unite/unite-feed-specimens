@@ -66,7 +66,7 @@ public class SpecimenIndexMapper
             Id = entity.Id,
             ReferenceId = entity.ReferenceId,
             CreationDay = entity.CreationDay ?? entity.CreationDate?.RelativeFrom(enrollmentDate),
-            Category = entity.CategoryId.ToDefinitionString(),
+            Category = entity.CategoryId?.ToDefinitionString(),
             TumorType = entity.TumorTypeId?.ToDefinitionString(),
             TumorGrade = entity.TumorGrade,
 
