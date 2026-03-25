@@ -13,8 +13,12 @@ internal static class TumorClassificationBindingExtensions
 
         return map
             .Map(path.Join(entity => entity.Superfamily), "tumor_superfamily")
+            .Map(path.Join(entity => entity.SuperfamilyScore), "tumor_superfamily_score")
             .Map(path.Join(entity => entity.Family), "tumor_family")
+            .Map(path.Join(entity => entity.FamilyScore), "tumor_family_score")
             .Map(path.Join(entity => entity.Class), "tumor_class")
-            .Map(path.Join(entity => entity.Subclass), "tumor_subclass");
+            .Map(path.Join(entity => entity.ClassScore), "tumor_class_score")
+            .Map(path.Join(entity => entity.Subclass), "tumor_subclass")
+            .Map(path.Join(entity => entity.SubclassScore), "tumor_subclass_score");
     }
 }

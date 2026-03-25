@@ -10,9 +10,13 @@ public class TumorClassificationModelConverter
         return new Data.Models.TumorClassificationModel
         {
             Superfamily = source.Superfamily,
+            SuperfamilyScore = source.SuperfamilyScore,
             Family = source.Family,
+            FamilyScore = source.FamilyScore,
             Class = source.Class,
-            Subclass = source.Subclass
+            ClassScore = source.ClassScore,
+            Subclass = source.Subclass,
+            SubclassScore = source.SubclassScore
         };
     }
 }
