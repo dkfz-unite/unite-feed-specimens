@@ -184,9 +184,13 @@ public class SpecimenIndexMapper
         return new TumorClassificationIndex
         {
             Superfamily = entity.Superfamily?.Name,
+            SuperfamilyScore = entity.SuperfamilyScore,
             Family = entity.Family?.Name,
+            FamilyScore = entity.FamilyScore,
             Class = entity.Class?.Name,
-            Subclass = entity.Subclass?.Name
+            ClassScore = entity.ClassScore,
+            Subclass = entity.Subclass?.Name,
+            SubclassScore = entity.SubclassScore
         };
     }
 

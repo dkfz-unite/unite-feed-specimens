@@ -100,9 +100,13 @@ internal abstract class SpecimenRepositoryBase<TModel> where TModel : SpecimenMo
                 entity.TumorClassification = new TumorClassification();
 
             entity.TumorClassification.Superfamily = GetTumorSuperfamily(model.TumorClassification.Superfamily);
+            entity.TumorClassification.SuperfamilyScore = model.TumorClassification.SuperfamilyScore;
             entity.TumorClassification.Family = GetTumorFamily(model.TumorClassification.Family);
+            entity.TumorClassification.FamilyScore = model.TumorClassification.FamilyScore;
             entity.TumorClassification.Class = GetTumorClass(model.TumorClassification.Class);
+            entity.TumorClassification.ClassScore = model.TumorClassification.ClassScore;
             entity.TumorClassification.Subclass = GetTumorSubclass(model.TumorClassification.Subclass);
+            entity.TumorClassification.SubclassScore = model.TumorClassification.SubclassScore;
         }
 
         if (model.MolecularData != null)

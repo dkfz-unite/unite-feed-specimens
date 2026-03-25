@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using MongoDB.Bson.Serialization.Attributes;
 using Unite.Data.Entities.Specimens.Enums;
 using Unite.Essentials.Tsv;
 
@@ -50,12 +51,15 @@ public record InterventionModel : Base.InterventionModel
     private string _specimenId;
     private SpecimenType? _specimenType;
 
+    [BsonIgnore]
     [JsonPropertyName("donor_id")]
     public string DonorId { get => _donorId?.Trim(); set => _donorId = value; }
 
+    [BsonIgnore]
     [JsonPropertyName("specimen_id")]
     public string SpecimenId { get => _specimenId?.Trim(); set => _specimenId = value; }
 
+    [BsonIgnore]
     [JsonPropertyName("specimen_type")]
     public SpecimenType? SpecimenType { get => _specimenType; set => _specimenType = value; }
 }
