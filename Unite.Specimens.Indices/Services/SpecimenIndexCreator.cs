@@ -113,18 +113,20 @@ public class SpecimenIndexCreator
         var sm = CheckSampleVariants<SM.Variant, SM.VariantEntry>(sample.Id);
         var cnv = CheckSampleVariants<CNV.Variant, CNV.VariantEntry>(sample.Id);
         var sv = CheckSampleVariants<SV.Variant, SV.VariantEntry>(sample.Id);
+        var cnvp = CheckSampleCnvProfiles(sample.Id);
         var meth = CheckSampleMethylation(sample.Id);
         var exp = CheckSampleGeneExp(sample.Id);
         var expSc = CheckSampleGeneExpSc(sample.Id);
         var prot = CheckSampleProtExp(sample.Id);
 
-        if (sm || cnv || sv || meth || exp || expSc || prot)
+        if (sm || cnv || sv || cnvp || meth || exp || expSc || prot)
         {
             index.Data = new Unite.Indices.Entities.Basic.Analysis.SampleDataIndex
             {
                 Sm = sm,
                 Cnv = cnv,
                 Sv = sv,
+                Cnvp = cnvp,
                 Meth = meth,
                 Exp = exp,
                 ExpSc = expSc,
@@ -165,6 +167,15 @@ public class SpecimenIndexCreator
         return dbContext.Set<TVariantEntry>()
             .AsNoTracking()
             .Any(entity => entity.SampleId == sampleId);
+    }
+
+    private bool CheckSampleCnvProfiles(int sampleId)
+    {
+        using var dbContext = _dbContextFactory.CreateDbContext();
+
+        return dbContext.Set<CNV.Profile>()
+            .AsNoTracking()
+            .Any(profile => profile.SampleId == sampleId);
     }
 
     private bool CheckSampleMethylation(int sampleId)
