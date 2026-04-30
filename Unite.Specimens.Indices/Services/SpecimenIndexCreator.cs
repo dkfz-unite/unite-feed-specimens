@@ -8,8 +8,6 @@ using Unite.Data.Entities.Donors.Clinical;
 using Unite.Data.Entities.Images;
 using Unite.Data.Entities.Images.Enums;
 using Unite.Data.Entities.Omics.Analysis;
-using Unite.Data.Entities.Omics.Analysis.Dna;
-using Unite.Data.Entities.Omics.Analysis.Rna;
 using Unite.Data.Entities.Specimens;
 using Unite.Data.Entities.Specimens.Analysis.Drugs;
 using Unite.Data.Entities.Specimens.Enums;
@@ -21,8 +19,6 @@ using Unite.Specimens.Indices.Services.Mapping;
 using SM = Unite.Data.Entities.Omics.Analysis.Dna.Sm;
 using CNV = Unite.Data.Entities.Omics.Analysis.Dna.Cnv;
 using SV = Unite.Data.Entities.Omics.Analysis.Dna.Sv;
-using Unite.Data.Constants;
-using Unite.Data.Entities.Omics.Analysis.Prot;
 
 
 namespace Unite.Specimens.Indices.Services;
@@ -32,6 +28,7 @@ public class SpecimenIndexCreator
     private readonly IDbContextFactory<DomainDbContext> _dbContextFactory;
     private readonly DonorsRepository _donorsRepository;
     private readonly SpecimensRepository _specimensRepository;
+    private readonly SamplesRepository _samplesRepository;
 
 
     public SpecimenIndexCreator(IDbContextFactory<DomainDbContext> dbContextFactory)
@@ -39,6 +36,7 @@ public class SpecimenIndexCreator
         _dbContextFactory = dbContextFactory;
         _donorsRepository = new DonorsRepository(dbContextFactory);
         _specimensRepository = new SpecimensRepository(dbContextFactory);
+        _samplesRepository = new SamplesRepository(dbContextFactory);
     }
 
 
@@ -110,27 +108,20 @@ public class SpecimenIndexCreator
     {
         var index = SampleIndexMapper.CreateFrom<SampleIndex>(sample, enrollmentDate);
 
-        var sm = CheckSampleVariants<SM.Variant, SM.VariantEntry>(sample.Id);
-        var cnv = CheckSampleVariants<CNV.Variant, CNV.VariantEntry>(sample.Id);
-        var sv = CheckSampleVariants<SV.Variant, SV.VariantEntry>(sample.Id);
-        var cnvp = CheckSampleCnvProfiles(sample.Id);
-        var meth = CheckSampleMethylation(sample.Id);
-        var exp = CheckSampleGeneExp(sample.Id);
-        var expSc = CheckSampleGeneExpSc(sample.Id);
-        var prot = CheckSampleProtExp(sample.Id);
+        var availability = _samplesRepository.HasRelatedOmicsResources(sample.Id).Result;
 
-        if (sm || cnv || sv || cnvp || meth || exp || expSc || prot)
+        if (availability != null)
         {
             index.Data = new Unite.Indices.Entities.Basic.Analysis.SampleDataIndex
             {
-                Sm = sm,
-                Cnv = cnv,
-                Sv = sv,
-                Cnvp = cnvp,
-                Meth = meth,
-                Exp = exp,
-                ExpSc = expSc,
-                Prot = prot
+                Sm = availability.Sm,
+                Cnv = availability.Cnv,
+                Sv = availability.Sv,
+                Cnvp = availability.Cnvp,
+                Meth = availability.Meth,
+                Exp = availability.GeneExp,
+                ExpSc = availability.GeneExpSc,
+                Prot = availability.ProtExp
             };
         }
 
@@ -157,65 +148,6 @@ public class SpecimenIndexCreator
                 sample.Resources.Any())
             .ToArray();
     }
-
-    private bool CheckSampleVariants<TVariant, TVariantEntry>(int sampleId)
-        where TVariant : Variant
-        where TVariantEntry : VariantEntry<TVariant>
-    {
-        using var dbContext = _dbContextFactory.CreateDbContext();
-
-        return dbContext.Set<TVariantEntry>()
-            .AsNoTracking()
-            .Any(entity => entity.SampleId == sampleId);
-    }
-
-    private bool CheckSampleCnvProfiles(int sampleId)
-    {
-        using var dbContext = _dbContextFactory.CreateDbContext();
-
-        return dbContext.Set<CNV.Profile>()
-            .AsNoTracking()
-            .Any(profile => profile.SampleId == sampleId);
-    }
-
-    private bool CheckSampleMethylation(int sampleId)
-    {
-        using var dbContext = _dbContextFactory.CreateDbContext();
-
-        return dbContext.Set<SampleResource>()
-            .AsNoTracking()
-            .Any(resource => resource.SampleId == sampleId
-                          && resource.Type == DataTypes.Omics.Methylation.Sample
-                          && resource.Format == FileTypes.Sequence.Idat);
-    }
-
-    private bool CheckSampleGeneExp(int sampleId)
-    {
-        using var dbContext = _dbContextFactory.CreateDbContext();
-
-        return dbContext.Set<GeneExpression>()
-            .AsNoTracking()
-            .Any(expression => expression.SampleId == sampleId);
-    }
-
-    private bool CheckSampleGeneExpSc(int sampleId)
-    {
-        using var dbContext = _dbContextFactory.CreateDbContext();
-
-        return dbContext.Set<SampleResource>()
-            .AsNoTracking()
-            .Any(resource => resource.SampleId == sampleId && resource.Type == DataTypes.Omics.Rnasc.Expression);
-    }
-
-    private bool CheckSampleProtExp(int sampleId)
-    {
-        using var dbContext = _dbContextFactory.CreateDbContext();
-
-        return dbContext.Set<ProteinExpression>()
-            .AsNoTracking()
-            .Any(expression => expression.SampleId == sampleId);
-    }
-
 
     private ParentIndex CreateParentIndex(int specimenId)
     {
@@ -322,8 +254,6 @@ public class SpecimenIndexCreator
 
     private DataIndex CreateDataIndex(int specimenId, int donorId, SpecimenType typeId, bool canHaveMrs = false, bool canHaveCts = false)
     {
-        using var dbContext = _dbContextFactory.CreateDbContext();
-
         var index = new DataIndex();
 
         index.Donors = true;
@@ -363,14 +293,14 @@ public class SpecimenIndexCreator
             index.XenograftsDrugs = CheckDrugScreenings(specimenId, typeId);
         }
 
-        index.Sms = CheckVariants<SM.Variant, SM.VariantEntry>(specimenId);
-        index.Cnvs = CheckVariants<CNV.Variant, CNV.VariantEntry>(specimenId);
-        index.Svs = CheckVariants<SV.Variant, SV.VariantEntry>(specimenId);
-        index.Cnvps = CheckCnvProfiles(specimenId);
-        index.Meth = CheckMethylation(specimenId);
-        index.Exp = CheckGeneExp(specimenId);
-        index.ExpSc = CheckGeneExpSc(specimenId);
-        index.Prot = CheckProtExp(specimenId);
+        index.Sms = _specimensRepository.HaveVariants<SM.VariantEntry, SM.Variant>([specimenId]).Result;
+        index.Cnvs = _specimensRepository.HaveVariants<CNV.VariantEntry, CNV.Variant>([specimenId]).Result;
+        index.Svs = _specimensRepository.HaveVariants<SV.VariantEntry, SV.Variant>([specimenId]).Result;
+        index.Cnvps = _specimensRepository.HaveProfiles([specimenId]).Result;
+        index.Meth = _specimensRepository.HaveMethylation([specimenId]).Result;
+        index.Exp = _specimensRepository.HaveGeneExpressions([specimenId]).Result;
+        index.ExpSc = _specimensRepository.HaveGeneExpressionsPerCells([specimenId]).Result;
+        index.Prot = _specimensRepository.HaveProteinExpressions([specimenId]).Result;
 
         return index;
     }
@@ -440,99 +370,5 @@ public class SpecimenIndexCreator
             .Where(entry => entry.Sample.SpecimenId == specimenId)
             .Where(entry => entry.Sample.Specimen.TypeId == type)
             .Any();
-    }
-
-    /// <summary>
-    /// Checks if variants data of given type is available for given specimen.
-    /// </summary>
-    /// <param name="specimenId">Specimen identifier.</param>
-    /// <typeparam name="TVariant">Variant type.</typeparam>
-    /// <typeparam name="TVariantEntry">Variant occurrence type.</typeparam>
-    /// <returns>'true' if variants data exists or 'false' otherwise.</returns>
-    private bool CheckVariants<TVariant, TVariantEntry>(int specimenId)
-        where TVariant : Variant
-        where TVariantEntry : VariantEntry<TVariant>
-    {
-        using var dbContext = _dbContextFactory.CreateDbContext();
-
-        return dbContext.Set<TVariantEntry>()
-            .AsNoTracking()
-            .Where(entry => entry.Sample.SpecimenId == specimenId)
-            .Select(entry => entry.EntityId)
-            .Distinct()
-            .Any();
-    }
-
-    /// <summary>
-    /// Checks if CNV profiles are available for given specimen.
-    /// </summary>
-    /// <param name="specimenId">Specimen identifier.</param>
-    /// <returns>'true' if CNV profiles exist or 'false' otherwise.</returns>
-    private bool CheckCnvProfiles(int specimenId)
-    {
-        using var dbContext = _dbContextFactory.CreateDbContext();
-
-        return dbContext.Set<CNV.Profile>()
-            .AsNoTracking()
-            .Where(profile => profile.Sample.SpecimenId == specimenId)
-            .Any();
-    }
-
-    /// <summary>
-    /// Checks if methylation data is available for given specimen.
-    /// </summary>
-    /// <param name="specimenId">Specimen identifier.</param>
-    /// <returns>'true' if methylation data exists or 'false' otherwise.</returns>
-    private bool CheckMethylation(int specimenId)
-    {
-        using var dbContext = _dbContextFactory.CreateDbContext();
-
-        return dbContext.Set<SampleResource>()
-            .AsNoTracking()
-            .Any(resource => resource.Sample.SpecimenId == specimenId
-                          && resource.Type == DataTypes.Omics.Methylation.Sample
-                          && resource.Format == FileTypes.Sequence.Idat);
-    }
-
-    /// <summary>
-    /// Checks if bulk gene expression data is available for given specimen.
-    /// </summary>
-    /// <param name="specimenId">Specimen identifier.</param>
-    /// <returns>'true' if bulk gene expression data exists or 'false' otherwise.</returns>
-    private bool CheckGeneExp(int specimenId)
-    {
-        using var dbContext = _dbContextFactory.CreateDbContext();
-
-        return dbContext.Set<GeneExpression>()
-            .AsNoTracking()
-            .Any(expression => expression.Sample.SpecimenId == specimenId);
-    }
-
-    /// <summary>
-    /// Checks if single cell gene expression data is available for given specimen.
-    /// </summary>
-    /// <param name="specimenId">Specimen identifier.</param>
-    /// <returns>'true' if single cell gene expression data exists or 'false' otherwise.</returns>
-    private bool CheckGeneExpSc(int specimenId)
-    {
-        using var dbContext = _dbContextFactory.CreateDbContext();
-
-        return dbContext.Set<SampleResource>()
-            .AsNoTracking()
-            .Any(resource => resource.Sample.SpecimenId == specimenId && resource.Type == DataTypes.Omics.Rnasc.Expression);
-    }
-
-    /// <summary>
-    /// Checks if proteomics data is available for given specimen.
-    /// </summary>
-    /// <param name="specimenId">Specimen identifier.</param>
-    /// <returns>'true' if proteomics data exists or 'false' otherwise.</returns>
-    private bool CheckProtExp(int specimenId)
-    {
-        using var dbContext = _dbContextFactory.CreateDbContext();
-
-        return dbContext.Set<ProteinExpression>()
-            .AsNoTracking()
-            .Any(expression => expression.Sample.SpecimenId == specimenId);
     }
 }
