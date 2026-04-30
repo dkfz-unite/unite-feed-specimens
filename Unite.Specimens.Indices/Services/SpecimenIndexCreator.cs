@@ -355,6 +355,7 @@ public class SpecimenIndexCreator
         index.Sms = CheckVariants<SM.Variant, SM.VariantEntry>(specimenId);
         index.Cnvs = CheckVariants<CNV.Variant, CNV.VariantEntry>(specimenId);
         index.Svs = CheckVariants<SV.Variant, SV.VariantEntry>(specimenId);
+        index.Cnvps = CheckCnvProfiles(specimenId);
         index.Meth = CheckMethylation(specimenId);
         index.Exp = CheckGeneExp(specimenId);
         index.ExpSc = CheckGeneExpSc(specimenId);
@@ -448,6 +449,21 @@ public class SpecimenIndexCreator
             .Where(entry => entry.Sample.SpecimenId == specimenId)
             .Select(entry => entry.EntityId)
             .Distinct()
+            .Any();
+    }
+
+    /// <summary>
+    /// Checks if CNV profiles are available for given specimen.
+    /// </summary>
+    /// <param name="specimenId">Specimen identifier.</param>
+    /// <returns>'true' if CNV profiles exist or 'false' otherwise.</returns>
+    private bool CheckCnvProfiles(int specimenId)
+    {
+        using var dbContext = _dbContextFactory.CreateDbContext();
+
+        return dbContext.Set<CNV.Profile>()
+            .AsNoTracking()
+            .Where(profile => profile.Sample.SpecimenId == specimenId)
             .Any();
     }
 
