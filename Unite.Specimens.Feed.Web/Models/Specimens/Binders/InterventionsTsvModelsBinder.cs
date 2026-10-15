@@ -37,7 +37,7 @@ public class InterventionsTsvModelsBinder : IModelBinder
                 DonorId = group.Key.DonorId,
                 SpecimenId = group.Key.SpecimenId,
                 SpecimenType = group.Key.SpecimenType,
-                Entries = group.ToArray()
+                Entries = group.Select(model => model.AsBase()).ToArray()
             })
             .ToArray();
 
@@ -45,6 +45,9 @@ public class InterventionsTsvModelsBinder : IModelBinder
     }
 }
 
+/// <summary>
+/// Intervention tsv model. This model <b>should not</b> be used to save as BSON document.
+/// </summary>
 public record InterventionModel : Base.InterventionModel
 {
     private string _donorId;
@@ -62,4 +65,18 @@ public record InterventionModel : Base.InterventionModel
     [BsonIgnore]
     [JsonPropertyName("specimen_type")]
     public SpecimenType? SpecimenType { get => _specimenType; set => _specimenType = value; }
+
+    public Base.InterventionModel AsBase()
+    {
+        return new Base.InterventionModel
+        {
+            Type = Type,
+            Details = Details,
+            StartDate = StartDate,
+            StartDay = StartDay,
+            EndDate = EndDate,
+            DurationDays = DurationDays,
+            Results = Results
+        };
+    }
 }
