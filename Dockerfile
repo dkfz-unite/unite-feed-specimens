@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 ENV ASPNETCORE_HTTP_PORTS=80
 WORKDIR /app
@@ -5,15 +7,16 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS restore
 ARG USER
-ARG TOKEN
 WORKDIR /src
-RUN dotnet nuget add source https://nuget.pkg.github.com/dkfz-unite/index.json -n github -u ${USER} -p ${TOKEN} --store-password-in-clear-text
 COPY ["Unite.Specimens.Indices/Unite.Specimens.Indices.csproj", "Unite.Specimens.Indices/"]
 COPY ["Unite.Specimens.Feed/Unite.Specimens.Feed.csproj", "Unite.Specimens.Feed/"]
 COPY ["Unite.Specimens.Feed.Web/Unite.Specimens.Feed.Web.csproj", "Unite.Specimens.Feed.Web/"]
-RUN dotnet restore "Unite.Specimens.Indices/Unite.Specimens.Indices.csproj"
-RUN dotnet restore "Unite.Specimens.Feed/Unite.Specimens.Feed.csproj"
-RUN dotnet restore "Unite.Specimens.Feed.Web/Unite.Specimens.Feed.Web.csproj"
+RUN --mount=type=secret,id=github_token \
+    dotnet nuget add source https://nuget.pkg.github.com/dkfz-unite/index.json -n github -u ${USER} -p "$(cat /run/secrets/github_token)" --store-password-in-clear-text \
+    && dotnet restore "Unite.Specimens.Indices/Unite.Specimens.Indices.csproj" \
+    && dotnet restore "Unite.Specimens.Feed/Unite.Specimens.Feed.csproj" \
+    && dotnet restore "Unite.Specimens.Feed.Web/Unite.Specimens.Feed.Web.csproj" \
+    && dotnet nuget remove source github
 
 FROM restore AS build
 COPY . .
