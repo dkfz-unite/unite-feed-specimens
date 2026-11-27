@@ -57,8 +57,8 @@ Submit donor materials data.
 
 ### Body
 The body content depends on the URL `type` parameter:  
-- `json` or **empty** (application/json) - JSON array of materials ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/specimens/materials.json)).
-- `tsv` (text/tab-separated-values) - headered TSV list of materials ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/specimens/materials.tsv)).
+- `json` or **empty** (application/json) - JSON array of materials ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/domain/specimens/materials.json)).
+- `tsv` (text/tab-separated-values) - headered TSV list of materials ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/domain/specimens/materials.tsv)).
 
 Fields description can be found [here](api-models-material.md).
 
@@ -87,8 +87,8 @@ Submit cell lines data.
 
 ### Body
 The body content depends on the URL `type` parameter:  
-- `json` or **empty** (application/json) - JSON array of cell lines ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/specimens/lines.json)).
-- `tsv` (text/tab-separated-values) - headered TSV list of cell lines ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/specimens/lines.tsv)).
+- `json` or **empty** (application/json) - JSON array of cell lines ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/domain/specimens/lines.json)).
+- `tsv` (text/tab-separated-values) - headered TSV list of cell lines ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/domain/specimens/lines.tsv)).
 
 Fields description can be found [here](api-models-line.md).
 
@@ -117,8 +117,8 @@ Submit organoids data.
 
 ### Body
 The body content depends on the URL `type` parameter:  
-- `json` or **empty** (application/json) - JSON array of organoids ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/specimens/organoids.json)).
-- `tsv` (text/tab-separated-values) - headered TSV list of organoids ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/specimens/organoids.tsv)).
+- `json` or **empty** (application/json) - JSON array of organoids ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/domain/specimens/organoids.json)).
+- `tsv` (text/tab-separated-values) - headered TSV list of organoids ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/domain/specimens/organoids.tsv)).
 
 Fields description can be found [here](api-models-organoid.md).
 
@@ -147,8 +147,8 @@ Submit xenografts data.
 
 ### Body
 The body content depends on the URL `type` parameter:  
-- `json` or **empty** (application/json) - JSON array of xenografts ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/specimens/xenografts.json)).
-- `tsv` (text/tab-separated-values) - headered TSV list of xenografts ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/specimens/xenografts.tsv)).
+- `json` or **empty** (application/json) - JSON array of xenografts ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/domain/specimens/xenografts.json)).
+- `tsv` (text/tab-separated-values) - headered TSV list of xenografts ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/domain/specimens/xenografts.tsv)).
 
 Fields description can be found [here](./api-models-xenograft.md).
 
@@ -180,8 +180,8 @@ Submit interventions data. Donors and specimens should be present in the system.
 
 ### Body
 The body content depends on the URL `type` parameter:  
-- `json` or **empty** (application/json) - JSON array of specimen interventions ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/specimens/interventions.json)).
-- `tsv` (text/tab-separated-values) - headered TSV list of specimen interventions ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/specimens/interventions.tsv)).
+- `json` or **empty** (application/json) - JSON array of specimen interventions ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/domain/specimens/interventions.json)).
+- `tsv` (text/tab-separated-values) - headered TSV list of specimen interventions ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/domain/specimens/interventions.tsv)).
 
 Fields description can be found [here](./api-models-interventions.md).
 
@@ -213,8 +213,8 @@ Submit drugs screening analysis data (including analysis metadata).
 
 ### Body
 The body content depends on the URL `type` parameter:  
-- `json` or **empty** (application/json) - JSON formatted drugs sceening analysis results ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/specimens/drugs.json)).
-- `tsv` (text/tab-separated-values) - TSV (headered) formatted drugs sceening analysis results ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/specimens/drugs.tsv)).
+- `json` or **empty** (application/json) - JSON formatted drugs sceening analysis results ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/domain/specimens/drugs.json)).
+- `tsv` (text/tab-separated-values) - TSV (headered) formatted drugs sceening analysis results ([example](https://github.com/dkfz-unite/unite/blob/main/Unite.Web/Client/public/templates/domain/specimens/drugs.tsv)).
 
 Fields description can be found [here](api-models-drugs.md).
 
